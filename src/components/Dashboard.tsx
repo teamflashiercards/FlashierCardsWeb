@@ -4,8 +4,8 @@ import UserAuth from "../AuthContext";
 
 function Dashboard() {
     const navigate = useNavigate();
-    const [error, setError] = useState({ status: false, message: "" });
-    const [loading, setLoading] = useState(false);
+    const [_error, setError] = useState({ status: false, message: "" });
+    const [_loading, setLoading] = useState(false);
     const { session, logout } = UserAuth();
 
     const handleLogout = async () => {
