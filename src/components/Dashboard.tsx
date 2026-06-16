@@ -1,11 +1,9 @@
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import UserAuth from "../AuthContext";
 
 function Dashboard() {
     const navigate = useNavigate();
-    const [_error, setError] = useState({ status: false, message: "" });
-    const [_loading, setLoading] = useState(false);
     const { session, logout } = UserAuth();
 
     const handleLogout = async () => {
@@ -21,36 +19,22 @@ function Dashboard() {
     };
   
     const fetchData = async () => {
-        setLoading(true);
-
-        try {
-            const response = await fetch(`${import.meta.env.VITE_FLASHIER_CARDS_API}/api/profile`, {
-                method: "GET",
-                headers: {
-                    "Authorization": `Bearer ${session.access_token}`
-                }
-            });
-
-            // get message and deck data
-            const data = await response.json();
-
-            console.log(data);
-
-            if (!response.ok) {
-                throw new Error(data.message);
+        const response = await fetch(`${import.meta.env.VITE_FLASHIER_CARDS_API}/api/profile`, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${session.access_token}`
             }
+        });
 
-            setLoading(false);
+        // get message and deck data
+        const data = await response.json();
 
-        } catch(error: any) {
-            setLoading(false);
-            setError({status: true, message: error.message});
-        }
+        console.log(data);
     }
 
-        useEffect(() => {
-            fetchData();
-        }, []);
+    useEffect(() => {
+        fetchData();
+    }, []);
 
 
     return (
