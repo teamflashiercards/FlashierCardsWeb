@@ -19,17 +19,21 @@ function Dashboard() {
     };
   
     const fetchData = async () => {
-        const response = await fetch(`${import.meta.env.VITE_FLASHIER_CARDS_API}/api/profile`, {
-            method: "GET",
-            headers: {
-                "Authorization": `Bearer ${session.access_token}`
-            }
-        });
+        try {
+            const response = await fetch(`${import.meta.env.VITE_FLASHIER_CARDS_API}/api/profile`, {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${session.access_token}`
+                }
+            });
 
-        // get message and deck data
-        const data = await response.json();
-
-        console.log(data);
+            // get message and deck data
+            const data = await response.json();
+            console.log(data);
+            
+        } catch (error: any) {
+            console.log(error);
+        }
     }
 
     useEffect(() => {
