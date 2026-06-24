@@ -1,22 +1,22 @@
-/* this css is for dashboard component */
+/* 
+    Description: This css module applies to Dashboard component.
+    Last updated: 6/23/2026
+*/
 
-.dashboardContent {
-    display: flex;
-    flex-direction: row;
-}
-
-.dashboardContent > div:last-of-type {
+.mainContainer {
     display: flex;
     flex: 1;
-    flex-direction: column;
-    padding: 2rem 1rem;
 }
 
-.dashboardContent > div:last-of-type > div:first-of-type {
+.subContainer {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
     position: relative;
 }
 
-.title {
+.appTitle {
     font-size: 45px;
     font-family: "Rampart One", sans-serif;
     font-weight: 400;
@@ -26,13 +26,15 @@
     margin-bottom: 2rem;
 }
 
+/* css for toolbar below */
+
 .toolbar {
-    margin-bottom: 1.5rem;
     display: flex;
     gap: 15px;
     padding: 1rem;
     border-radius: 5px;
     background-color: #D9EDF8;
+    margin-bottom: 1.5rem;
 }
 
 .toolOption {
@@ -46,7 +48,7 @@
     outline-offset: 4px;
 }
 
-.shadow {
+.toolOption .shadow {
     position: absolute;
     inset: 0;
     border-radius: 14px;
@@ -54,14 +56,14 @@
     transform: translateY(6px);
 }
 
-.edge {
+.toolOption .edge {
     position: absolute;
     inset: 0;
     border-radius: 14px;
     background-color: #296b8e;
 }
 
-.front {
+.toolOption .front {
     position: relative;
     display: flex;
     align-items: center;
@@ -87,6 +89,8 @@
 .toolOption:active .shadow {
     transform: translateY(2px);
 }
+
+/* css for decks below */
 
 .deckList {
     display: flex;
@@ -118,40 +122,46 @@
     transform: translateY(5px);
 }
 
+/* css for overlay below */
+
 .overlay {
-    width: 300px;
-    padding: 1.5rem;
     display: flex;
     flex-direction: column;
-    position: absolute;
-    background-color: white;
-    top: 50%;
+    top: 40%;
     left: 50%;
     transform: translate(-50%, -50%);
-    border-radius: 10px;
-    border: 2px solid #004A94;
+    position: absolute;
     pointer-events: auto;
+    width: 310px;
+    padding: 1.5rem;
+    background-color: white;
+    border: 2px solid #004A94;
+    border-radius: 10px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
-.exitOverlay {
+.exitBtn {
     display: flex;
     justify-content: flex-end;
+    margin-bottom: 0.5rem;
     font-size: 25px;
     color: #004A94;
 }
 
-.formHeading {
-    font-size: 22px;
-    font-family: "Imprima", sans-serif;
-    font-weight: 600;
-    font-style: normal;
-    color: #004A94;
-    margin-top: 0.5rem;
-    margin-bottom: 1rem;
+/* css for create and rename forms below */
+
+.form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
-.subtitle {
+.form > div  {
+    margin-bottom: 1.3rem;
+}
+
+.formText {
     font-size: 20px;
     font-family: "Imprima", sans-serif;
     font-weight: 400;
@@ -160,19 +170,7 @@
     margin-bottom: 0.2rem;
 }
 
-.signupForm {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.formField  {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 1.3rem;
-}
-
-.formField input {
+.form > div input {
     border: 2px solid #004A94;
     border-radius: 5px;
     font-size: 18px;
@@ -180,11 +178,11 @@
     min-width: 250px;
 }
 
-.formField input:focus {
+.form > div input:focus {
     outline: none;
 }
 
-.homeBtn {
+.fancyBtn {
     position: relative;
     display: inline-block;
     background: transparent;
@@ -193,9 +191,10 @@
     cursor: pointer;
     text-decoration: none;
     outline-offset: 4px;
+    margin-top: 0.5rem;
 }
 
-.loginShadow {
+.darkBlueBtnShadow {
     position: absolute;
     inset: 0;
     border-radius: 5px;
@@ -203,14 +202,14 @@
     transform: translateY(6px);
 }
 
-.loginEdge {
+.darkBlueBtnEdge {
     position: absolute;
     inset: 0;
     border-radius: 5px;
     background-color: #01162b;
 }
 
-.loginFront {
+.darkBlueBtnFront {
     position: relative;
     display: flex;
     align-items: center;
@@ -228,29 +227,19 @@
     background-color: #004A94;
 }
 
-.homeBtn:hover .loginFront {
+.fancyBtn:hover .darkBlueBtnFront {
     transform: translateY(-8px);
 }
 
-.homeBtn:active .loginFront {
+.fancyBtn:active .darkBlueBtnFront {
     transform: translateY(-2px);
 }
 
-.homeBtn:active .loginShadow {
+.fancyBtn:active .darkBlueBtnShadow {
     transform: translateY(2px);
 }
 
-.invalidRequest {
-    color: #004A94;
-    font-size: 18px;
-    font-family: "Imprima", sans-serif;
-    font-style: normal;
-    margin-bottom: 1rem;
-    font-weight: 600;
-    background-color: #D9EDF8;
-    border-radius: 5px;
-    padding: 1rem;
-}
+/* background animation css below */
 
 .floatingBackground {
     position: absolute;
@@ -267,10 +256,14 @@
     bottom: -80px;
 }
 
-.main {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    height: 100%;
-    overflow-y: scroll;
+.errorMessage {
+    background-color: #D9EDF8;
+    border-radius: 5px;
+    padding: 1rem;
+    font-size: 18px;
+    font-family: "Imprima", sans-serif;
+    font-weight: 600;
+    font-style: normal;
+    color: #004A94;
+    margin-bottom: 1rem;
 }
