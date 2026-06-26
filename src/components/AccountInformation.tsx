@@ -18,9 +18,24 @@ function AccountInformation() {
     const fetchDeckData = async () => {
         setLoading(true);
 
-        // TODO: call endpoint to get data to display total number of decks
-
         try {
+            const token = session.access_token;
+
+            const deckResponse = await fetch(`${import.meta.env.VITE_API_URL}/api/deck`, {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            });
+
+            const deckData = await deckResponse.json();
+
+            if (!deckResponse.ok) {
+                throw new Error(deckData.message);
+            }
+
+            setTotalDecks(deckData.length);
+
             /*
             // get list of decks to count
             const deckResponse = await fetch(`${import.meta.env.VITE_API_URL}/user/${userId}/decks`, {
@@ -38,7 +53,6 @@ function AccountInformation() {
             }
 
             setTotalDecks(deckData.length);*/
-            
         } catch (error: any) {
             setError({ status: true, message: error.message });
 

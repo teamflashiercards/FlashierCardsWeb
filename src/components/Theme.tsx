@@ -19,7 +19,7 @@ function Theme() {
         setLoading(true);
 
         try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/profile`, {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/profile`, {
                 method: "GET",
                 headers: {
                     "Authorization": `Bearer ${session.access_token}`
@@ -47,7 +47,7 @@ function Theme() {
         setLoading(true);
 
         try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/profile`, {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/profile`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",

@@ -479,6 +479,7 @@ function Edit() {
         } finally {
             setLoading(false);
         }
+        
     }
 
     const fetchDeckName = async () => {
@@ -487,6 +488,9 @@ function Edit() {
         try {
             // get specific deck from Supabase
             const response = await fetch(`${import.meta.env.VITE_FLASHIER_CARDS_API}/api/deck/${deckId}`, {
+            
+            // get deck data from supabase
+            const response = await fetch(`${import.meta.env.VITE_FLASHIER_CARDS_API}/api/deck/${deckId}/content`, {
                 method: "GET",
                 headers: {
                     "Authorization": `Bearer ${session.access_token}`
@@ -527,7 +531,7 @@ function Edit() {
             
            
             // get card content from mongodb
-            const docResponse = await fetch(`${import.meta.env.VITE_API_URL}/user/${userId}/deck/${deckId}/cards`, {
+           /* const docResponse = await fetch(`${import.meta.env.VITE_FLASHIER_CARDS_API}/api/deck/${deckId}/content`, {
                 method: "GET",
                 headers: {
                     "Authorization": `Bearer ${token}`
@@ -543,6 +547,13 @@ function Edit() {
             setFrontCards(docData.frontCards);
             setBackCards(docData.backCards);
             setTotal(docData.frontCards.length);*/
+            */
+            // set deck name content to display
+            // setDeckName(data.name);
+            setFrontCards(data.front_cards);
+            setBackCards(data.back_cards);
+            setTotal(data.front_cards.length);
+            console.log(data);
 
         } catch(error: any) {
             setError({ status: true, message: error.message });
