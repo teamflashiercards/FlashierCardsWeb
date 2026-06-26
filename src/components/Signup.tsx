@@ -3,7 +3,7 @@ import { useState, type ChangeEvent } from "react";
 import UserAuth from "../AuthContext";
 import HomeAnimation from "./HomeAnimation";
 import Tooltip from "@mui/material/Tooltip";
-import styles from "../styles/Account.module.css";
+import styles from "../styles/Home.module.css";
 
 /*
     Description: This component is the signup page for a user to create an account.
@@ -77,17 +77,17 @@ function Signup() {
     return (
         <>
             <HomeAnimation />
-            <div className={styles.mainContainer}>
-                <div className={styles.title}>
+            <div className={styles.subContainer}>
+                <div className={"app-title"}>
                     Join Flashier Cards
                 </div>
                 { (loading) ?
-                    <div className={styles.errorMessage}>
+                    <div className={"error-message"}>
                         Loading request...
                     </div>
                 :
                     (error.status) ?
-                        <div className={styles.errorMessage}>{error.message}</div>
+                        <div className={"error-message"}>{error.message}</div>
                     :
                         <></>
                 }
@@ -124,7 +124,7 @@ function Signup() {
                     <button
                         type="submit"
                         className={"fancy-btn"}
-                        style={{marginTop: "0.5rem"}}
+                        style={{ marginTop: "0.5rem" }}
                     >
                         <span className={"dark-blue-btn-shadow"}></span>
                         <span className={"dark-blue-btn-edge"}></span>

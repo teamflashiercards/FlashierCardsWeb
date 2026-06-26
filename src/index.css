@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Imprima&family=Rampart+One&display=swap');
 
 /*
-    Description: This stylesheet contains reusable css for components.
+    Description: This stylesheet contains reusable css for all components.
     Last updated: 6/6/2026
 */
 
@@ -15,57 +15,14 @@ body {
     display: flex;
 }
 
-.main-container {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem;
-}
-
-.main-container-2 {
-    display: flex;
-    flex: 1;
-}
-
-.title-1 {
-    font-size: 70px;
-    font-family: "Rampart One", sans-serif;
-    font-weight: 400;
-    font-style: normal;
-    color: #004A94;
-    text-align: center;
-}
-
-.title-2 {
-    font-size: 25px;
-    font-family: "Imprima", sans-serif;
-    font-weight: 400;
-    font-style: normal;
-    color: #004A94;
-    text-align: center;
-}
-
-.title-3 {
+.app-title {
     font-size: 45px;
     font-family: "Rampart One", sans-serif;
     font-weight: 400;
     font-style: normal;
     color: #004A94;
     text-align: center;
-}
-
-.title-4 {
-    font-size: 18px;
-    font-family: "Imprima", sans-serif;
-    font-weight: 400;
-    font-style: normal;
-    color: black;
-    
-    /*
-    padding: 0.5rem 0rem;
-    margin-bottom: 1rem;*/
+    margin-bottom: 2rem;
 }
 
 .error-message {
@@ -79,6 +36,8 @@ body {
     color: #004A94;
     margin-bottom: 1rem;
 }
+
+/*
 
 .form-title {
     font-size: 20px;
@@ -110,7 +69,9 @@ body {
 
 .form > div input:focus {
     outline: none;
-}
+}*/
+
+/* buttons css below */
 
 .fancy-btn {
     position: relative;

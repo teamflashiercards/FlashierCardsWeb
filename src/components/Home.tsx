@@ -30,27 +30,27 @@ function Home() {
                 <div className={styles.homeTitle}>
                     Flashier Cards
                 </div>
-                <div className={styles.subTitle}>
+                <div className={styles.homeSubTitle}>
                     Study The Flashier Way
                 </div>
                 <button
                     type="button"
                     onClick={() => navigate("/signup")}
-                    className={styles.fancyBtn}
+                    className={"fancy-btn"}
                     style={{marginBottom: "1.5rem"}}
                 >
-                    <span className={styles.lightBlueBtnShadow}></span>
-                    <span className={styles.lightBlueBtnEdge}></span>
-                    <span className={styles.lightBlueBtnFront}>Sign up</span>
+                    <span className={"light-blue-btn-shadow"}></span>
+                    <span className={"light-blue-btn-edge"}></span>
+                    <span className={"light-blue-btn-front"}>Sign up</span>
                 </button>
                 <button
                     type="button"
                     onClick={() => navigate("/login")}
-                    className={styles.fancyBtn}
+                    className={"fancy-btn"}
                 >
-                    <span className={styles.darkBlueBtnShadow}></span>
-                    <span className={styles.darkBlueBtnEdge}></span>
-                    <span className={styles.darkBlueBtnFront}>Log in</span>
+                    <span className={"dark-blue-btn-shadow"}></span>
+                    <span className={"dark-blue-btn-edge"}></span>
+                    <span className={"dark-blue-btn-front"}>Log in</span>
                 </button>
             </div>
         </>

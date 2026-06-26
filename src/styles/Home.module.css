@@ -1,5 +1,5 @@
 /* 
-    Description: This css module applies to Home component.
+    Description: This css module applies to Home, Signup, VerifyEmail, Login, ForgotPassword, and ResetPassword components.
     Last updated: 6/26/2026
 */
 
@@ -12,6 +12,14 @@
     padding: 2rem;
 }
 
+.subContainer {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 4rem;
+}
+
 .homeTitle {
     font-size: 70px;
     font-family: "Rampart One", sans-serif;
@@ -22,7 +30,7 @@
     margin-bottom: 0.5rem;
 }
 
-.subTitle {
+.homeSubTitle {
     font-size: 25px;
     font-family: "Imprima", sans-serif;
     font-weight: 400;
@@ -32,105 +40,34 @@
     margin-bottom: 5rem;
 }
 
-/* buttons css below */
-
-.fancyBtn {
-    position: relative;
-    display: inline-block;
-    background: transparent;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-    text-decoration: none;
-    outline-offset: 4px;
-}
-
-.lightBlueBtnShadow {
-    position: absolute;
-    inset: 0;
-    border-radius: 5px;
-    background: rgba(0, 0, 0, 0.1);
-    transform: translateY(6px);
-}
-
-.lightBlueBtnEdge {
-    position: absolute;
-    inset: 0;
-    border-radius: 5px;
-    background-color: #afd6eb;
-}
-
-.lightBlueBtnFront {
-    position: relative;
+.form {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-width: 200px;
-    min-height: 50px;
-    border-radius: 5px;
-    transform: translateY(-6px);
-    transition: transform 0.1s ease;
+}
+
+.formText {
     font-size: 20px;
     font-family: "Imprima", sans-serif;
     font-weight: 400;
     font-style: normal;
     color: #004A94;
-    background-color: #D9EDF8;
+    margin-bottom: 0.2rem;
 }
 
-.fancyBtn:hover .lightBlueBtnFront {
-    transform: translateY(-8px);
+.form > div  {
+    margin-bottom: 1.3rem;
 }
 
-.fancyBtn:active .lightBlueBtnFront {
-    transform: translateY(-2px);
-}
-
-.fancyBtn:active .lightBlutBtnShadow {
-    transform: translateY(2px);
-}
-
-.darkBlueBtnShadow {
-    position: absolute;
-    inset: 0;
+.form > div input {
+    border: 2px solid #004A94;
     border-radius: 5px;
-    background: rgba(0, 0, 0, 0.2);
-    transform: translateY(6px);
+    font-size: 18px;
+    padding: 0.5rem;
+    min-width: 250px;
 }
 
-.darkBlueBtnEdge {
-    position: absolute;
-    inset: 0;
-    border-radius: 5px;
-    background-color: #01162b;
-}
-
-.darkBlueBtnFront {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 200px;
-    min-height: 50px;
-    border-radius: 5px;
-    transform: translateY(-6px);
-    transition: transform 0.1s ease;
-    font-size: 20px;
-    font-family: "Imprima", sans-serif;
-    font-weight: 400;
-    font-style: normal;
-    color: white;
-    background-color: #004A94;
-}
-
-.fancyBtn:hover .darkBlueBtnFront {
-    transform: translateY(-8px);
-}
-
-.fancyBtn:active .darkBlueBtnFront {
-    transform: translateY(-2px);
-}
-
-.fancyBtn:active .darkBlueBtnShadow {
-    transform: translateY(2px);
+.form > div input:focus {
+    outline: none;
 }
