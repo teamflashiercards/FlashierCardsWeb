@@ -6,6 +6,8 @@ import styles from "../styles/HomeAnimation.module.css";
     Last updated: 6/6/2026
 */
 
+// TODO: Use framer motion to create this animation
+
 function HomeAnimation() {
     useEffect(() => {
         

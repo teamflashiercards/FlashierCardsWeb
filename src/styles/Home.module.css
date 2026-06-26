@@ -1,6 +1,6 @@
 /* 
     Description: This css module applies to Home component.
-    Last updated: 6/12/2026
+    Last updated: 6/26/2026
 */
 
 .mainContainer {
@@ -12,7 +12,7 @@
     padding: 2rem;
 }
 
-.title {
+.homeTitle {
     font-size: 70px;
     font-family: "Rampart One", sans-serif;
     font-weight: 400;
@@ -30,4 +30,107 @@
     color: #004A94;
     text-align: center;
     margin-bottom: 5rem;
+}
+
+/* buttons css below */
+
+.fancyBtn {
+    position: relative;
+    display: inline-block;
+    background: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    text-decoration: none;
+    outline-offset: 4px;
+}
+
+.lightBlueBtnShadow {
+    position: absolute;
+    inset: 0;
+    border-radius: 5px;
+    background: rgba(0, 0, 0, 0.1);
+    transform: translateY(6px);
+}
+
+.lightBlueBtnEdge {
+    position: absolute;
+    inset: 0;
+    border-radius: 5px;
+    background-color: #afd6eb;
+}
+
+.lightBlueBtnFront {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 200px;
+    min-height: 50px;
+    border-radius: 5px;
+    transform: translateY(-6px);
+    transition: transform 0.1s ease;
+    font-size: 20px;
+    font-family: "Imprima", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    color: #004A94;
+    background-color: #D9EDF8;
+}
+
+.fancyBtn:hover .lightBlueBtnFront {
+    transform: translateY(-8px);
+}
+
+.fancyBtn:active .lightBlueBtnFront {
+    transform: translateY(-2px);
+}
+
+.fancyBtn:active .lightBlutBtnShadow {
+    transform: translateY(2px);
+}
+
+.darkBlueBtnShadow {
+    position: absolute;
+    inset: 0;
+    border-radius: 5px;
+    background: rgba(0, 0, 0, 0.2);
+    transform: translateY(6px);
+}
+
+.darkBlueBtnEdge {
+    position: absolute;
+    inset: 0;
+    border-radius: 5px;
+    background-color: #01162b;
+}
+
+.darkBlueBtnFront {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 200px;
+    min-height: 50px;
+    border-radius: 5px;
+    transform: translateY(-6px);
+    transition: transform 0.1s ease;
+    font-size: 20px;
+    font-family: "Imprima", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    color: white;
+    background-color: #004A94;
+}
+
+.fancyBtn:hover .darkBlueBtnFront {
+    transform: translateY(-8px);
+}
+
+.fancyBtn:active .darkBlueBtnFront {
+    transform: translateY(-2px);
+}
+
+.fancyBtn:active .darkBlueBtnShadow {
+    transform: translateY(2px);
 }

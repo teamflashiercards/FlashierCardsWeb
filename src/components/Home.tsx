@@ -27,7 +27,7 @@ function Home() {
         <>
             <HomeAnimation />
             <div className={styles.mainContainer}>
-                <div className={styles.title}>
+                <div className={styles.homeTitle}>
                     Flashier Cards
                 </div>
                 <div className={styles.subTitle}>
@@ -36,21 +36,21 @@ function Home() {
                 <button
                     type="button"
                     onClick={() => navigate("/signup")}
-                    className={"fancy-btn"}
+                    className={styles.fancyBtn}
                     style={{marginBottom: "1.5rem"}}
                 >
-                    <span className={"light-blue-btn-shadow"}></span>
-                    <span className={"light-blue-btn-edge"}></span>
-                    <span className={"light-blue-btn-front"}>Sign up</span>
+                    <span className={styles.lightBlueBtnShadow}></span>
+                    <span className={styles.lightBlueBtnEdge}></span>
+                    <span className={styles.lightBlueBtnFront}>Sign up</span>
                 </button>
                 <button
                     type="button"
                     onClick={() => navigate("/login")}
-                    className={"fancy-btn"}
+                    className={styles.fancyBtn}
                 >
-                    <span className={"dark-blue-btn-shadow"}></span>
-                    <span className={"dark-blue-btn-edge"}></span>
-                    <span className={"dark-blue-btn-front"}>Log in</span>
+                    <span className={styles.darkBlueBtnShadow}></span>
+                    <span className={styles.darkBlueBtnEdge}></span>
+                    <span className={styles.darkBlueBtnFront}>Log in</span>
                 </button>
             </div>
         </>
