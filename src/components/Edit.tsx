@@ -43,14 +43,11 @@ function Giphy({newImage, onDblClick, onDragEnd}: any) {
 
 function Edit() {
     // fetch related variables
-    const [error, setError] = useState({status: false, message: ""});
+    const [error, setError] = useState({ status: false, message: "" });
     const [loading, setLoading] = useState(false);
     const [deckName, setDeckName] = useState();
     const { deckId } = useParams();
     const { session } = UserAuth();
-
-    // session.access_token
-    // session.user.id
 
     // text side panel related variables
     const [textPanel, setTextPanel] = useState(false);
@@ -63,8 +60,9 @@ function Edit() {
     const [cardSide, setCardSide] = useState("Front");
     const [cardNum, setCardNum] = useState(1);
     const [total, setTotal] = useState(1);
-    const [frontCards, setFrontCards] = useState<Card[]>([{text: [], gif: [], sticker: []}]);
-    const [backCards, setBackCards] = useState<Card[]>([{text: [], gif: [], sticker: []}]);
+    const [frontCards, setFrontCards] = useState<Card[]>([]);   // initialize with initial card content
+    const [backCards, setBackCards] = useState<Card[]>([]);     // initialize with initial card content
+
 
     // giphs and stickers related variables
     const [query, setQuery] = useState("");
@@ -143,8 +141,9 @@ function Edit() {
         }
     }
 
+    /*
     function createSticker(stickerUrl: string) {
-        let stickerTmp = {url: stickerUrl, width: 100, height: 100, x: 20, y: 20};
+        let stickerTmp = { id: null, card_id: null, url: stickerUrl, width: 100, height: 100, x: 20, y: 20 };
         if (cardSide == "Front") {
             setFrontCards(prev =>
                 prev.map((card, index) =>
@@ -158,10 +157,11 @@ function Edit() {
                 )
             );
         }
-    }
+    }*/
 
+    /*
     function createGif(gifUrl: string) {
-        let gifTmp = {url: gifUrl, width: 150, height: 150, x: 50, y: 50};
+        let gifTmp = { id: null, card_id: null, url: gifUrl, width: 150, height: 150, x: 50, y: 50 };
         if (cardSide == "Front") {
             setFrontCards(prev =>
                 prev.map((card, index) =>
@@ -175,7 +175,7 @@ function Edit() {
                 )
             );
         }
-    }
+    }*/
 
     function changeTextColor(color: string) {
         if (cardSide === "Front") {
@@ -197,6 +197,7 @@ function Edit() {
         }
     }
 
+    /*
     function createSmallText() {
         let textTmp = {input: "Double click to edit text", width: 300, x: 30, y: 30, fontSize: 18, color: "#201002"};
         if (cardSide == "Front") {
@@ -212,8 +213,9 @@ function Edit() {
                 )
             );
         }
-    }
+    }*/
 
+    /*
     function createMediumText() {
         let textTmp = {input: "Double click to edit text", width: 400, x: 30, y: 30, fontSize: 28, color: "#201002"};
         if (cardSide == "Front") {
@@ -229,10 +231,11 @@ function Edit() {
                 )
             );
         }
-    }
+    }*/
 
+        /*
     function createLargeText() {
-        let textTmp = {input: "Double click to edit text", width: 600, x: 30, y: 30, fontSize: 38, color: "#201002"};
+        let textTmp = { id: null, card_id: null, input: "Double click to edit text", width: 600, x: 30, y: 30, fontSize: 38, color: "#201002"};
         if (cardSide == "Front") {
             setFrontCards(prev =>
                 prev.map((card, index) =>
@@ -246,7 +249,7 @@ function Edit() {
                 )
             );
         }
-    }
+    }*/
 
     function deleteText() {
         if (cardSide === "Front") {
@@ -338,13 +341,14 @@ function Edit() {
         }
     }
 
+    /*
     function addCard() {
         if ((total + 1) <= 20) {
             setTotal(total + 1);
-            setFrontCards([...frontCards, {text: [], gif: [], sticker: []}]);
+            setFrontCards([...frontCards, { id: null, deck_id: deckId, text: [], gif: [], sticker: []}]);
             setBackCards([...backCards, {text: [], gif: [], sticker: []}]);
         }
-    }
+    }*/
 
     function deleteCard() {
         if ((total - 1) >= 1) {
@@ -477,26 +481,51 @@ function Edit() {
         }
     }
 
-    const fetchDeckData = async () => {
+    const fetchDeckName = async () => {
         setLoading(true);
 
         try {
-            /*
-            // get deck data from supabase
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/user/${userId}/deck/${deckId}`, {
+            // get specific deck from Supabase
+            const response = await fetch(`${import.meta.env.VITE_FLASHIER_CARDS_API}/api/deck/${deckId}`, {
                 method: "GET",
                 headers: {
-                    "Authorization": `Bearer ${token}`
+                    "Authorization": `Bearer ${session.access_token}`
                 }
             });
 
-            // get message and deck data
             const data = await response.json();
+            if (!response.ok) throw new Error(data.message);
+            setDeckName(data[0].name);
+        
+        } catch(error: any) {
+            setError({ status: true, message: error.message });
 
-            if (!response.ok) {
-                throw new Error(data.message);
-            }
+        } finally {
+            setLoading(false);
+        }
+    };
 
+    console.log(session.access_token);
+
+    const fetchDeckContent = async () => {
+        setLoading(true);
+
+        try {
+            setFrontCards([{}])
+            /*
+            // get specific deck from Supabase
+            const response = await fetch(`${import.meta.env.VITE_FLASHIER_CARDS_API}/api/deck/${deckId}`, {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${session.access_token}`
+                }
+            });
+
+            const data = await response.json();
+            if (!response.ok) throw new Error(data.message);
+            setDeckName(data[0].name);
+            
+           
             // get card content from mongodb
             const docResponse = await fetch(`${import.meta.env.VITE_API_URL}/user/${userId}/deck/${deckId}/cards`, {
                 method: "GET",
@@ -511,9 +540,6 @@ function Edit() {
             if (!docResponse.ok) {
                 throw new Error(docData.message);
             }
-
-            // set deck name content to display
-            setDeckName(data.name);
             setFrontCards(docData.frontCards);
             setBackCards(docData.backCards);
             setTotal(docData.frontCards.length);*/
@@ -524,10 +550,11 @@ function Edit() {
         } finally {
             setLoading(false);
         }
-    }
+    };
     
     useEffect(() => {
-        fetchDeckData()
+        fetchDeckName();
+        fetchDeckContent();
     }, []);
 
     return (
@@ -550,7 +577,7 @@ function Edit() {
                         <button
                             type="button"
                             className={styles.toolOption}
-                            onClick={addCard}
+                            //onClick={addCard}
                         >
                             <span className={styles.shadow}></span>
                             <span className={styles.edge}></span>
@@ -656,6 +683,7 @@ function Edit() {
                         <div className={styles.card} ref={cardRef}>
                             <div className={styles.cardInner}>
                                 <div className={styles.cardFront}>
+                                    {/*
                                     <Stage
                                         width={800}
                                         height={400}
@@ -674,7 +702,7 @@ function Edit() {
                                                     width={text.width}
                                                     text={text.input}
                                                     fontFamily="Imprima"
-                                                    fontSize={text.fontSize}
+                                                    //fontSize={text.fontSize}
                                                     fill={text.color}
                                                     draggable
                                                     onDblClick={() => {
@@ -744,9 +772,10 @@ function Edit() {
                                             )}
                                         </Layer>
                                         
-                                    </Stage>                                    
+                                    </Stage>    */}                                 
                                 </div>
                                 <div className={styles.cardBack}>
+                                     {/*
                                     <Stage
                                         width={800}
                                         height={400}
@@ -765,7 +794,7 @@ function Edit() {
                                                     width={text.width}
                                                     text={text.input}
                                                     fontFamily="Imprima"
-                                                    fontSize={text.fontSize}
+                                                    //fontSize={text.fontSize}
                                                     fill={text.color}
                                                     draggable
                                                     onDblClick={() => {
@@ -834,7 +863,7 @@ function Edit() {
                                                 />
                                             )}
                                         </Layer>
-                                    </Stage>                            
+                                    </Stage>      */}                       
                                 </div>
                             </div>
                         </div>
@@ -875,11 +904,12 @@ function Edit() {
                         </div>
                         <div>
                             <div className={styles.sidePanelTitle}>Text Size</div>
+                            {/* 
                             <div className={styles.textOptions}>
                                 <button onClick={createSmallText}>Small</button>
                                 <button onClick={createMediumText}>Medium</button>
                                 <button onClick={createLargeText}>Large</button>
-                            </div>
+                            </div>*/}
                         </div>
                     </div>
                     <div className={styles.sidePanel} style={{display: gifPanel ? "flex" : "none"}}>
@@ -906,7 +936,7 @@ function Edit() {
                                         key={gif.id}
                                         src={gif.url}
                                         alt={gif.title}
-                                        onClick={() => createGif(gif.url)}
+                                        //onClick={() => createGif(gif.url)}
                                     />
                                 ))}
                             </div>
@@ -939,7 +969,7 @@ function Edit() {
                                         key={sticker.id}
                                         src={sticker.url}
                                         alt={sticker.title}
-                                        onClick={() => createSticker(sticker.url)}
+                                        //onClick={() => createSticker(sticker.url)}
                                     />
                                 ))}
                             </div>
