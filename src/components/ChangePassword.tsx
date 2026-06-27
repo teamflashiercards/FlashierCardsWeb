@@ -32,7 +32,8 @@ function ChangePassword() {
         e.preventDefault();
         setLoading(true);
 
-        // TODO: update user password
+        // TODO: update user password with user auth
+
         try {
             /*
             const response = await fetch(`${import.meta.env.VITE_API_URL}/user/${userId}/changePassword`, {
@@ -71,19 +72,19 @@ function ChangePassword() {
         <div className={styles.mainContainer}>
             <Navbar />
             <div className={styles.subContainer}>
-                <div className={styles.appTitle}>
+                <div className={"app-title"}>
                     Flashier Cards
                 </div>
-                <div className={styles.profileContent}>
+                <div className={styles.profileTable}>
                     <ProfileNavbar currentView={"changePassword"} />
                     <div>
                         { (loading) ?
-                            <div className={styles.errorMessage}>
+                            <div className={"error-message"}>
                                 Loading request...
                             </div>
                         :
                             (error.status) ?
-                                <div className={styles.errorMessage}>{error.message}</div>
+                                <div className={"error-message"}>{error.message}</div>
                             :
                                 <></>
                         }
@@ -92,7 +93,7 @@ function ChangePassword() {
                         </div>
                         <form className={styles.form} onSubmit={submitForm}>
                             <div>
-                                <div className={styles.formTitle}>
+                                <div className={styles.formText}>
                                     Current password
                                 </div>
                                 <input 
@@ -104,7 +105,7 @@ function ChangePassword() {
                             </div>
                             <Tooltip title="Password should have 8 characters with at least one uppercase letter, lowercase letter, number, and symbol.">
                                 <div>
-                                    <div className={styles.formTitle}>
+                                    <div className={styles.formText}>
                                         New password
                                     </div>
                                     <input 
@@ -116,7 +117,7 @@ function ChangePassword() {
                                 </div>
                             </Tooltip>
                             <div>
-                                <div className={styles.formTitle}>
+                                <div className={styles.formText}>
                                     Confirm new password
                                 </div>
                                 <input 
@@ -129,6 +130,7 @@ function ChangePassword() {
                             <button
                                 type="submit"
                                 className={"fancy-btn"}
+                                style={{ marginTop: "0.5rem" }}
                             >
                                 <span className={"dark-blue-btn-shadow"}></span>
                                 <span className={"dark-blue-btn-edge"}></span>

@@ -23,7 +23,8 @@ function DeleteAccount() {
         e.preventDefault();
         setLoading(true);
 
-        // TODO: delete user from database
+        // TODO: delete user from database with user auth
+
         try {
 			/*
             // delete user in supabase
@@ -69,19 +70,19 @@ function DeleteAccount() {
 		<div className={styles.mainContainer} style={{pointerEvents: overlay ? "none" : "auto"}}>
             <Navbar />
             <div className={styles.subContainer}>
-				<div className={styles.appTitle}>
+				<div className={"app-title"}>
                     Flashier Cards
                 </div>
-                <div className={styles.profileContent}>
+                <div className={styles.profileTable}>
                     <ProfileNavbar currentView={"deleteAccount"} />
                     <div>
                         { (loading) ?
-                            <div className={styles.errorMessage}>
+                            <div className={"error-message"}>
                                 Loading request...
                             </div>
                         :
                             (error.status) ?
-                                <div className={styles.errorMessage}>{error.message}</div>
+                                <div className={"error-message"}>{error.message}</div>
                             :
                                 <></>
                         }
@@ -113,11 +114,16 @@ function DeleteAccount() {
                             <button
                                 type="submit"
                                 className={"fancy-btn"}
-                                style={{marginRight: "1rem"}}
+                                style={{ marginRight: "1rem" }}
                             >
                                 <span className={"light-blue-btn-shadow"}></span>
                                 <span className={"light-blue-btn-edge"}></span>
-                                <span className={"small-light-blue-btn-front"}><FontAwesomeIcon icon={faCheck} /></span>
+                                <span 
+                                    className={"light-blue-btn-front"} 
+                                    style={{ minWidth: "40px", minHeight: "40px" }}
+                                >
+                                    <FontAwesomeIcon icon={faCheck} />
+                                </span>
                             </button>
                             <button
                                 type="button"
@@ -126,7 +132,12 @@ function DeleteAccount() {
                             >
                                 <span className={"dark-blue-btn-shadow"}></span>
                                 <span className={"dark-blue-btn-edge"}></span>
-                                <span className={"small-dark-blue-btn-front"}><FontAwesomeIcon icon={faX} /></span>
+                                <span 
+                                    className={"dark-blue-btn-front"}
+                                    style={{ minWidth: "40px", minHeight: "40px" }}
+                                >
+                                    <FontAwesomeIcon icon={faX} />
+                                </span>
                             </button>
                         </div>
                     </form>

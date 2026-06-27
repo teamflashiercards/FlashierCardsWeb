@@ -6,7 +6,7 @@ import UserAuth from "../AuthContext";
 
 /*
     Description: This component displays basic user information.
-    Last updated: 6/10/2026
+    Last updated: 6/26/2026
 */
 
 function AccountInformation() {
@@ -19,40 +19,17 @@ function AccountInformation() {
         setLoading(true);
 
         try {
-            const token = session.access_token;
-
-            const deckResponse = await fetch(`${import.meta.env.VITE_API_URL}/api/deck`, {
+            const response = await fetch(`${import.meta.env.VITE_FLASHIER_CARDS_API}/api/deck`, {
                 method: "GET",
                 headers: {
-                    "Authorization": `Bearer ${token}`
+                    "Authorization": `Bearer ${session.access_token}`
                 }
             });
 
-            const deckData = await deckResponse.json();
+            const data = await response.json();
+            if (!response.ok) throw new Error(data.message);
+            setTotalDecks(data.length);
 
-            if (!deckResponse.ok) {
-                throw new Error(deckData.message);
-            }
-
-            setTotalDecks(deckData.length);
-
-            /*
-            // get list of decks to count
-            const deckResponse = await fetch(`${import.meta.env.VITE_API_URL}/user/${userId}/decks`, {
-                method: "GET",
-                headers: {
-                    "Authorization": `Bearer ${token}`
-                }
-            });
-
-            // get message and deck data
-            const deckData = await deckResponse.json();
-
-            if (!deckResponse.ok) {
-                throw new Error(deckData.message);
-            }
-
-            setTotalDecks(deckData.length);*/
         } catch (error: any) {
             setError({ status: true, message: error.message });
 
@@ -69,19 +46,19 @@ function AccountInformation() {
         <div className={styles.mainContainer}>
             <Navbar />
             <div className={styles.subContainer}>
-                <div className={styles.appTitle}>
+                <div className={"app-title"}>
                     Flashier Cards
                 </div>
-                <div className={styles.profileContent}>
+                <div className={styles.profileTable}>
                     <ProfileNavbar currentView={"accountInformation"} />
                     <div>
                         { (loading) ?
-                            <div className={styles.errorMessage}>
+                            <div className={"error-message"}>
                                 Loading request...
                             </div>
                         :
                             (error.status) ?
-                                <div className={styles.errorMessage}>{error.message}</div>
+                                <div className={"error-message"}>{error.message}</div>
                             :
                                 <></>
                         }
@@ -100,7 +77,7 @@ function AccountInformation() {
                         <div className={styles.text}>
                             Total Number of Decks
                         </div>
-                        <div className={styles.subText} style={{marginBottom: "0rem"}}>
+                        <div className={styles.subText} style={{ marginBottom: "0rem" }}>
                             {totalDecks}
                         </div>
                     </div>

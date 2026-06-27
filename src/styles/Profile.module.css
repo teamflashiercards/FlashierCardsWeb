@@ -12,44 +12,20 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    align-items: center;
     padding: 2rem;
 }
 
-.appTitle {
-    font-size: 45px;
-    font-family: "Rampart One", sans-serif;
-    font-weight: 400;
-    font-style: normal;
-    color: #004A94;
-    text-align: center;
-    margin-bottom: 2rem;
-}
-
-.profileContent {
+.profileTable {
     display: flex;
     flex-direction: column;
     position: relative;
     border: 2px solid #004A94;
     background-color: aliceblue;
     flex: 1;
-    width: 100%;
 }
 
-.profileContent > div:last-of-type {
+.profileTable > div:last-of-type {
     padding: 1rem;
-}
-
-.errorMessage {
-    background-color: #D9EDF8;
-    border-radius: 5px;
-    padding: 1rem;
-    font-size: 18px;
-    font-family: "Imprima", sans-serif;
-    font-weight: 600;
-    font-style: normal;
-    color: #004A94;
-    margin-bottom: 1rem;
 }
 
 .text {
@@ -76,6 +52,7 @@
     display: flex;
     gap: 30px;
     margin-bottom: 1rem;
+    margin-right: 0.5rem;
 }
 
 .animationOptions > div {
@@ -112,17 +89,17 @@
     margin-bottom: 1rem;
 }
 
-.form > div  {
-    margin-bottom: 1.3rem;
-}
-
-.formTitle {
+.formText {
     font-size: 20px;
     font-family: "Imprima", sans-serif;
     font-weight: 400;
     font-style: normal;
     color: #004A94;
     margin-bottom: 0.2rem;
+}
+
+.form > div  {
+    margin-bottom: 1.3rem;
 }
 
 .form > div input {

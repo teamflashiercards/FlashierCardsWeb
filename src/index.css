@@ -83,37 +83,11 @@ body {
     background-color: #D9EDF8;
 }
 
-.small-light-blue-btn-front {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 40px;
-    min-height: 40px;
-    border-radius: 5px;
-    transform: translateY(-6px);
-    transition: transform 0.1s ease;
-    font-size: 20px;
-    font-family: "Imprima", sans-serif;
-    font-weight: 400;
-    font-style: normal;
-    color: #004A94;
-    background-color: #D9EDF8;
-}
-
 .fancy-btn:hover .light-blue-btn-front {
     transform: translateY(-8px);
 }
 
-.fancy-btn:hover .small-light-blue-btn-front {
-    transform: translateY(-8px);
-}
-
 .fancy-btn:active .light-blue-btn-front {
-    transform: translateY(-2px);
-}
-
-.fancy-btn:active .small-light-blue-btn-front {
     transform: translateY(-2px);
 }
 
@@ -154,37 +128,11 @@ body {
     background-color: #004A94;
 }
 
-.small-dark-blue-btn-front {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 40px;
-    min-height: 40px;
-    border-radius: 5px;
-    transform: translateY(-6px);
-    transition: transform 0.1s ease;
-    font-size: 20px;
-    font-family: "Imprima", sans-serif;
-    font-weight: 400;
-    font-style: normal;
-    color: white;
-    background-color: #004A94;
-}
-
 .fancy-btn:hover .dark-blue-btn-front {
     transform: translateY(-8px);
 }
 
-.fancy-btn:hover .small-dark-blue-btn-front {
-    transform: translateY(-8px);
-}
-
 .fancy-btn:active .dark-blue-btn-front {
-    transform: translateY(-2px);
-}
-
-.fancy-btn:active .small-dark-blue-btn-front {
     transform: translateY(-2px);
 }
 
