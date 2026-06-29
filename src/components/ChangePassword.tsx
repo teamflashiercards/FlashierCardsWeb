@@ -2,18 +2,18 @@ import Navbar from "./Navbar";
 import ProfileNavbar from "./ProfileNavbar";
 import { useState, type ChangeEvent } from 'react';
 import styles from "../styles/Profile.module.css";
-//import UserAuth from "../AuthContext";
 import Tooltip from "@mui/material/Tooltip";
+import UserAuth from "../AuthContext";
 
 /*
     Description: This component allows user to change their password.
-    Last updated: 6/10/2026
+    Last updated: 6/29/2026
 */
 
 function ChangePassword() {
     const [error, setError] = useState({ status: false, message: "" });
     const [loading, setLoading] = useState(false);
-    //const { session } = UserAuth();
+    const { changePassword } = UserAuth();
 
     const [formData, setFormData] = useState({
         currentPassword: "",
@@ -32,33 +32,27 @@ function ChangePassword() {
         e.preventDefault();
         setLoading(true);
 
-        // TODO: update user password with user auth
-
         try {
-            /*
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/user/${userId}/changePassword`, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`
-                },
-                body: JSON.stringify({
-                    currentPassword: formData.currentPassword,
-                    newPassword: formData.newPassword,
-                    confirmNewPassword: formData.confirmNewPassword
-                })
-            });
+            const passwordRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[\\W]).{8,}$");
 
-            const data = await response.json();
+            // verify user input
+            if (formData.currentPassword === "" || formData.newPassword === "" || formData.confirmNewPassword === "") {
+                throw new Error("Please complete the form.");
 
-            if (!response.ok) {
-                throw new Error(data.message);
+            } else if (!passwordRegex.test(formData.newPassword)) {
+                throw new Error("Password should have 8 characters with at least one uppercase letter, lowercase letter, number, and symbol.");
+            
+            } else if (formData.newPassword !== formData.confirmNewPassword) {
+                throw new Error("New password and Confirm new password do not match.");
             }
 
-            
-            setSuccess(true);
-            // throw an exception show success with message
-          */
+            const result = await changePassword(formData.currentPassword, formData.newPassword);
+
+            if (!result.success) {
+                throw new Error(result.error.message);
+            }
+
+            throw new Error("Your password was successfully updated.");
 
         } catch(error: any) {
             setError({ status: true, message: error.message });

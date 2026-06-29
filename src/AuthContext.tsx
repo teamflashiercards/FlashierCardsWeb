@@ -67,10 +67,10 @@ export function AuthContextProvider({ children }: any) {
         }
     };
 
-    // handle password update here
-    const updatePassword = async (password: string) => {
+    // handle password update here for reset password
+    const updatePassword = async (newPassword: string) => {
         const { data, error } = await supabase.auth.updateUser({
-            password: password
+            password: newPassword
         });
 
         if (error) {
@@ -78,6 +78,25 @@ export function AuthContextProvider({ children }: any) {
         } else {
             return {success: true, data};
         }
+    };
+
+    // handle password change here
+    const changePassword = async (newPassword: string, currPassword: string) => {
+        const { data, error } = await supabase.auth.updateUser({
+            password: newPassword,
+            current_password: currPassword
+        });
+
+        if (error) {
+            return {success: false, error};
+        } else {
+            return {success: true, data};
+        }
+    };
+
+    // handle delete user account here
+    const deleteUser = async() => {
+        // use edge function to allow user to delete their own account
     };
 
     // handle logout here
@@ -104,7 +123,7 @@ export function AuthContextProvider({ children }: any) {
     
     return (
         <AuthContext.Provider 
-            value={{ signup, verifyToken, login, resetPassword, updatePassword, logout, session }}
+            value={{ signup, verifyToken, login, resetPassword, updatePassword, changePassword, logout, deleteUser, session }}
         >
             { children }
         </AuthContext.Provider>

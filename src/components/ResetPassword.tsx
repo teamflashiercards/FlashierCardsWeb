@@ -42,7 +42,7 @@ function ResetPassword() {
                 throw new Error("Password should have 8 characters with at least one uppercase letter, lowercase letter, number, and symbol.");
             
             } else if (formData.newPassword !== formData.confirmNewPassword) {
-                throw new Error("Password and Confirm password do not match.");
+                throw new Error("New password and Confirm new password do not match.");
             }
 
             // make request to update user's account password
