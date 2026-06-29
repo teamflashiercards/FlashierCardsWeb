@@ -20,6 +20,7 @@ function Dashboard() {
     const [deckName, setDeckName] = useState("");
     const [deckId, setDeckId] = useState<null | number>(null);
     const [decks, setDecks] = useState<Deck[]>([]);
+    const [totalDecks, setTotalDecks] = useState(0);
     
     function handleFormData(e: ChangeEvent<HTMLInputElement>) {
         setDeckName(e.target.value);
@@ -54,6 +55,7 @@ function Dashboard() {
             const data = await response.json();
             if (!response.ok) throw new Error(data.message);
             setDecks(data);
+            setTotalDecks(data.length);
 
         } catch(error: any) {
             setError({ status: true, message: error.message });
@@ -100,6 +102,13 @@ function Dashboard() {
         setLoading(true);
 
         try {
+            // verify user input
+            if (deckName === "") {
+                throw new Error("Please enter a deck name.");
+            } else if ((totalDecks + 1) > 6) {
+                throw new Error("You can only create up to 6 decks.");
+            }
+
             // create a deck in Supabase
             const response = await fetch(`${import.meta.env.VITE_FLASHIER_CARDS_API}/api/deck`, {
                 method: "POST",
@@ -132,6 +141,11 @@ function Dashboard() {
         setLoading(true);
 
         try {
+            // verify user input
+            if (deckName === "") {
+                throw new Error("Please enter a deck name.");
+            }
+
             // update a deck in Supabase
             const response = await fetch(`${import.meta.env.VITE_FLASHIER_CARDS_API}/api/deck/${deckId}`, {
                 method: "PUT",
