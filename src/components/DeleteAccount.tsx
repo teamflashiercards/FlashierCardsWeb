@@ -3,9 +3,9 @@ import ProfileNavbar from "./ProfileNavbar";
 import styles from "../styles/Profile.module.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faX } from "@fortawesome/free-solid-svg-icons";
-import { useNavigate } from "react-router-dom";
+//import { useNavigate } from "react-router-dom";
 import { useState } from 'react';
-import UserAuth from "../AuthContext";
+//import UserAuth from "../AuthContext";
 
 /*
     Description: This component allows user to delete their account.
@@ -16,8 +16,8 @@ function DeleteAccount() {
     const [error, setError] = useState({ status: false, message: "" });
     const [loading, setLoading] = useState(false);
 	const [overlay, setOverlay] = useState(false);
-    const navigate = useNavigate();
-    const { session } = UserAuth();
+    //const navigate = useNavigate();
+    //const { session } = UserAuth();
 
 	const submitForm = async (e: any) => {
         e.preventDefault();

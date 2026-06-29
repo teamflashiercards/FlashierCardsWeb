@@ -2,7 +2,7 @@ import Navbar from "./Navbar";
 import ProfileNavbar from "./ProfileNavbar";
 import { useState, type ChangeEvent } from 'react';
 import styles from "../styles/Profile.module.css";
-import UserAuth from "../AuthContext";
+//import UserAuth from "../AuthContext";
 import Tooltip from "@mui/material/Tooltip";
 
 /*
@@ -13,7 +13,7 @@ import Tooltip from "@mui/material/Tooltip";
 function ChangePassword() {
     const [error, setError] = useState({ status: false, message: "" });
     const [loading, setLoading] = useState(false);
-    const { session } = UserAuth();
+    //const { session } = UserAuth();
 
     const [formData, setFormData] = useState({
         currentPassword: "",
