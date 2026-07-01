@@ -96,7 +96,15 @@ export function AuthContextProvider({ children }: any) {
 
     // handle delete user account here
     const deleteUser = async() => {
-        // use edge function to allow user to delete their own account
+        const { data, error } = await supabase.functions.invoke("delete-user", {
+            body: { name: 'Functions' }
+        });
+
+        if (error) {
+            return {success: false, error};
+        } else {
+            return {success: true, data};
+        }
     };
 
     // handle logout here

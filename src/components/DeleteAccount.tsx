@@ -3,66 +3,50 @@ import ProfileNavbar from "./ProfileNavbar";
 import styles from "../styles/Profile.module.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faX } from "@fortawesome/free-solid-svg-icons";
-//import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState } from 'react';
-//import UserAuth from "../AuthContext";
+import UserAuth from "../AuthContext";
 
 /*
     Description: This component allows user to delete their account.
-    Last updated: 6/11/2026
+    Last updated: 6/30/2026
 */
 
 function DeleteAccount() {
     const [error, setError] = useState({ status: false, message: "" });
     const [loading, setLoading] = useState(false);
 	const [overlay, setOverlay] = useState(false);
-    //const navigate = useNavigate();
-    //const { session } = UserAuth();
+    const { deleteUser, logout } = UserAuth();
+    const navigate = useNavigate();
+
+    const handleLogout = async () => {
+        try {
+            const result = await logout();
+            if (!result.success) {
+                throw new Error(result.error.message);
+            }
+            navigate("/");
+        } catch (error: any) {
+            console.error(error.message);
+        }
+    };
 
 	const submitForm = async (e: any) => {
         e.preventDefault();
         setLoading(true);
 
-        // TODO: delete user from database with user auth
-
         try {
-			/*
-            // delete user in supabase
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/user/${userId}/delete`, {
-                method: "DELETE",
-                headers: {
-                    "Authorization": `Bearer ${token}`
-                }
-            });
-
-            const data = await response.json();
-
-            if (!response.ok) {
-                throw new Error(data.message);
-            }
-
-            // delete user card content in mongodb
-            const docResponse = await fetch(`${import.meta.env.VITE_API_URL}/user/${userId}/deleteCards`, {
-                method: "DELETE",
-                headers: {
-                    "Authorization": `Bearer ${token}`
-                }
-            });
-
-            const docData = await docResponse.json();
-
-            if (!response.ok) {
-                throw new Error(docData.message);
-            }
-
-			navigate(`/`, {replace: true});*/
+            // make request to delete user
+            const result = await deleteUser();
+            if (!result.success) throw new Error(result.error.message);
 
         } catch(error: any) {
             setError({ status: true, message: error.message });
 
         } finally {
+            setLoading(false);
             setOverlay(false);
-			setLoading(false);
+			handleLogout();
 		}
     };
 	
