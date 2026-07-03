@@ -23,7 +23,7 @@ function VerifyEmail() {
         setLoading(true);
 
         try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/profile`, {
+            const response = await fetch(`${import.meta.env.VITE_FLASHIER_CARDS_API}/api/profile`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -34,13 +34,8 @@ function VerifyEmail() {
                 })
             });
 
-            if (!response.ok) {
-                const error = await response.json();
-                throw new Error(error.message);
-            }
-
             const data = await response.json();
-            console.log(data);
+            if (!response.ok)  throw new Error(data.message);
 
         } catch (error: any) {
             setError({ status: true, message: error.message });
