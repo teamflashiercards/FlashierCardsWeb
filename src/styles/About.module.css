@@ -1,5 +1,3 @@
-/* About page styles */
-
 .main {
     flex: 1;
     display: flex;
@@ -12,95 +10,115 @@
     box-sizing: border-box;
 }
 
-.card {
-    background-color: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 74, 148, 0.1);
-    padding: 3rem;
-    max-width: 700px;
-    width: 100%;
-}
-
-.title {
-    font-family: "Rampart One", sans-serif;
-    font-size: 48px;
-    font-weight: 400;
-    color: #004A94;
-    margin: 0 0 1.5rem 0;
+.cardContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 2rem;
     text-align: center;
 }
 
-.body {
+.cardTitle {
+    font-family: "Rampart One", sans-serif;
+    font-size: 32px;
+    color: #004A94;
+}
+
+.cardHint {
     font-family: "Imprima", sans-serif;
-    font-size: 16px;
-    color: #333333;
+    font-size: 14px;
+    color: #aaa;
+    margin-top: 1rem;
+}
+
+.cardBody {
+    font-family: "Imprima", sans-serif;
+    font-size: 18px;
+    color: #333;
     line-height: 1.75;
-    margin: 0 0 1.25rem 0;
 }
 
 .link {
     color: #004A94;
-    font-family: "Imprima", sans-serif;
-    font-weight: 400;
     text-decoration: underline;
-    cursor: pointer;
 }
 
 .link:hover {
     color: #0066cc;
 }
 
-.backBtn {
-    position: relative;
-    display: inline-block;
-    background: transparent;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-    outline-offset: 4px;
+.dots {
+    display: flex;
+    gap: 10px;
     margin-top: 1rem;
 }
 
-.btnShadow {
-    position: absolute;
-    inset: 0;
-    border-radius: 5px;
-    background: rgba(0, 0, 0, 0.1);
-    transform: translateY(6px);
+.dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid #004A94;
+    background: transparent;
+    cursor: pointer;
+    padding: 0;
+    transition: background 0.15s ease;
 }
 
-.btnEdge {
-    position: absolute;
-    inset: 0;
-    border-radius: 5px;
-    background-color: #afd6eb;
+.dotActive {
+    background: #004A94;
 }
 
-.btnFront {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 160px;
-    min-height: 44px;
-    border-radius: 5px;
-    transform: translateY(-6px);
-    transition: transform 0.1s ease;
-    font-size: 16px;
-    font-family: "Imprima", sans-serif;
-    font-weight: 400;
+.homeBtn {
+    position: fixed;
+    bottom: 1.5rem;
+    left: 1.5rem;
+    background: none;
+    border: none;
     color: #004A94;
-    background-color: #D9EDF8;
+    font-family: "Imprima", sans-serif;
+    font-size: 15px;
+    cursor: pointer;
+    text-decoration: underline;
+    padding: 0;
 }
 
-.backBtn:hover .btnFront {
-    transform: translateY(-8px);
+.homeBtn:hover {
+    color: #0066cc;
 }
 
-.backBtn:active .btnFront {
-    transform: translateY(-2px);
+.demoHint {
+    font-family: "Imprima", sans-serif;
+    font-size: 14px;
+    color: #888;
+    margin-top: 0.5rem;
 }
 
-.backBtn:active .btnShadow {
-    transform: translateY(2px);
+.flipLink {
+    background: none;
+    border: none;
+    color: #004A94;
+    font-family: "Imprima", sans-serif;
+    font-size: 14px;
+    cursor: pointer;
+    padding: 0;
+    text-decoration: underline;
 }
+
+.flipLink:hover {
+    color: #0066cc;
+}
+
+.demoTitle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: "Rampart One", sans-serif;
+    font-size: 32px;
+    color: #004A94;
+    pointer-events: none;
+    white-space: nowrap;
+}
+
