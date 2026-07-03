@@ -305,16 +305,16 @@ function Edit() {
         }
     }
 
-    function createText(fontSize: number) {
+    function createText(fontSize: number, width: number) {
         if (cardSide === "Front") {
-            let tmp = {id: null, card_id: frontCards[cardNum - 1].id, input: "Double click to edit text", width: 300, x: 30, y: 30, font_size: fontSize, color: "#201002"};
+            let tmp = {id: null, card_id: frontCards[cardNum - 1].id, input: "Double click to edit text", width: width, x: 30, y: 30, font_size: fontSize, color: "#201002"};
             setFrontCards(prevCards =>
                 prevCards.map((card, index) =>
                     index === (cardNum - 1) ? {...card, text: [...card.text, tmp]} : card
                 )
             );
         } else if (cardSide === "Back") {
-            let tmp = {id: null, card_id: backCards[cardNum - 1].id, input: "Double click to edit text", width: 300, x: 30, y: 30, font_size: fontSize, color: "#201002"};
+            let tmp = {id: null, card_id: backCards[cardNum - 1].id, input: "Double click to edit text", width: width, x: 30, y: 30, font_size: fontSize, color: "#201002"};
             setBackCards(prevCards =>
                 prevCards.map((card, index) =>
                     index === (cardNum - 1) ? {...card, text: [...card.text, tmp]} : card
@@ -833,9 +833,9 @@ function Edit() {
                         <div>
                             <div className={styles.sidePanelTitle}>Text Size</div>
                             <div className={styles.sidePanelOptions} style={{ marginBottom: "0rem" }}>
-                                <button className={styles.sidePanelBtn} onClick={() => createText(18)}>Small</button>
-                                <button className={styles.sidePanelBtn} onClick={() => createText(28)}>Medium</button>
-                                <button className={styles.sidePanelBtn} onClick={() => createText(38)}>Large</button>
+                                <button className={styles.sidePanelBtn} onClick={() => createText(18, 300)}>Small</button>
+                                <button className={styles.sidePanelBtn} onClick={() => createText(28, 400)}>Medium</button>
+                                <button className={styles.sidePanelBtn} onClick={() => createText(38, 600)}>Large</button>
                             </div>
                         </div>
                     </div>
