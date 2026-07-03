@@ -57,7 +57,7 @@ export function AuthContextProvider({ children }: any) {
     // handle password reset here
     const resetPassword = async (email: string) => {
         const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
-            redirectTo: "http://localhost:5173/resetPassword",
+            redirectTo: import.meta.env.VITE_RESET_PASSWORD_LINK,
         });
 
         if (error) {
