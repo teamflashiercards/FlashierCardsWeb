@@ -71,3 +71,21 @@
 .form > div input:focus {
     outline: none;
 }
+
+.aboutLink {
+    position: fixed;
+    bottom: 1.5rem;
+    left: 1.5rem;
+    background: none;
+    border: none;
+    color: #004A94;
+    font-family: "Imprima", sans-serif;
+    font-size: 15px;
+    cursor: pointer;
+    text-decoration: underline;
+    padding: 0;
+}
+
+.aboutLink:hover {
+    color: #0066cc;
+}

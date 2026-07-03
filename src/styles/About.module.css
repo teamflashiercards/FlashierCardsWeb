@@ -1,0 +1,106 @@
+/* About page styles */
+
+.main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #f0f7fd;
+    padding: 2rem 1rem;
+    box-sizing: border-box;
+}
+
+.card {
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 74, 148, 0.1);
+    padding: 3rem;
+    max-width: 700px;
+    width: 100%;
+}
+
+.title {
+    font-family: "Rampart One", sans-serif;
+    font-size: 48px;
+    font-weight: 400;
+    color: #004A94;
+    margin: 0 0 1.5rem 0;
+    text-align: center;
+}
+
+.body {
+    font-family: "Imprima", sans-serif;
+    font-size: 16px;
+    color: #333333;
+    line-height: 1.75;
+    margin: 0 0 1.25rem 0;
+}
+
+.link {
+    color: #004A94;
+    font-family: "Imprima", sans-serif;
+    font-weight: 400;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.link:hover {
+    color: #0066cc;
+}
+
+.backBtn {
+    position: relative;
+    display: inline-block;
+    background: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    outline-offset: 4px;
+    margin-top: 1rem;
+}
+
+.btnShadow {
+    position: absolute;
+    inset: 0;
+    border-radius: 5px;
+    background: rgba(0, 0, 0, 0.1);
+    transform: translateY(6px);
+}
+
+.btnEdge {
+    position: absolute;
+    inset: 0;
+    border-radius: 5px;
+    background-color: #afd6eb;
+}
+
+.btnFront {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 160px;
+    min-height: 44px;
+    border-radius: 5px;
+    transform: translateY(-6px);
+    transition: transform 0.1s ease;
+    font-size: 16px;
+    font-family: "Imprima", sans-serif;
+    font-weight: 400;
+    color: #004A94;
+    background-color: #D9EDF8;
+}
+
+.backBtn:hover .btnFront {
+    transform: translateY(-8px);
+}
+
+.backBtn:active .btnFront {
+    transform: translateY(-2px);
+}
+
+.backBtn:active .btnShadow {
+    transform: translateY(2px);
+}

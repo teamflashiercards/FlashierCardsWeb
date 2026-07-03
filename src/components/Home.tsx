@@ -53,6 +53,13 @@ function Home() {
                     <span className={"dark-blue-btn-front"}>Log in</span>
                 </button>
             </div>
+            <button
+                type="button"
+                onClick={() => navigate("/about")}
+                className={styles.aboutLink}
+            >
+                About
+            </button>
         </>
     );
 }

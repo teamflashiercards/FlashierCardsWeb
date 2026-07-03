@@ -1,0 +1,40 @@
+.btn {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.icon {
+    width: 44px;
+    height: 44px;
+    opacity: 0.75;
+    transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.btn:hover .icon {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+.tooltip {
+    position: absolute;
+    right: calc(100% + 8px);
+    background-color: #004A94;
+    color: #ffffff;
+    font-family: "Imprima", sans-serif;
+    font-size: 13px;
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s ease;
+}
+
+.btn:hover .tooltip {
+    opacity: 1;
+}

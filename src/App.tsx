@@ -13,6 +13,8 @@ import AccountInformation from "./components/AccountInformation";
 import Theme from "./components/Theme";
 import ChangePassword from "./components/ChangePassword";
 import DeleteAccount from "./components/DeleteAccount";
+import About from "./components/About";
+import FeedbackButton from "./components/FeedbackButton";
 
 /*
     Description: This file contains all the public and private routes.
@@ -22,6 +24,7 @@ import DeleteAccount from "./components/DeleteAccount";
 function App() {  
     return (
         <BrowserRouter>
+            <FeedbackButton />
             <Routes>
                 {/* public routes */}
                 <Route path="/" element={<Home />} />
@@ -30,6 +33,7 @@ function App() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/forgotPassword" element={<ForgotPassword />} />
                 <Route path="/resetPassword" element={<ResetPassword />} />
+                <Route path="/about" element={<About />} />
                 <Route path="*" element={<Navigate to="/"/>} />
                 
                 {/* private routes */}
