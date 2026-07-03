@@ -1,4 +1,5 @@
-import { BrowserRouter, Routes, Route, Navigate} from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { AnimatePresence } from "motion/react";
 import PrivateRoute from "./PrivateRoute";
 import Home from "./components/Home";
 import Signup from "./components/Signup";
@@ -21,11 +22,12 @@ import FeedbackButton from "./components/FeedbackButton";
     Last updated: 6/6/2026
 */
 
-function App() {  
+function AnimatedRoutes() {
+    const location = useLocation();
+
     return (
-        <BrowserRouter>
-            <FeedbackButton />
-            <Routes>
+        <AnimatePresence mode="wait">
+            <Routes location={location} key={location.pathname}>
                 {/* public routes */}
                 <Route path="/" element={<Home />} />
                 <Route path="/signup" element={<Signup />} />
@@ -35,7 +37,7 @@ function App() {
                 <Route path="/resetPassword" element={<ResetPassword />} />
                 <Route path="/about" element={<About />} />
                 <Route path="*" element={<Navigate to="/"/>} />
-                
+
                 {/* private routes */}
                 <Route element={<PrivateRoute />}>
                     <Route path="/dashboard" element={<Dashboard />} />
@@ -47,6 +49,15 @@ function App() {
                     <Route path="/profile/deleteAccount" element={<DeleteAccount />} />
                 </Route>
             </Routes>
+        </AnimatePresence>
+    );
+}
+
+function App() {
+    return (
+        <BrowserRouter>
+            <FeedbackButton />
+            <AnimatedRoutes />
         </BrowserRouter>
     );
 }
