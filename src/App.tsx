@@ -14,17 +14,15 @@ import Theme from "./components/Theme";
 import ChangePassword from "./components/ChangePassword";
 import DeleteAccount from "./components/DeleteAccount";
 import About from "./components/About";
-import FeedbackButton from "./components/FeedbackButton";
 
 /*
     Description: This file contains all the public and private routes.
-    Last updated: 6/6/2026
+    Last updated: 7/5/2026
 */
 
 function App() {  
     return (
         <BrowserRouter>
-            <FeedbackButton />
             <Routes>
                 {/* public routes */}
                 <Route path="/" element={<Home />} />

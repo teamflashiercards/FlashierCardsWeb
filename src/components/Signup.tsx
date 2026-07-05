@@ -4,6 +4,7 @@ import UserAuth from "../AuthContext";
 import HomeAnimation from "./HomeAnimation";
 import Tooltip from "@mui/material/Tooltip";
 import styles from "../styles/Home.module.css";
+import FeedbackButton from "./FeedbackButton";
 
 /*
     Description: This component is the signup page for a user to create an account.
@@ -132,6 +133,7 @@ function Signup() {
                     </button>
                 </form>
             </div>
+            <FeedbackButton />
         </>
     );
 }

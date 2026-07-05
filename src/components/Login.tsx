@@ -3,6 +3,7 @@ import { useEffect, useState, type ChangeEvent } from "react";
 import UserAuth from "../AuthContext";
 import styles from "../styles/Home.module.css";
 import HomeAnimation from "./HomeAnimation";
+import FeedbackButton from "./FeedbackButton";
 
 /*
     Description: This component is the login page for a user to access their account.
@@ -120,6 +121,7 @@ function Login() {
                     </button>
                 </form>
             </div>
+            <FeedbackButton />
         </>
     );
 }

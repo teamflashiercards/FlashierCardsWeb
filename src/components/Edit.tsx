@@ -18,6 +18,7 @@ import UserAuth from "../AuthContext";
 import GiphyLogo from "../assets/giphyLogo.png";
 import Tooltip from "@mui/material/Tooltip";
 import type Card from "../interfaces/Card";
+import FeedbackButton from "./FeedbackButton";
 
 /*
     Description: This component allows the user create, update, or delete deck content.
@@ -907,6 +908,7 @@ function Edit() {
                     </div>
                 </div>
             </div>
+            <FeedbackButton />
         </div>
     );
 }

@@ -1,17 +1,19 @@
 import feedbackIcon from "../assets/feedbackIcon.png";
 import styles from "../styles/FeedbackButton.module.css";
+import Tooltip from "@mui/material/Tooltip";
 
 function FeedbackButton() {
     return (
-        <a
-            className={styles.btn}
-            href="https://forms.gle/nWyB69visGQJQEcUA"
-            target="_blank"
-            rel="noopener noreferrer"
-        >
-            <img src={feedbackIcon} alt="Feedback" className={styles.icon} />
-            <span className={styles.tooltip}>Feedback</span>
-        </a>
+        <Tooltip title="Feedback">
+            <a
+                className={styles.btn}
+                href="https://forms.gle/nWyB69visGQJQEcUA"
+                target="_blank"
+                rel="icon"
+            >
+                <img src={feedbackIcon} alt="feedback button" className={styles.icon} />
+            </a>
+        </Tooltip>
     );
 }
 

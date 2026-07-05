@@ -4,6 +4,7 @@ import { useState, type ChangeEvent } from 'react';
 import styles from "../styles/Profile.module.css";
 import Tooltip from "@mui/material/Tooltip";
 import UserAuth from "../AuthContext";
+import FeedbackButton from "./FeedbackButton";
 
 /*
     Description: This component allows user to change their password.
@@ -130,6 +131,7 @@ function ChangePassword() {
                     </div>
                 </div>
             </div>
+            <FeedbackButton />
         </div>
     );
 }

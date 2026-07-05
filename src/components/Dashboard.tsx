@@ -8,6 +8,7 @@ import styles from "../styles/Dashboard.module.css";
 import UserAuth from "../AuthContext";
 import Tooltip from "@mui/material/Tooltip";
 import DashboardAnimation from "./DashboardAnimation";
+import FeedbackButton from "./FeedbackButton";
 
 function Dashboard() {
     const navigate = useNavigate();
@@ -390,6 +391,7 @@ function Dashboard() {
                     </div>
                 </div>
             </div>
+            <FeedbackButton />
         </>
     );
 }

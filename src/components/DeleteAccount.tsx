@@ -6,6 +6,7 @@ import { faCheck, faX } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { useState } from 'react';
 import UserAuth from "../AuthContext";
+import FeedbackButton from "./FeedbackButton";
 
 /*
     Description: This component allows user to delete their account.
@@ -127,6 +128,7 @@ function DeleteAccount() {
                     </form>
                 </div>
             </div>
+            <FeedbackButton />
         </div>
     );
 }
