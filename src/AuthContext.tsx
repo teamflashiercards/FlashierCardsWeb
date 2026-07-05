@@ -81,10 +81,10 @@ export function AuthContextProvider({ children }: any) {
     };
 
     // handle password change here
-    const changePassword = async (newPassword: string, currPassword: string) => {
+    const changePassword = async (currPassword: string, newPassword: string) => {
         const { data, error } = await supabase.auth.updateUser({
-            password: newPassword,
-            current_password: currPassword
+            current_password: currPassword,
+            password: newPassword
         });
 
         if (error) {
