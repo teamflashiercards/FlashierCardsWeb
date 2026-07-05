@@ -7,7 +7,7 @@ function FeedbackButton() {
         <Tooltip title="Feedback">
             <a
                 className={styles.btn}
-                href="https://forms.gle/nWyB69visGQJQEcUA"
+                href="https://forms.gle/nReYxNJtiRcLCxKi7"
                 target="_blank"
                 rel="icon"
             >
