@@ -3,6 +3,11 @@ import { useEffect, useState, type ChangeEvent } from "react";
 import UserAuth from "../AuthContext";
 import styles from "../styles/Home.module.css";
 import HomeAnimation from "./HomeAnimation";
+import { faHouse } from "@fortawesome/free-solid-svg-icons";
+import Fab from "@mui/material/Fab";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Tooltip from "@mui/material/Tooltip";
+
 
 /*
     Description: This component is the login page for a user to access their account.
@@ -118,6 +123,16 @@ function Login() {
                         <span className={"light-blue-btn-edge"}></span>
                         <span className={"light-blue-btn-front"}>Forgot password?</span>
                     </button>
+                    <Tooltip
+                    title="Go Back to Homepage" >
+                        <button
+                        type="button"
+                        onClick={()=> navigate("/")}
+                        className={styles.homeButton}
+                        data-tooltip-id="homepagenav">
+                            <FontAwesomeIcon icon={faHouse}/>
+                    </button>
+                    </Tooltip>
                 </form>
             </div>
         </>

@@ -3,6 +3,8 @@ import { useState, type ChangeEvent } from "react";
 import UserAuth from "../AuthContext";
 import HomeAnimation from "./HomeAnimation";
 import Tooltip from "@mui/material/Tooltip";
+import { faHouse } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styles from "../styles/Home.module.css";
 
 /*
@@ -130,6 +132,16 @@ function Signup() {
                         <span className={"dark-blue-btn-edge"}></span>
                         <span className={"dark-blue-btn-front"}>Create account</span>
                     </button>
+                    <Tooltip
+                    title="Go Back to Homepage" >
+                        <button
+                        type="button"
+                        onClick={()=> navigate("/")}
+                        className={styles.homeButton}
+                        data-tooltip-id="homepagenav">
+                            <FontAwesomeIcon icon={faHouse}/>
+                    </button>
+                    </Tooltip>
                 </form>
             </div>
         </>
