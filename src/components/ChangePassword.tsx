@@ -2,9 +2,9 @@ import Navbar from "./Navbar";
 import ProfileNavbar from "./ProfileNavbar";
 import { useState, type ChangeEvent } from 'react';
 import styles from "../styles/Profile.module.css";
-import Tooltip from "@mui/material/Tooltip";
 import UserAuth from "../AuthContext";
 import FeedbackButton from "./FeedbackButton";
+import BlueTooltip from "./BlueTooltip";
 
 /*
     Description: This component allows user to change their password.
@@ -94,7 +94,7 @@ function ChangePassword() {
                                     onChange={handleFormData}
                                 />
                             </div>
-                            <Tooltip title="Password should have 8 characters with at least one uppercase letter, lowercase letter, number, and symbol.">
+                            <BlueTooltip title="Password should have 8 characters with at least one uppercase letter, lowercase letter, number, and symbol.">
                                 <div>
                                     <div className={styles.formText}>
                                         New password
@@ -106,7 +106,7 @@ function ChangePassword() {
                                         onChange={handleFormData}
                                     />
                                 </div>
-                            </Tooltip>
+                            </BlueTooltip>
                             <div>
                                 <div className={styles.formText}>
                                     Confirm new password

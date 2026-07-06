@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import { faChevronLeft, faChevronRight, faHouse } from "@fortawesome/free-solid-svg-icons";
 import { useRef, useState } from "react";
 import styles from "../styles/About.module.css";
 import Navbar from "./Navbar";
@@ -7,6 +7,7 @@ import UserAuth from "../AuthContext";
 import { useNavigate } from "react-router-dom";
 import GiphyLogo from "../assets/giphyLogo.png";
 import { motion } from "motion/react";
+import BlueTooltip from "./BlueTooltip";
 
 /*
     Description: This about component shares information about Flashier Cards web app.
@@ -57,6 +58,13 @@ function About() {
 
     return (
         <div className={styles.mainContainer}>
+            {!session &&
+                <BlueTooltip title="Home" placement="bottom">
+                    <div className={styles.homeButton}>
+                        <FontAwesomeIcon className={styles.homeIcon} icon={faHouse} onClick={() => navigate("/")} />
+                    </div>
+                </BlueTooltip>
+            }
             {session && <Navbar />}
             <motion.div 
                 className={styles.subContainer}

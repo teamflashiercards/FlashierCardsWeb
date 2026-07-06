@@ -4,6 +4,9 @@ import UserAuth from "../AuthContext";
 import styles from "../styles/Home.module.css";
 import HomeAnimation from "./HomeAnimation";
 import FeedbackButton from "./FeedbackButton";
+import { faHouse } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import BlueTooltip from "./BlueTooltip";
 
 /*
     Description: This component is the login page for a user to access their account.
@@ -68,6 +71,11 @@ function Login() {
     return (
         <>
             <HomeAnimation />
+            <BlueTooltip title="Home" placement="bottom">
+                <div className={styles.homeButton}>
+                    <FontAwesomeIcon className={styles.homeIcon} icon={faHouse} onClick={() => navigate("/")} />
+                </div>
+            </BlueTooltip>
             <div className={styles.subContainer}>
                 <div className={"app-title"}>
                     Flashier Cards
