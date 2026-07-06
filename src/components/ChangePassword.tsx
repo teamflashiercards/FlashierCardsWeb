@@ -14,7 +14,7 @@ import BlueTooltip from "./BlueTooltip";
 function ChangePassword() {
     const [error, setError] = useState({ status: false, message: "" });
     const [loading, setLoading] = useState(false);
-    const { changePassword, session } = UserAuth();
+    const { changePassword } = UserAuth();
 
     const [formData, setFormData] = useState({
         currentPassword: "",
