@@ -1,52 +1,158 @@
-.main {
+/*
+    Description: This css applies to About component.
+    Last updated: 7/6/2026
+*/
+
+.mainContainer {
+    background-color: #f0f7fd;
+    display: flex;
+    flex: 1;
+}
+
+.subContainer {
     flex: 1;
     display: flex;
     flex-direction: column;
-    align-items: center;
     justify-content: center;
-    min-height: 100vh;
-    background-color: #f0f7fd;
-    padding: 2rem 1rem;
-    box-sizing: border-box;
+    align-items: center;
+    padding: 2rem;
 }
 
-.cardContent {
+/* css for deck below */
+
+.deck {
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+.card {
+    perspective: 1000px;
+    width: 800px;
+    height: 400px;
+    margin-bottom: 1.5rem;
+}
+
+.cardInner {
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 1s;
+}
+
+.card.flip .cardInner {
+    transform: rotateY(180deg);
+}
+
+.cardFront, .cardBack {
+    width: 800px;
+    height: 400px;
+    position: absolute;
+    backface-visibility: hidden;
+    background-color: white;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    overflow: hidden;
+}
+
+.cardFront {
+    z-index: 2;
+    transform: rotateY(0deg);
+    display: flex;
     justify-content: center;
-    height: 100%;
-    padding: 2rem;
+    align-items: center;
+}
+
+.cardBack {
+    transform: rotateY(180deg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.frontCardText {
+    font-size: 45px;
+    font-family: "Rampart One", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    color: #004A94;
     text-align: center;
 }
 
-.cardTitle {
-    font-family: "Rampart One", sans-serif;
-    font-size: 32px;
-    color: #004A94;
+.backCardText {
+    padding: 4rem;
+    font-size: 20px;
+    font-family: "Imprima", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    text-align: center;
+    line-height: 35px;
+    color: black;
 }
 
-.cardHint {
-    font-family: "Imprima", sans-serif;
-    font-size: 14px;
-    color: #aaa;
-    margin-top: 1rem;
-}
-
-.cardBody {
-    font-family: "Imprima", sans-serif;
+.backCardHint {
     font-size: 18px;
-    color: #333;
-    line-height: 1.75;
+    font-family: "Imprima", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    text-align: center;
+    color: #aaa;
+    user-select: none;
 }
 
-.link {
+.backCardText b {
+    color: #FF2511;
+}
+
+.backCardText a {
+    color: black;
+}
+
+/* deck navigation css below */
+
+.navContainer {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.navContainer > button {
+    background-color: #cfe9f7;
+    border: 2px solid #004A94;
     color: #004A94;
-    text-decoration: underline;
+    padding: 0.5rem;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+    font-family: "Imprima", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    text-align: center;
 }
 
-.link:hover {
-    color: #0066cc;
+.deckNav {
+    display: flex;
+    gap: 10px;
+}
+
+.deckNav button, span {
+    display: flex;
+    align-items: center;
+    font-size: 22px;
+    font-family: "Imprima", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    color: #004A94;
+}
+
+.deckNav button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.deckNav button:disabled {
+    color: #D9EDF8;
+    cursor: auto;
 }
 
 .dots {
@@ -56,69 +162,14 @@
 }
 
 .dot {
-    width: 12px;
-    height: 12px;
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
     border: 2px solid #004A94;
     background: transparent;
-    cursor: pointer;
-    padding: 0;
     transition: background 0.15s ease;
 }
 
 .dotActive {
     background: #004A94;
 }
-
-.homeBtn {
-    position: fixed;
-    bottom: 1.5rem;
-    left: 1.5rem;
-    background: none;
-    border: none;
-    color: #004A94;
-    font-family: "Imprima", sans-serif;
-    font-size: 15px;
-    cursor: pointer;
-    text-decoration: underline;
-    padding: 0;
-}
-
-.homeBtn:hover {
-    color: #0066cc;
-}
-
-.demoHint {
-    font-family: "Imprima", sans-serif;
-    font-size: 14px;
-    color: #888;
-    margin-top: 0.5rem;
-}
-
-.flipLink {
-    background: none;
-    border: none;
-    color: #004A94;
-    font-family: "Imprima", sans-serif;
-    font-size: 14px;
-    cursor: pointer;
-    padding: 0;
-    text-decoration: underline;
-}
-
-.flipLink:hover {
-    color: #0066cc;
-}
-
-.demoTitle {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-family: "Rampart One", sans-serif;
-    font-size: 32px;
-    color: #004A94;
-    pointer-events: none;
-    white-space: nowrap;
-}
-

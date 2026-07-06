@@ -1,212 +1,286 @@
-import { useNavigate } from "react-router-dom";
-import { motion } from "motion/react";
-import { useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import { useRef, useState } from "react";
 import styles from "../styles/About.module.css";
-import deckStyles from "../styles/Deck.module.css";
+import Navbar from "./Navbar";
+import UserAuth from "../AuthContext";
+import { useNavigate } from "react-router-dom";
+import GiphyLogo from "../assets/giphyLogo.png";
+import { motion } from "motion/react";
 
-type CardDef     = { front: string; back: string | null; isDemo?: boolean; };
-type GifItem     = { id: string; url: string; x: number; y: number; width: number; height: number; };
-type TextItem    = { input: string; x: number; y: number; fontSize: number; color: string; };
-type DragRef  = { type: "gif" | "text"; index: number; startMouseX: number; startMouseY: number; startItemX: number; startItemY: number; };
-
-const cards: CardDef[] = [
-    {
-        front: "What is FlashierCards?",
-        back: "Index cards that you record definitions on and flip through endlessly are great for memorization and quick recall. But what if your cards were digital with animated backgrounds, gifs, and shapes? With FlashierCards you can do just that."
-    },
-    {
-        front: "Our Story",
-        back: "Established in 2026, with busy, bored students in mind, the FlashierCards team came together to make studying, notes, and general learning material, a bit more flashy."
-    },
-    {
-        front: "What's Next",
-        back: "Try FlashierCards where you can edit, study, and read in a new way. We plan on adding more features and quality of life updates as time moves on."
-    },
-    { front: "Get in Touch", back: null },
-    { front: "Try it for yourself!", back: null, isDemo: true }
-];
-
-const INIT_GIFS: GifItem[] = [
-    { id: "1", url: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOWR4dmdmNmg3ZDBsbXE4YjhhZ2V2aGF5Y2sycmIxa2hieXo5bDQ1NCZlcD12MV9naWZzX3RyZW5kaW5nJmN0PWc/qNj0irbjMDRgeBXNlG/giphy.gif", x: 20,  y: 20,  width: 120, height: 120 },
-    { id: "2", url: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNTVweTJsYW94azdjYXJocnlheGUxczNjYXM4N3pqa284b3ozN2pzOSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/111ebonMs90YLu/giphy.gif", x: 640, y: 20,  width: 120, height: 120 },
-    { id: "3", url: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExcG9iODEwY3p0ZW04bWV5NGZjdTI5aXF1aXlnZzdsM2l4MjZ4N2l4NiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/3o7TKLC8zBUd7eEteE/giphy.gif",  x: 330, y: 270, width: 120, height: 120 }
-];
-
-const INIT_BACK_TEXTS: TextItem[] = [
-    { input: "Making",   x: 40,  y: 40,  fontSize: 38, color: "#FF2511" },
-    { input: "studying", x: 230, y: 130, fontSize: 28, color: "#016236" },
-    { input: "fun",      x: 490, y: 200, fontSize: 48, color: "#621590" },
-    { input: "😎",       x: 100, y: 250, fontSize: 60, color: "#FED43F" }
-];
+/*
+    Description: This about component shares information about Flashier Cards web app.
+    Last updated: 7/6/2026
+*/
 
 function About() {
+    const frontCards = [
+        "What is Flashier Cards?",
+        "Our Story",
+        "Try it for yourself!",
+        "What's next?",
+        "Get in Touch",
+        "Attributions"
+    ];
+
+    const { session } = UserAuth();
     const navigate = useNavigate();
-    const cardRef  = useRef<HTMLDivElement>(null);
-    const dragRef  = useRef<DragRef | null>(null);
-
-    const [cardNum,   setCardNum]   = useState(1);
-    const [flipped,   setFlipped]   = useState(false);
-    const [frontGifs, setFrontGifs] = useState<GifItem[]>(INIT_GIFS);
-    const [backTexts, setBackTexts] = useState<TextItem[]>(INIT_BACK_TEXTS);
-
-    const total = cards.length;
-    const card  = cards[cardNum - 1];
+    const cardRef = useRef<HTMLDivElement>(null);
+    const [cardSide, setCardSide] = useState("Front");
+    const [cardNum, setCardNum] = useState(1);
+    const total = frontCards.length;
 
     function flipCard() {
         if (cardRef.current) {
-            cardRef.current.classList.toggle(deckStyles.flip);
-            setFlipped(prev => !prev);
+            cardRef.current.classList.toggle(styles.flip);
+            setCardSide(prev => (prev === "Front") ? "Back" : "Front");
+        }
+    }
+    
+    function showNextCard() {
+        if ((cardNum + 1) <= total) {
+            setCardNum(cardNum + 1);
+            if (cardSide === "Back") {
+                flipCard();
+            }
         }
     }
 
-    function goToCard(num: number) {
-        if (flipped) flipCard();
-        setCardNum(num);
+    function showPrevCard() {
+        if ((cardNum - 1) >= 1) {
+            setCardNum(cardNum - 1);
+            if (cardSide === "Back") {
+                flipCard();
+            }
+        }
     }
-
-    function onItemMouseDown(e: React.MouseEvent, type: "gif" | "text", index: number, itemX: number, itemY: number) {
-        e.preventDefault();
-        dragRef.current = { type, index, startMouseX: e.clientX, startMouseY: e.clientY, startItemX: itemX, startItemY: itemY };
-    }
-
-    function onMouseMove(e: React.MouseEvent) {
-        if (!dragRef.current) return;
-        const { type, index, startMouseX, startMouseY, startItemX, startItemY } = dragRef.current;
-        const x = startItemX + (e.clientX - startMouseX);
-        const y = startItemY + (e.clientY - startMouseY);
-        if (type === "gif")  setFrontGifs(prev => prev.map((g, i) => i === index ? { ...g, x, y } : g));
-        if (type === "text") setBackTexts(prev => prev.map((t, i) => i === index ? { ...t, x, y } : t));
-    }
-
-    function onMouseUp() { dragRef.current = null; }
-
 
     return (
-        <motion.div
-            className={styles.main}
-            initial={{ x: "100%" }}
-            animate={{ x: 0 }}
-            exit={{ x: "100%" }}
-            transition={{ type: "spring", stiffness: 500, damping: 40, mass: 0.5 }}
-        >
-            <div className={deckStyles.deck}>
-                <div
-                    className={deckStyles.card}
-                    onClick={card.isDemo ? undefined : flipCard}
-                    style={{ cursor: card.isDemo ? "default" : "pointer" }}
-                    ref={cardRef}
-                >
-                    <div className={deckStyles.cardInner}>
-
-                        {/* front */}
-                        <div className={deckStyles.cardFront}>
-                            {card.isDemo ? (
-                                <div
-                                    style={{ position: "relative", width: 800, height: 400, overflow: "hidden" }}
-                                    onMouseMove={onMouseMove}
-                                    onMouseUp={onMouseUp}
-                                    onMouseLeave={onMouseUp}
-                                >
-                                    <span className={styles.demoTitle}>Try it for yourself!</span>
-                                    {frontGifs.map((gif, i) => (
-                                        <img
-                                            key={gif.id}
-                                            src={gif.url}
+        <div className={styles.mainContainer}>
+            {session && <Navbar />}
+            <motion.div 
+                className={styles.subContainer}
+                initial={{ x: "100%" }}
+                animate={{ x: 0 }}
+                transition={{ type: "spring", stiffness: 500, damping: 40, mass: 0.5 }}
+            >
+                <div className={styles.deck}>
+                    <div className={styles.card} ref={cardRef}>
+                        <div className={styles.cardInner}>
+                            <div className={styles.cardFront}>
+                                <div className={styles.frontCardText}>
+                                    {frontCards[cardNum - 1]}
+                                </div>
+                            </div>
+                            <div className={styles.cardBack}>
+                                {cardNum === 1 && 
+                                    <div className={styles.backCardText}>
+                                        <p>Index cards that you record definitions on and flip through endlessly are great 
+                                            for memorization and quick recall. <b>But what if your index cards were digital with 
+                                            animated backgrounds, gifs, and stickers?</b> With Flashier Cards, you can do just that.
+                                        </p>
+                                    </div>
+                                }
+                                {cardNum === 2 && 
+                                    <div className={styles.backCardText}>
+                                        <p>
+                                            Established in 2026, with busy high school and university students in mind, the
+                                            Flashier Cards team, composed of three university students themselves, came together 
+                                            to <b>make studying,</b> notes, and general learning material <b>a bit more flashy and fun.</b>
+                                        </p>
+                                    </div>
+                                }
+                                {cardNum === 3 && 
+                                    <div className={styles.backCardText}>
+                                        <p className={styles.backCardHint}>drag items freely</p>
+                                        <motion.img
+                                            src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOWR4dmdmNmg3ZDBsbXE4YjhhZ2V2aGF5Y2sycmIxa2hieXo5bDQ1NCZlcD12MV9naWZzX3RyZW5kaW5nJmN0PWc/qNj0irbjMDRgeBXNlG/giphy.gif"
                                             alt="gif"
-                                            draggable={false}
-                                            style={{ position: "absolute", left: gif.x, top: gif.y, width: gif.width, height: gif.height, cursor: "grab", userSelect: "none" }}
-                                            onMouseDown={(e) => onItemMouseDown(e, "gif", i, gif.x, gif.y)}
+                                            drag
+                                            dragMomentum={false}
+                                            style={{
+                                                width: "150px",
+                                                height: "150px",
+                                                objectFit: "contain",
+                                                cursor: "grab",
+                                                position: "absolute",
+                                                left: 20,
+                                                top: 10
+                                            }}
                                         />
-                                    ))}
-                                </div>
-                            ) : (
-                                <div className={styles.cardContent}>
-                                    <span className={styles.cardTitle}>{card.front}</span>
-                                    <span className={styles.cardHint}>click to flip</span>
-                                </div>
-                            )}
-                        </div>
-
-                        {/* back */}
-                        <div className={deckStyles.cardBack}>
-                            {card.isDemo ? (
-                                <div
-                                    style={{ position: "relative", width: 800, height: 400, overflow: "hidden" }}
-                                    onMouseMove={onMouseMove}
-                                    onMouseUp={onMouseUp}
-                                    onMouseLeave={onMouseUp}
-                                >
-                                    {backTexts.map((t, i) => (
-                                        <span
-                                            key={i}
-                                            style={{ position: "absolute", left: t.x, top: t.y, fontFamily: "Imprima, sans-serif", fontSize: t.fontSize, color: t.color, cursor: "grab", userSelect: "none", whiteSpace: "nowrap" }}
-                                            onMouseDown={(e) => onItemMouseDown(e, "text", i, t.x, t.y)}
+                                        <motion.img
+                                            src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNTVweTJsYW94azdjYXJocnlheGUxczNjYXM4N3pqa284b3ozN2pzOSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/111ebonMs90YLu/giphy.gif"
+                                            alt="gif"
+                                            drag
+                                            dragMomentum={false}
+                                            style={{
+                                                width: "150px",
+                                                height: "150px",
+                                                objectFit: "contain",
+                                                cursor: "grab",
+                                                position: "absolute",
+                                                left: 600,
+                                                top: 20
+                                            }}
+                                        />
+                                        <motion.img
+                                            src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExcG9iODEwY3p0ZW04bWV5NGZjdTI5aXF1aXlnZzdsM2l4MjZ4N2l4NiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/3o7TKLC8zBUd7eEteE/giphy.gif"
+                                            alt="gif"
+                                            drag
+                                            dragMomentum={false}
+                                            style={{
+                                                width: "150px",
+                                                height: "150px",
+                                                objectFit: "contain",
+                                                cursor: "grab",
+                                                position: "absolute",
+                                                left: 320,
+                                                top: 240
+                                            }}
+                                        />
+                                        <motion.img
+                                            src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExbmZ5bmx6cTluM2gyZjJuOW00MnFxZGU3bzl5YnVjNDJvN2VxdHdybCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/3oKIPlTwWYVUTFuCd2/giphy.gif"
+                                            alt="gif"
+                                            drag
+                                            dragMomentum={false}
+                                            style={{
+                                                width: "150px",
+                                                height: "150px",
+                                                objectFit: "contain",
+                                                cursor: "grab",
+                                                position: "absolute",
+                                                left: 10,
+                                                top: 250
+                                            }}
+                                        />
+                                        <motion.p
+                                            drag
+                                            dragMomentum={false}
+                                            style={{
+                                                fontSize: "38px",
+                                                color: "#FF2511",
+                                                cursor: "grab",
+                                                position: "absolute",
+                                                left: 200,
+                                                top: 40
+                                            }}
                                         >
-                                            {t.input}
-                                        </span>
-                                    ))}
-                                </div>
-                            ) : (
-                                <div className={styles.cardContent}>
-                                    {card.back ? (
-                                        <span className={styles.cardBody}>{card.back}</span>
-                                    ) : (
-                                        <span className={styles.cardBody}>
-                                            If you need support, feedback, comments, or concerns please{" "}
-                                            <a
-                                                className={styles.link}
-                                                href="https://forms.gle/nWyB69visGQJQEcUA"
+                                            Making
+                                        </motion.p>
+                                        <motion.p
+                                            drag
+                                            dragMomentum={false}
+                                            style={{
+                                                fontSize: "28px",
+                                                color: "#016236",
+                                                cursor: "grab",
+                                                position: "absolute",
+                                                left: 400,
+                                                top: 125
+                                            }}
+                                        >
+                                            studying
+                                        </motion.p>
+                                        <motion.p
+                                            drag
+                                            dragMomentum={false}
+                                            style={{
+                                                fontSize: "48px",
+                                                color: "#621590",
+                                                cursor: "grab",
+                                                position: "absolute",
+                                                left: 600,
+                                                top: 200
+                                            }}
+                                        >
+                                            fun!
+                                        </motion.p>
+                                        <motion.span
+                                            drag
+                                            dragMomentum={false}
+                                            style={{
+                                                fontSize: "60px",
+                                                cursor: "grab",
+                                                position: "absolute",
+                                                left: 100,
+                                                top: 250
+                                            }}
+                                        >
+                                            😎
+                                        </motion.span>
+                                    </div>
+                                }
+                                {cardNum === 4 && 
+                                    <div className={styles.backCardText}>
+                                        <p>
+                                            <b>Sign up for Flashier Cards</b> where you can create and study content in a new way. We plan 
+                                            on adding more features and quality of life updates as time moves on.
+                                        </p>
+                                        <button
+                                            type="button"
+                                            onClick={() => navigate("/signup")}
+                                            className={"fancy-btn"}
+                                            style={{marginTop: "1.5rem"}}
+                                        >
+                                            <span className={"dark-blue-btn-shadow"}></span>
+                                            <span className={"dark-blue-btn-edge"}></span>
+                                            <span className={"dark-blue-btn-front"}>Sign up</span>
+                                        </button>
+                                    </div>
+                                }
+                                {cardNum === 5 && 
+                                    <div className={styles.backCardText}>
+                                        <p>
+                                           If you need support or would like to provide feedback, you may email us at <b>flashiercards@gmail.com</b> or&nbsp;
+                                           <a
+                                                href="https://forms.gle/nReYxNJtiRcLCxKi7"
                                                 target="_blank"
-                                                rel="noopener noreferrer"
-                                                onClick={e => e.stopPropagation()}
                                             >
-                                                fill out our form
+                                                fill out our feedback form.
                                             </a>
-                                            .
-                                        </span>
-                                    )}
-                                </div>
-                            )}
+                                        </p>
+                                    </div>
+                                }
+                                {cardNum === 6 && 
+                                    <div className={styles.backCardText}>
+                                        <div style={{display: "flex", alignItems: "center"}}>
+                                            <p>Gifs and stickers&nbsp;&nbsp;</p>
+                                            <img src={GiphyLogo} alt="Powered by GIPHY" />
+                                        </div>
+                                        <a href="https://www.flaticon.com/free-icons/feedback" title="feedback icons">Feedback icons created by Freepik - Flaticon</a>
+                                    </div>
+                                }
+                            </div>
                         </div>
-
                     </div>
-                </div>
-
-                <div className={deckStyles.deckNav}>
-                    <button disabled={cardNum === 1} onClick={() => goToCard(cardNum - 1)}>
-                        <FontAwesomeIcon icon={faChevronLeft} />
-                    </button>
-                    <span>{cardNum}/{total}</span>
-                    <button disabled={cardNum === total} onClick={() => goToCard(cardNum + 1)}>
-                        <FontAwesomeIcon icon={faChevronRight} />
-                    </button>
-                </div>
-
-                {card.isDemo && (
-                    <div className={styles.demoHint}>
-                        drag items freely •{" "}
-                        <button className={styles.flipLink} onClick={flipCard}>flip card ↺</button>
-                    </div>
-                )}
-
-
-                <div className={styles.dots}>
-                    {cards.map((_, i) => (
+                    <div className={styles.navContainer}>
+                        <div className={styles.deckNav}>
+                            <button disabled={cardNum === 1} onClick={showPrevCard}>
+                                <FontAwesomeIcon icon={faChevronLeft} />
+                            </button>
+                            <span>{cardNum}/{total}</span>
+                            <button disabled={cardNum === total} onClick={showNextCard}>
+                                <FontAwesomeIcon icon={faChevronRight} />
+                            </button>
+                        </div>
                         <button
-                            key={i}
-                            className={`${styles.dot} ${cardNum === i + 1 ? styles.dotActive : ""}`}
-                            onClick={() => goToCard(i + 1)}
-                        />
-                    ))}
+                            type="button"
+                            onClick={() => flipCard()}
+                        >
+                            Flip Card
+                        </button>
+                    </div>
+                    <div className={styles.dots}>
+                        {frontCards.map((_, i) => (
+                            <div
+                                key={i}
+                                className={`${styles.dot} ${i === (cardNum - 1) ? styles.dotActive : ""}`}
+                            />
+                        ))}
+                    </div>
                 </div>
-            </div>
-
-            <button className={styles.homeBtn} onClick={() => navigate("/")}>
-                Back to Home
-            </button>
-        </motion.div>
+            </motion.div>
+        </div>
     );
 }
 
