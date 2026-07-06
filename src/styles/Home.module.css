@@ -38,6 +38,12 @@
     color: #004A94;
     text-align: center;
     margin-bottom: 5rem;
+    cursor: pointer;
+    transition: all 0.1s ease-in-out;
+}
+
+.homeSubTitle:hover {
+    transform: translateY(5px);
 }
 
 .form {

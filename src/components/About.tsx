@@ -86,7 +86,7 @@ function About() {
                                         <p>
                                             Established in 2026, with busy high school and university students in mind, the
                                             Flashier Cards team, composed of three university students themselves, came together 
-                                            to <b>make studying,</b> notes, and general learning material <b>a bit more flashy and fun.</b>
+                                            to make studying, notes, and general learning material a bit more flashy and fun.
                                         </p>
                                     </div>
                                 }
@@ -213,19 +213,21 @@ function About() {
                                 {cardNum === 4 && 
                                     <div className={styles.backCardText}>
                                         <p>
-                                            <b>Sign up for Flashier Cards</b> where you can create and study content in a new way. We plan 
+                                            Try Flashier Cards where you can create and study content in a new way. We plan 
                                             on adding more features and quality of life updates as time moves on.
                                         </p>
-                                        <button
-                                            type="button"
-                                            onClick={() => navigate("/signup")}
-                                            className={"fancy-btn"}
-                                            style={{marginTop: "1.5rem"}}
-                                        >
-                                            <span className={"dark-blue-btn-shadow"}></span>
-                                            <span className={"dark-blue-btn-edge"}></span>
-                                            <span className={"dark-blue-btn-front"}>Sign up</span>
-                                        </button>
+                                        { !session &&
+                                            <button
+                                                type="button"
+                                                onClick={() => navigate("/signup")}
+                                                className={"fancy-btn"}
+                                                style={{marginTop: "1.5rem"}}
+                                            >
+                                                <span className={"dark-blue-btn-shadow"}></span>
+                                                <span className={"dark-blue-btn-edge"}></span>
+                                                <span className={"dark-blue-btn-front"}>Sign up</span>
+                                            </button>
+                                        }
                                     </div>
                                 }
                                 {cardNum === 5 && 

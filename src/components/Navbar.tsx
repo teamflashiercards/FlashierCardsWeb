@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faFolder, faCircleUser, faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
+import { faBars, faFolder, faCircleUser, faRightFromBracket, faInfo } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import styles from "../styles/Navbar.module.css";
@@ -52,6 +52,14 @@ function Navbar() {
             >
                 <span><FontAwesomeIcon icon={faCircleUser} /></span>
                 <span style={{display: menu ? "block" : "none"}}>Profile</span>
+            </button>
+            <button 
+                type="button"
+                className={styles.navOption}
+                onClick={() => navigate("/about")}
+            >
+                <span><FontAwesomeIcon icon={faInfo} /></span>
+                <span style={{display: menu ? "block" : "none"}}>Info</span>
             </button>
             <button 
                 type="button"
