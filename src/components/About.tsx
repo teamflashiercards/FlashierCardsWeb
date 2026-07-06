@@ -19,9 +19,9 @@ function About() {
         "What is Flashier Cards?",
         "Our Story",
         "Try it for yourself!",
-        "What's next?",
         "Get in Touch",
-        "Attributions"
+        "Attributions",
+        "What's next?"
     ];
 
     const { session } = UserAuth();
@@ -221,6 +221,28 @@ function About() {
                                 {cardNum === 4 && 
                                     <div className={styles.backCardText}>
                                         <p>
+                                           If you need support or would like to provide feedback, you may email us at <b>flashiercards@gmail.com</b> or&nbsp;
+                                           <a
+                                                href="https://forms.gle/nReYxNJtiRcLCxKi7"
+                                                target="_blank"
+                                            >
+                                                fill out our feedback form.
+                                            </a>
+                                        </p>
+                                    </div>
+                                }
+                                {cardNum === 5 && 
+                                    <div className={styles.backCardText}>
+                                        <div style={{display: "flex", alignItems: "center"}}>
+                                            <p>Gifs and stickers&nbsp;&nbsp;</p>
+                                            <img src={GiphyLogo} alt="Powered by GIPHY" />
+                                        </div>
+                                        <a href="https://www.flaticon.com/free-icons/feedback" title="feedback icons">Feedback icons created by Freepik - Flaticon</a>
+                                    </div>
+                                }
+                                {cardNum === 6 && 
+                                    <div className={styles.backCardText}>
+                                        <p>
                                             Try Flashier Cards where you can create and study content in a new way. We plan 
                                             on adding more features and quality of life updates as time moves on.
                                         </p>
@@ -236,28 +258,6 @@ function About() {
                                                 <span className={"dark-blue-btn-front"}>Sign up</span>
                                             </button>
                                         }
-                                    </div>
-                                }
-                                {cardNum === 5 && 
-                                    <div className={styles.backCardText}>
-                                        <p>
-                                           If you need support or would like to provide feedback, you may email us at <b>flashiercards@gmail.com</b> or&nbsp;
-                                           <a
-                                                href="https://forms.gle/nReYxNJtiRcLCxKi7"
-                                                target="_blank"
-                                            >
-                                                fill out our feedback form.
-                                            </a>
-                                        </p>
-                                    </div>
-                                }
-                                {cardNum === 6 && 
-                                    <div className={styles.backCardText}>
-                                        <div style={{display: "flex", alignItems: "center"}}>
-                                            <p>Gifs and stickers&nbsp;&nbsp;</p>
-                                            <img src={GiphyLogo} alt="Powered by GIPHY" />
-                                        </div>
-                                        <a href="https://www.flaticon.com/free-icons/feedback" title="feedback icons">Feedback icons created by Freepik - Flaticon</a>
                                     </div>
                                 }
                             </div>
