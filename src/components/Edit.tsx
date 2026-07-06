@@ -16,7 +16,7 @@ import { Stage, Layer, Text, Image } from 'react-konva';
 import useImage from "use-image";
 import UserAuth from "../AuthContext";
 import GiphyLogo from "../assets/giphyLogo.png";
-import Tooltip from "@mui/material/Tooltip";
+import BlueTooltip from "./BlueTooltip";
 import type Card from "../interfaces/Card";
 
 /*
@@ -504,7 +504,7 @@ function Edit() {
                         <></>
                 }
                 <div className={styles.toolbar}>
-                    <Tooltip title="Add Card">
+                    <BlueTooltip title="Add Card">
                         <button
                             type="button"
                             className={styles.toolOption}
@@ -516,8 +516,8 @@ function Edit() {
                                 <FontAwesomeIcon icon={faPlus} />
                             </span>
                         </button>
-                    </Tooltip>
-                    <Tooltip title="Add Text">
+                    </BlueTooltip>
+                    <BlueTooltip title="Add Text">
                         <button
                             type="button"
                             className={styles.toolOption}
@@ -529,8 +529,8 @@ function Edit() {
                                 <FontAwesomeIcon icon={faT} />
                             </span>
                         </button>
-                    </Tooltip>
-                    <Tooltip title="Add Gif">
+                    </BlueTooltip>
+                    <BlueTooltip title="Add Gif">
                         <button
                             type="button"
                             className={styles.toolOption}
@@ -542,8 +542,8 @@ function Edit() {
                                 GIF
                             </span>
                         </button>
-                    </Tooltip>
-                    <Tooltip title="Add Sticker">
+                    </BlueTooltip>
+                    <BlueTooltip title="Add Sticker">
                         <button
                             type="button"
                             className={styles.toolOption}
@@ -555,8 +555,8 @@ function Edit() {
                                 <FontAwesomeIcon icon={faHeart} />
                             </span>
                         </button>
-                    </Tooltip>
-                    <Tooltip title="Delete Card">
+                    </BlueTooltip>
+                    <BlueTooltip title="Delete Card">
                         <button
                             type="button"
                             className={styles.toolOption}
@@ -568,8 +568,8 @@ function Edit() {
                                 <FontAwesomeIcon icon={faTrash} />
                             </span>
                         </button>
-                    </Tooltip>
-                    <Tooltip title="Flip Card">
+                    </BlueTooltip>
+                    <BlueTooltip title="Flip Card">
                         <button
                             type="button"
                             className={styles.toolOption}
@@ -581,8 +581,8 @@ function Edit() {
                                 <FontAwesomeIcon icon={faRightLeft} />
                             </span>
                         </button>
-                    </Tooltip>
-                    <Tooltip title="Save Content">
+                    </BlueTooltip>
+                    <BlueTooltip title="Save Content">
                         <button
                             type="button"
                             className={styles.toolOption} 
@@ -594,8 +594,8 @@ function Edit() {
                                 <FontAwesomeIcon icon={faFloppyDisk} />
                             </span>
                         </button>
-                    </Tooltip>
-                    <Tooltip title="Close Side Panel">
+                    </BlueTooltip>
+                    <BlueTooltip title="Close Side Panel">
                         <button
                             type="button"
                             className={styles.toolOption}
@@ -607,7 +607,7 @@ function Edit() {
                                 <FontAwesomeIcon icon={faCircleXmark} />
                             </span>
                         </button>
-                    </Tooltip>
+                    </BlueTooltip>
                 </div>
                 <div className={styles.mainPanel}>
                     <div className={styles.deck}>
