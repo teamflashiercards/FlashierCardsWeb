@@ -6,8 +6,9 @@ import { useEffect, useState, type ChangeEvent } from 'react';
 import type Deck from "../interfaces/Deck";
 import styles from "../styles/Dashboard.module.css";
 import UserAuth from "../AuthContext";
-import Tooltip from "@mui/material/Tooltip";
 import DashboardAnimation from "./DashboardAnimation";
+import FeedbackButton from "./FeedbackButton";
+import BlueTooltip from "./BlueTooltip";
 
 function Dashboard() {
     const navigate = useNavigate();
@@ -220,7 +221,7 @@ function Dashboard() {
                         Flashier Cards
                     </div>
                     <div className={styles.toolbar}>
-                        <Tooltip title="Create New Deck">
+                        <BlueTooltip title="Create New Deck">
                             <button
                                 type="button"
                                 className={styles.toolOption}
@@ -232,8 +233,8 @@ function Dashboard() {
                                     <FontAwesomeIcon icon={faPlus} />
                                 </span>
                             </button>
-                        </Tooltip>
-                        <Tooltip title="Study Deck">
+                        </BlueTooltip>
+                        <BlueTooltip title="Study Deck">
                             <button
                                 type="button"
                                 style={{ display: toolVisible ? "inline-block" : "none" }}
@@ -246,8 +247,8 @@ function Dashboard() {
                                     <FontAwesomeIcon icon={faFolderOpen} />
                                 </span>
                             </button>
-                        </Tooltip>
-                        <Tooltip title="Edit Deck">
+                        </BlueTooltip>
+                        <BlueTooltip title="Edit Deck">
                             <button
                                 type="button"
                                 style={{ display: toolVisible ? "inline-block" : "none" }}
@@ -260,8 +261,8 @@ function Dashboard() {
                                     <FontAwesomeIcon icon={faPencil} />
                                 </span>
                             </button>
-                        </Tooltip>
-                        <Tooltip title="Rename Deck">
+                        </BlueTooltip>
+                        <BlueTooltip title="Rename Deck">
                             <button
                                 type="button"
                                 style={{ display: toolVisible ? "inline-block" : "none" }}
@@ -274,8 +275,8 @@ function Dashboard() {
                                     <FontAwesomeIcon icon={faICursor} />
                                 </span>
                             </button>
-                        </Tooltip>
-                        <Tooltip title="Delete Deck">
+                        </BlueTooltip>
+                        <BlueTooltip title="Delete Deck">
                             <button
                                 type="button"
                                 style={{ display: toolVisible ? "inline-block" : "none" }}
@@ -288,8 +289,8 @@ function Dashboard() {
                                     <FontAwesomeIcon icon={faTrash} />
                                 </span>
                             </button>
-                        </Tooltip>
-                        <Tooltip title="Cancel Selection">
+                        </BlueTooltip>
+                        <BlueTooltip title="Cancel Selection">
                             <button
                                 type="button"
                                 onClick={() => setDeckSelected(null, false)}
@@ -302,7 +303,7 @@ function Dashboard() {
                                     <FontAwesomeIcon icon={faCircleXmark} />
                                 </span>
                             </button>
-                        </Tooltip>
+                        </BlueTooltip>
                     </div>
                     { (loading) ?
                         <div className={"error-message"}>
@@ -390,6 +391,7 @@ function Dashboard() {
                     </div>
                 </div>
             </div>
+            <FeedbackButton />
         </>
     );
 }

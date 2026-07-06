@@ -38,6 +38,12 @@
     color: #004A94;
     text-align: center;
     margin-bottom: 5rem;
+    cursor: pointer;
+    transition: all 0.1s ease-in-out;
+}
+
+.homeSubTitle:hover {
+    transform: translateY(5px);
 }
 
 .form {
@@ -70,4 +76,21 @@
 
 .form > div input:focus {
     outline: none;
+}
+
+.homeButton {
+    position: fixed;
+    top: 1.5rem;
+    left: 1.3rem;
+    cursor: pointer;
+}
+
+.homeIcon {
+    color: #004A94;
+    font-size: 45px;
+    transition: transform 0.1s ease;
+}
+
+.homeButton:hover .homeIcon {
+    transform: scale(1.2);
 }

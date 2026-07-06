@@ -2,8 +2,11 @@ import { useNavigate } from "react-router-dom";
 import { useState, type ChangeEvent } from "react";
 import UserAuth from "../AuthContext";
 import HomeAnimation from "./HomeAnimation";
-import Tooltip from "@mui/material/Tooltip";
+import { faHouse } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styles from "../styles/Home.module.css";
+import FeedbackButton from "./FeedbackButton";
+import BlueTooltip from "./BlueTooltip";
 
 /*
     Description: This component is the signup page for a user to create an account.
@@ -77,6 +80,11 @@ function Signup() {
     return (
         <>
             <HomeAnimation />
+            <BlueTooltip title="Home" placement="bottom">
+                <div className={styles.homeButton}>
+                    <FontAwesomeIcon className={styles.homeIcon} icon={faHouse} onClick={() => navigate("/")} />
+                </div>
+            </BlueTooltip>
             <div className={styles.subContainer}>
                 <div className={"app-title"}>
                     Join Flashier Cards
@@ -101,7 +109,7 @@ function Signup() {
                             onChange={handleFormData}
                         />
                     </div>
-                    <Tooltip title="Password should have 8 characters with at least one uppercase letter, lowercase letter, number, and symbol.">
+                    <BlueTooltip title="Password should have 8 characters with at least one uppercase letter, lowercase letter, number, and symbol.">
                         <div>
                             <div className={styles.formText}>Password</div>
                             <input
@@ -111,7 +119,7 @@ function Signup() {
                                 onChange={handleFormData}
                             />
                         </div>
-                    </Tooltip>
+                    </BlueTooltip>
                     <div>
                         <div className={styles.formText}>Confirm password</div>
                         <input
@@ -132,6 +140,7 @@ function Signup() {
                     </button>
                 </form>
             </div>
+            <FeedbackButton />
         </>
     );
 }

@@ -2,8 +2,9 @@ import Navbar from "./Navbar";
 import ProfileNavbar from "./ProfileNavbar";
 import { useState, type ChangeEvent } from 'react';
 import styles from "../styles/Profile.module.css";
-import Tooltip from "@mui/material/Tooltip";
 import UserAuth from "../AuthContext";
+import FeedbackButton from "./FeedbackButton";
+import BlueTooltip from "./BlueTooltip";
 
 /*
     Description: This component allows user to change their password.
@@ -13,7 +14,7 @@ import UserAuth from "../AuthContext";
 function ChangePassword() {
     const [error, setError] = useState({ status: false, message: "" });
     const [loading, setLoading] = useState(false);
-    const { changePassword } = UserAuth();
+    const { changePassword, session } = UserAuth();
 
     const [formData, setFormData] = useState({
         currentPassword: "",
@@ -46,7 +47,7 @@ function ChangePassword() {
                 throw new Error("New password and Confirm new password do not match.");
             }
 
-            const result = await changePassword(formData.newPassword, formData.currentPassword);
+            const result = await changePassword(formData.currentPassword, formData.newPassword);
             if (!result.success) throw new Error(result.error.message);
             throw new Error("Your password was successfully updated.");
 
@@ -93,7 +94,7 @@ function ChangePassword() {
                                     onChange={handleFormData}
                                 />
                             </div>
-                            <Tooltip title="Password should have 8 characters with at least one uppercase letter, lowercase letter, number, and symbol.">
+                            <BlueTooltip title="Password should have 8 characters with at least one uppercase letter, lowercase letter, number, and symbol.">
                                 <div>
                                     <div className={styles.formText}>
                                         New password
@@ -105,7 +106,7 @@ function ChangePassword() {
                                         onChange={handleFormData}
                                     />
                                 </div>
-                            </Tooltip>
+                            </BlueTooltip>
                             <div>
                                 <div className={styles.formText}>
                                     Confirm new password
@@ -130,6 +131,7 @@ function ChangePassword() {
                     </div>
                 </div>
             </div>
+            <FeedbackButton />
         </div>
     );
 }

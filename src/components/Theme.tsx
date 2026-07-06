@@ -4,6 +4,7 @@ import styles from "../styles/Profile.module.css";
 import { useEffect, useState } from 'react';
 import UserAuth from "../AuthContext";
 import type Profile from "../interfaces/Profile";
+import FeedbackButton from "./FeedbackButton";
 
 /*
     Description: This component allows user to change background animation.
@@ -119,6 +120,7 @@ function Theme() {
                     </div>
                 </div>
             </div>
+            <FeedbackButton />
         </div>
     );
 }

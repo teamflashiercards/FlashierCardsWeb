@@ -6,6 +6,7 @@ import styles from "../styles/Deck.module.css";
 import { useParams } from "react-router-dom";
 import type Card from "../interfaces/Card";
 import UserAuth from "../AuthContext";
+import FeedbackButton from "./FeedbackButton";
 
 /*
     Description: This component allows the user to study deck content.
@@ -268,6 +269,7 @@ function Study() {
                     </div>
                 </div>
             </div>
+            <FeedbackButton />
         </>
     );
 }

@@ -57,7 +57,7 @@ export function AuthContextProvider({ children }: any) {
     // handle password reset here
     const resetPassword = async (email: string) => {
         const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
-            redirectTo: "http://flashiercards.com/resetPassword",
+            redirectTo: import.meta.env.VITE_RESET_PASSWORD_LINK,
         });
 
         if (error) {
@@ -81,10 +81,10 @@ export function AuthContextProvider({ children }: any) {
     };
 
     // handle password change here
-    const changePassword = async (newPassword: string, currPassword: string) => {
+    const changePassword = async (currPassword: string, newPassword: string) => {
         const { data, error } = await supabase.auth.updateUser({
-            password: newPassword,
-            current_password: currPassword
+            current_password: currPassword,
+            password: newPassword
         });
 
         if (error) {

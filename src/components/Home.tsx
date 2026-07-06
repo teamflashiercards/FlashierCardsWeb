@@ -30,7 +30,10 @@ function Home() {
                 <div className={styles.homeTitle}>
                     Flashier Cards
                 </div>
-                <div className={styles.homeSubTitle}>
+                <div 
+                    className={styles.homeSubTitle}
+                    onClick={() => navigate("/about")}
+                >
                     Study The Flashier Way
                 </div>
                 <button

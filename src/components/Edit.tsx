@@ -16,8 +16,9 @@ import { Stage, Layer, Text, Image } from 'react-konva';
 import useImage from "use-image";
 import UserAuth from "../AuthContext";
 import GiphyLogo from "../assets/giphyLogo.png";
-import Tooltip from "@mui/material/Tooltip";
+import BlueTooltip from "./BlueTooltip";
 import type Card from "../interfaces/Card";
+import FeedbackButton from "./FeedbackButton";
 
 /*
     Description: This component allows the user create, update, or delete deck content.
@@ -305,16 +306,16 @@ function Edit() {
         }
     }
 
-    function createText(fontSize: number) {
+    function createText(fontSize: number, width: number) {
         if (cardSide === "Front") {
-            let tmp = {id: null, card_id: frontCards[cardNum - 1].id, input: "Double click to edit text", width: 300, x: 30, y: 30, font_size: fontSize, color: "#201002"};
+            let tmp = {id: null, card_id: frontCards[cardNum - 1].id, input: "Double click to edit text", width: width, x: 30, y: 30, font_size: fontSize, color: "#201002"};
             setFrontCards(prevCards =>
                 prevCards.map((card, index) =>
                     index === (cardNum - 1) ? {...card, text: [...card.text, tmp]} : card
                 )
             );
         } else if (cardSide === "Back") {
-            let tmp = {id: null, card_id: backCards[cardNum - 1].id, input: "Double click to edit text", width: 300, x: 30, y: 30, font_size: fontSize, color: "#201002"};
+            let tmp = {id: null, card_id: backCards[cardNum - 1].id, input: "Double click to edit text", width: width, x: 30, y: 30, font_size: fontSize, color: "#201002"};
             setBackCards(prevCards =>
                 prevCards.map((card, index) =>
                     index === (cardNum - 1) ? {...card, text: [...card.text, tmp]} : card
@@ -504,7 +505,7 @@ function Edit() {
                         <></>
                 }
                 <div className={styles.toolbar}>
-                    <Tooltip title="Add Card">
+                    <BlueTooltip title="Add Card">
                         <button
                             type="button"
                             className={styles.toolOption}
@@ -516,8 +517,8 @@ function Edit() {
                                 <FontAwesomeIcon icon={faPlus} />
                             </span>
                         </button>
-                    </Tooltip>
-                    <Tooltip title="Add Text">
+                    </BlueTooltip>
+                    <BlueTooltip title="Add Text">
                         <button
                             type="button"
                             className={styles.toolOption}
@@ -529,8 +530,8 @@ function Edit() {
                                 <FontAwesomeIcon icon={faT} />
                             </span>
                         </button>
-                    </Tooltip>
-                    <Tooltip title="Add Gif">
+                    </BlueTooltip>
+                    <BlueTooltip title="Add Gif">
                         <button
                             type="button"
                             className={styles.toolOption}
@@ -542,8 +543,8 @@ function Edit() {
                                 GIF
                             </span>
                         </button>
-                    </Tooltip>
-                    <Tooltip title="Add Sticker">
+                    </BlueTooltip>
+                    <BlueTooltip title="Add Sticker">
                         <button
                             type="button"
                             className={styles.toolOption}
@@ -555,8 +556,8 @@ function Edit() {
                                 <FontAwesomeIcon icon={faHeart} />
                             </span>
                         </button>
-                    </Tooltip>
-                    <Tooltip title="Delete Card">
+                    </BlueTooltip>
+                    <BlueTooltip title="Delete Card">
                         <button
                             type="button"
                             className={styles.toolOption}
@@ -568,8 +569,8 @@ function Edit() {
                                 <FontAwesomeIcon icon={faTrash} />
                             </span>
                         </button>
-                    </Tooltip>
-                    <Tooltip title="Flip Card">
+                    </BlueTooltip>
+                    <BlueTooltip title="Flip Card">
                         <button
                             type="button"
                             className={styles.toolOption}
@@ -581,8 +582,8 @@ function Edit() {
                                 <FontAwesomeIcon icon={faRightLeft} />
                             </span>
                         </button>
-                    </Tooltip>
-                    <Tooltip title="Save Content">
+                    </BlueTooltip>
+                    <BlueTooltip title="Save Content">
                         <button
                             type="button"
                             className={styles.toolOption} 
@@ -594,8 +595,8 @@ function Edit() {
                                 <FontAwesomeIcon icon={faFloppyDisk} />
                             </span>
                         </button>
-                    </Tooltip>
-                    <Tooltip title="Close Side Panel">
+                    </BlueTooltip>
+                    <BlueTooltip title="Close Side Panel">
                         <button
                             type="button"
                             className={styles.toolOption}
@@ -607,7 +608,7 @@ function Edit() {
                                 <FontAwesomeIcon icon={faCircleXmark} />
                             </span>
                         </button>
-                    </Tooltip>
+                    </BlueTooltip>
                 </div>
                 <div className={styles.mainPanel}>
                     <div className={styles.deck}>
@@ -833,9 +834,9 @@ function Edit() {
                         <div>
                             <div className={styles.sidePanelTitle}>Text Size</div>
                             <div className={styles.sidePanelOptions} style={{ marginBottom: "0rem" }}>
-                                <button className={styles.sidePanelBtn} onClick={() => createText(18)}>Small</button>
-                                <button className={styles.sidePanelBtn} onClick={() => createText(28)}>Medium</button>
-                                <button className={styles.sidePanelBtn} onClick={() => createText(38)}>Large</button>
+                                <button className={styles.sidePanelBtn} onClick={() => createText(18, 300)}>Small</button>
+                                <button className={styles.sidePanelBtn} onClick={() => createText(28, 400)}>Medium</button>
+                                <button className={styles.sidePanelBtn} onClick={() => createText(38, 600)}>Large</button>
                             </div>
                         </div>
                     </div>
@@ -907,6 +908,7 @@ function Edit() {
                     </div>
                 </div>
             </div>
+            <FeedbackButton />
         </div>
     );
 }

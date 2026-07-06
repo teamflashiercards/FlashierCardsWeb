@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState, type ChangeEvent } from "react";
 import UserAuth from "../AuthContext";
-import Tooltip from "@mui/material/Tooltip";
 import styles from "../styles/Home.module.css";
+import BlueTooltip from "./BlueTooltip";
 
 /*
     Description: This component is used to reset password from login route.
@@ -88,7 +88,7 @@ function ResetPassword() {
                     <></>
             }
             <form className={styles.form} onSubmit={submitForm}>
-                <Tooltip title="Password should have 8 characters with at least one uppercase letter, lowercase letter, number, and symbol.">
+                <BlueTooltip title="Password should have 8 characters with at least one uppercase letter, lowercase letter, number, and symbol.">
                     <div>
                         <div className={styles.formText}>New password</div>
                         <input
@@ -98,7 +98,7 @@ function ResetPassword() {
                             onChange={handleFormData}
                         />
                     </div>
-                </Tooltip>
+                </BlueTooltip>
                 <div>
                     <div className={styles.formText}>Confirm new password</div>
                     <input
