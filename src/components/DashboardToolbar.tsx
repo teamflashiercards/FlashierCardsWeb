@@ -4,6 +4,11 @@ import { useNavigate } from "react-router-dom";
 import BlueTooltip from "./BlueTooltip";
 import styles from "../styles/Dashboard.module.css";
 
+/*
+    Description: This is a sub-component that contains code for the Dashboard component's toolbar.
+    Last updated: 7/12/2026
+*/
+
 function DashboardToolbar({ deckId, toolVisible, setDeckSelected, setCreateOverlay, setRenameOverlay, deleteDeck }: any) {
     const navigate = useNavigate();
     
