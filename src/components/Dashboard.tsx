@@ -1,17 +1,15 @@
 import Navbar from "./Navbar";
-import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircleXmark, faPlus, faFolderOpen, faPencil, faICursor, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState, type ChangeEvent } from 'react';
 import type Deck from "../interfaces/Deck";
 import styles from "../styles/Dashboard.module.css";
 import UserAuth from "../AuthContext";
 import DashboardAnimation from "./DashboardAnimation";
 import FeedbackButton from "./FeedbackButton";
-import BlueTooltip from "./BlueTooltip";
+import DashboardToolbar from "./DashboardToolbar";
 
 function Dashboard() {
-    const navigate = useNavigate();
     const [error, setError] = useState({ status: false, message: "" });
     const [loading, setLoading] = useState(false);
     const { session } = UserAuth();
@@ -210,7 +208,7 @@ function Dashboard() {
     useEffect(() => {
         fetchDeckData();
     }, []);
-    
+
     return (
         <>
             <DashboardAnimation />
@@ -220,91 +218,14 @@ function Dashboard() {
                     <div className={"app-title"}>
                         Flashier Cards
                     </div>
-                    <div className={styles.toolbar}>
-                        <BlueTooltip title="Create New Deck">
-                            <button
-                                type="button"
-                                className={styles.toolOption}
-                                onClick={() => setCreateOverlay(true)} 
-                            >
-                                <span className={styles.shadow}></span>
-                                <span className={styles.edge}></span>
-                                <span className={styles.front}>
-                                    <FontAwesomeIcon icon={faPlus} />
-                                </span>
-                            </button>
-                        </BlueTooltip>
-                        <BlueTooltip title="Study Deck">
-                            <button
-                                type="button"
-                                style={{ display: toolVisible ? "inline-block" : "none" }}
-                                className={styles.toolOption}
-                                onClick={() => navigate(`/dashboard/study/${deckId}`)}
-                            >
-                                <span className={styles.shadow}></span>
-                                <span className={styles.edge}></span>
-                                <span className={styles.front}>
-                                    <FontAwesomeIcon icon={faFolderOpen} />
-                                </span>
-                            </button>
-                        </BlueTooltip>
-                        <BlueTooltip title="Edit Deck">
-                            <button
-                                type="button"
-                                style={{ display: toolVisible ? "inline-block" : "none" }}
-                                className={styles.toolOption}
-                                onClick={() => navigate(`/dashboard/edit/${deckId}`)}
-                            >
-                                <span className={styles.shadow}></span>
-                                <span className={styles.edge}></span>
-                                <span className={styles.front}>
-                                    <FontAwesomeIcon icon={faPencil} />
-                                </span>
-                            </button>
-                        </BlueTooltip>
-                        <BlueTooltip title="Rename Deck">
-                            <button
-                                type="button"
-                                style={{ display: toolVisible ? "inline-block" : "none" }}
-                                className={styles.toolOption}
-                                onClick={() => setRenameOverlay(true)}
-                            >
-                                <span className={styles.shadow}></span>
-                                <span className={styles.edge}></span>
-                                <span className={styles.front}>
-                                    <FontAwesomeIcon icon={faICursor} />
-                                </span>
-                            </button>
-                        </BlueTooltip>
-                        <BlueTooltip title="Delete Deck">
-                            <button
-                                type="button"
-                                style={{ display: toolVisible ? "inline-block" : "none" }}
-                                className={styles.toolOption}
-                                onClick={deleteDeck}
-                            >
-                                <span className={styles.shadow}></span>
-                                <span className={styles.edge}></span>
-                                <span className={styles.front}>
-                                    <FontAwesomeIcon icon={faTrash} />
-                                </span>
-                            </button>
-                        </BlueTooltip>
-                        <BlueTooltip title="Cancel Selection">
-                            <button
-                                type="button"
-                                onClick={() => setDeckSelected(null, false)}
-                                style={{ display: toolVisible ? "inline-block" : "none" }}
-                                className={styles.toolOption}
-                            >
-                                <span className={styles.shadow}></span>
-                                <span className={styles.edge}></span>
-                                <span className={styles.front}>
-                                    <FontAwesomeIcon icon={faCircleXmark} />
-                                </span>
-                            </button>
-                        </BlueTooltip>
-                    </div>
+                    <DashboardToolbar 
+                        deckId={deckId} 
+                        toolVisible={toolVisible}
+                        setDeckSelected={setDeckSelected}
+                        setCreateOverlay={setCreateOverlay}
+                        setRenameOverlay={setRenameOverlay}
+                        deleteDeck={deleteDeck}
+                    />
                     { (loading) ?
                         <div className={"error-message"}>
                             Loading request...
