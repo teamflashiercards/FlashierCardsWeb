@@ -1,14 +1,7 @@
 import Navbar from "./Navbar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import { faT } from "@fortawesome/free-solid-svg-icons";
-import { faHeart } from "@fortawesome/free-solid-svg-icons";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
-import { faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
-import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons/faChevronRight";
-import { faRightLeft } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useRef, useState } from "react";
 import styles from "../styles/Deck.module.css";
 import { useParams } from "react-router-dom";
@@ -16,10 +9,11 @@ import { Stage, Layer, Text, Image } from 'react-konva';
 import useImage from "use-image";
 import UserAuth from "../AuthContext";
 import GiphyLogo from "../assets/giphyLogo.png";
-import BlueTooltip from "./BlueTooltip";
 import type Card from "../interfaces/Card";
 import FeedbackButton from "./FeedbackButton";
-import StickerSidePanel from "./StickerSidepanel";
+import StickerSidePanel from "./StickerSidePanel";
+import EditNavbar from "./EditNavbar";
+import GifPanel from "./GifPanel";
 
 /*
     Description: This component allows the user create, update, or delete deck content.
@@ -164,32 +158,6 @@ function Edit() {
             setLoading(false);
         }
     };
-
-    const fetchGiphs = async (e: any) => {
-        e.preventDefault();
-        setLoading(true);
-        
-        try {
-            const response = await fetch(`https://api.giphy.com/v1/gifs/search?api_key=${import.meta.env.VITE_GIPHY_API_KEY}&q=${giphyQuery.trim()}&limit=12&rating=g`);
-            const data = await response.json();
-            if (!response.ok) throw new Error(data.message);
-
-            const gifs = data.data.map((item: any) => ({
-                id: item.id,
-                title: item.title,
-                url: item.images.original.url
-            }));
-
-            setGifResults(gifs);
-
-        } catch(error: any) {
-            setError({ status: true, message: error.message });
-        
-        } finally {
-            setGiphyQuery("");
-            setLoading(false);
-        }
-    }
 
     function createCard() {
         if ((total + 1) <= 20) {
@@ -479,112 +447,14 @@ function Edit() {
                     :
                         <></>
                 }
-                <div className={styles.toolbar}>
-                    <BlueTooltip title="Add Card">
-                        <button
-                            type="button"
-                            className={styles.toolOption}
-                            onClick={createCard}
-                        >
-                            <span className={styles.shadow}></span>
-                            <span className={styles.edge}></span>
-                            <span className={styles.front}>
-                                <FontAwesomeIcon icon={faPlus} />
-                            </span>
-                        </button>
-                    </BlueTooltip>
-                    <BlueTooltip title="Add Text">
-                        <button
-                            type="button"
-                            className={styles.toolOption}
-                            onClick={() => showSidePanel("text")}
-                        >
-                            <span className={styles.shadow}></span>
-                            <span className={styles.edge}></span>
-                            <span className={styles.front}>
-                                <FontAwesomeIcon icon={faT} />
-                            </span>
-                        </button>
-                    </BlueTooltip>
-                    <BlueTooltip title="Add Gif">
-                        <button
-                            type="button"
-                            className={styles.toolOption}
-                            onClick={() => showSidePanel("gif")}
-                        >
-                            <span className={styles.shadow}></span>
-                            <span className={styles.edge}></span>
-                            <span className={styles.front} style={{fontWeight: "600"}}>
-                                GIF
-                            </span>
-                        </button>
-                    </BlueTooltip>
-                    <BlueTooltip title="Add Sticker">
-                        <button
-                            type="button"
-                            className={styles.toolOption}
-                            onClick={() => showSidePanel("sticker")}
-                        >
-                            <span className={styles.shadow}></span>
-                            <span className={styles.edge}></span>
-                            <span className={styles.front}>
-                                <FontAwesomeIcon icon={faHeart} />
-                            </span>
-                        </button>
-                    </BlueTooltip>
-                    <BlueTooltip title="Delete Card">
-                        <button
-                            type="button"
-                            className={styles.toolOption}
-                            onClick={deleteCard}
-                        >
-                            <span className={styles.shadow}></span>
-                            <span className={styles.edge}></span>
-                            <span className={styles.front}>
-                                <FontAwesomeIcon icon={faTrash} />
-                            </span>
-                        </button>
-                    </BlueTooltip>
-                    <BlueTooltip title="Flip Card">
-                        <button
-                            type="button"
-                            className={styles.toolOption}
-                            onClick={() => flipCard()}
-                        >
-                            <span className={styles.shadow}></span>
-                            <span className={styles.edge}></span>
-                            <span className={styles.front}>
-                                <FontAwesomeIcon icon={faRightLeft} />
-                            </span>
-                        </button>
-                    </BlueTooltip>
-                    <BlueTooltip title="Save Content">
-                        <button
-                            type="button"
-                            className={styles.toolOption} 
-                            onClick={saveDeckContent}                       
-                        >
-                            <span className={styles.shadow}></span>
-                            <span className={styles.edge}></span>
-                            <span className={styles.front}>
-                                <FontAwesomeIcon icon={faFloppyDisk} />
-                            </span>
-                        </button>
-                    </BlueTooltip>
-                    <BlueTooltip title="Close Side Panel">
-                        <button
-                            type="button"
-                            className={styles.toolOption}
-                            onClick={closeSidePanel}
-                        >
-                            <span className={styles.shadow}></span>
-                            <span className={styles.edge}></span>
-                            <span className={styles.front}>
-                                <FontAwesomeIcon icon={faCircleXmark} />
-                            </span>
-                        </button>
-                    </BlueTooltip>
-                </div>
+                <EditNavbar
+                createCard={createCard}
+                showSidePanel={showSidePanel}
+                deleteCard={deleteCard}
+                flipCard={flipCard}
+                saveDeckContent={saveDeckContent}
+                closeSidePanel={closeSidePanel}
+                />
                 <div className={styles.mainPanel}>
                     <div className={styles.deck}>
                         <div className={styles.card} ref={cardRef}>
@@ -815,39 +685,14 @@ function Edit() {
                             </div>
                         </div>
                     </div>
-                    <div className={styles.sidePanel} style={{ display: gifPanel ? "flex" : "none" }}>
-                        <div style={{ display: (gifTools) ? "flex" : "none" }}>
-                            <div className={styles.sidePanelTitle}>Giph Deletion</div>
-                            <div className={styles.sidePanelOptions}>
-                                <button className={styles.sidePanelBtn} onClick={deleteGif}>Delete</button>
-                            </div>
-                        </div>
-                        <div>
-                            <div className={styles.sidePanelTitle}>Gifs</div>
-                            <form onSubmit={fetchGiphs} className={styles.sidePanelOptions}>
-                                <input
-                                    type="text"
-                                    placeholder="Search for gifs"
-                                    value={giphyQuery}
-                                    onChange={(e) => setGiphyQuery(e.target.value)}
-                                />
-                                <button type="submit" className={styles.sidePanelFormBtn}>Search</button>
-                            </form>
-                            <div className={styles.giphyGrid}>
-                                {gifResults?.map((gif) => (
-                                    <img
-                                        key={gif.id}
-                                        src={gif.url}
-                                        alt={gif.title}
-                                        onClick={() => createGif(gif.url)}
-                                    />
-                                ))}
-                            </div>
-                            <div className={styles.giphyLogo}>
-                                <img src={GiphyLogo} alt="Powered by GIPHY" />
-                            </div>
-                        </div>
-                    </div>
+                    <GifPanel
+                    gifPanel={gifPanel}
+                    createGif={createGif}
+                    gifTools={gifTools}
+                    deleteGif={deleteGif}
+                    setLoading={setLoading}
+                    setError={setError}
+                    />
                     <StickerSidePanel
                         stickerPanel={stickerPanel}
                         stickerTools={stickerTools}
