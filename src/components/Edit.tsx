@@ -19,7 +19,7 @@ import GiphyLogo from "../assets/giphyLogo.png";
 import BlueTooltip from "./BlueTooltip";
 import type Card from "../interfaces/Card";
 import FeedbackButton from "./FeedbackButton";
-import StickerSidePanel from "./StickerSidepanel";
+import StickerSidePanel from "./StickerSidePanel";
 
 /*
     Description: This component allows the user create, update, or delete deck content.
@@ -590,6 +590,10 @@ function Edit() {
                         <div className={styles.card} ref={cardRef}>
                             <div className={styles.cardInner}>
                                 <div className={styles.cardFront}>
+                                    {/* loop through text and use motion.p to display text on frontCards */}
+                                    {/* loop through text and use motion.img to display gifs on frontCards */}
+                                    {/* loop through text and use motion.img to display stickers on frontCards */}
+                                    {/*  
                                     <Stage
                                         width={800}
                                         height={400}
@@ -677,9 +681,13 @@ function Edit() {
                                                 />
                                             )}
                                         </Layer>
-                                    </Stage>
+                                    </Stage>*/}
                                 </div>
                                 <div className={styles.cardBack}>
+                                    {/* loop through text and use motion.p to display text on frontCards */}
+                                    {/* loop through text and use motion.img to display gifs on frontCards */}
+                                    {/* loop through text and use motion.img to display stickers on frontCards */}
+                                    {/*  
                                     <Stage
                                         width={800}
                                         height={400}
@@ -767,7 +775,7 @@ function Edit() {
                                                 />
                                             )}
                                         </Layer>
-                                    </Stage>
+                                    </Stage>*/}
                                 </div>
                             </div>
                         </div>
