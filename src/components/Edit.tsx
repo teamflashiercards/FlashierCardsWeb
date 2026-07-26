@@ -8,12 +8,11 @@ import { useParams } from "react-router-dom";
 import { Stage, Layer, Text, Image } from 'react-konva';
 import useImage from "use-image";
 import UserAuth from "../AuthContext";
-import GiphyLogo from "../assets/giphyLogo.png";
 import type Card from "../interfaces/Card";
 import FeedbackButton from "./FeedbackButton";
 import StickerSidePanel from "./StickerSidePanel";
-import EditNavbar from "./EditNavbar";
-import GifPanel from "./GifPanel";
+import GifSidePanel from "./GifSidePanel";
+import EditToolbar from "./EditToolbar";
 
 /*
     Description: This component allows the user create, update, or delete deck content.
@@ -71,7 +70,6 @@ function Edit() {
     const [textIndex, setTextIndex] = useState<number | null>();
     
     // gif related variables
-    const [giphyQuery, setGiphyQuery] = useState("");
     const [gifTools, setGifTools] = useState(false);
     const [gifResults, setGifResults] = useState<Giphy[] | null>([]);
     const [gifIndex, setGifIndex] = useState<number | null>();
@@ -336,7 +334,6 @@ function Edit() {
     }
 
     function showGifTools(request: boolean, gifIndex: number | null, gifResults: Giphy[] | null) {
-        setGiphyQuery("");
         setGifIndex(gifIndex);
         setGifTools(request);
         setGifResults(gifResults);
@@ -361,7 +358,6 @@ function Edit() {
     }
 
     function showStickerTools(request: boolean, stickerIndex: number | null, stickerResults: Giphy[] | null) {
-        setGiphyQuery("");
         setStickerIndex(stickerIndex);
         setStickerTools(request);
         setStickerResults(stickerResults);
@@ -447,13 +443,13 @@ function Edit() {
                     :
                         <></>
                 }
-                <EditNavbar
-                createCard={createCard}
-                showSidePanel={showSidePanel}
-                deleteCard={deleteCard}
-                flipCard={flipCard}
-                saveDeckContent={saveDeckContent}
-                closeSidePanel={closeSidePanel}
+                <EditToolbar
+                    createCard={createCard}
+                    showSidePanel={showSidePanel}
+                    deleteCard={deleteCard}
+                    flipCard={flipCard}
+                    saveDeckContent={saveDeckContent}
+                    closeSidePanel={closeSidePanel}
                 />
                 <div className={styles.mainPanel}>
                     <div className={styles.deck}>
@@ -554,9 +550,9 @@ function Edit() {
                                     </Stage>*/}
                                 </div>
                                 <div className={styles.cardBack}>
-                                    {/* loop through text and use motion.p to display text on frontCards */}
-                                    {/* loop through text and use motion.img to display gifs on frontCards */}
-                                    {/* loop through text and use motion.img to display stickers on frontCards */}
+                                    {/* loop through text and use motion.p to display text on backCards */}
+                                    {/* loop through text and use motion.img to display gifs on backCards */}
+                                    {/* loop through text and use motion.img to display stickers on backCards */}
                                     {/*  
                                     <Stage
                                         width={800}
@@ -693,13 +689,13 @@ function Edit() {
                             </div>
                         </div>
                     </div>
-                    <GifPanel
-                    gifPanel={gifPanel}
-                    createGif={createGif}
-                    gifTools={gifTools}
-                    deleteGif={deleteGif}
-                    setLoading={setLoading}
-                    setError={setError}
+                    <GifSidePanel
+                        gifPanel={gifPanel}
+                        createGif={createGif}
+                        gifTools={gifTools}
+                        deleteGif={deleteGif}
+                        setLoading={setLoading}
+                        setError={setError}
                     />
                     <StickerSidePanel
                         stickerPanel={stickerPanel}
