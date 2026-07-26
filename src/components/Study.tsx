@@ -7,6 +7,7 @@ import { useParams } from "react-router-dom";
 import type Card from "../interfaces/Card";
 import UserAuth from "../AuthContext";
 import FeedbackButton from "./FeedbackButton";
+import { motion } from "motion/react";
 
 /*
     Description: This component allows the user to study deck content.
@@ -188,23 +189,20 @@ function Study() {
                                             style={{
                                                 width: gif.width + "px",
                                                 height: gif.height + "px",
-                                                position: "absolute",
-                                                left: gif.x + "px",
-                                                top: gif.y + "px"
+                                                transform: `translate(${gif.x}px, ${gif.y}px)`
                                             }}
                                         />
                                     )}
                                     {frontCards[cardNum - 1]?.sticker?.map((sticker, stickerId) =>
-                                        <img 
+                                        <motion.img 
                                             key={stickerId}
                                             src={sticker.url}
                                             alt="sticker"
                                             style={{
-                                                width: sticker.width + "px",
-                                                height: sticker.height + "px",
-                                                position: "absolute",
-                                                left: sticker.x + "px",
-                                                top: sticker.y + "px"
+                                                width: sticker.width,
+                                                height: sticker.height,
+                                                x: sticker.x,
+                                                y: sticker.y
                                             }}
                                         />
                                     )}
@@ -241,16 +239,15 @@ function Study() {
                                         />
                                     )}
                                     {backCards[cardNum - 1]?.sticker?.map((sticker, stickerId) =>
-                                        <img 
+                                        <motion.img 
                                             key={stickerId}
                                             src={sticker.url}
                                             alt="sticker"
                                             style={{
-                                                width: sticker.width + "px",
-                                                height: sticker.height + "px",
-                                                position: "absolute",
-                                                left: sticker.x + "px",
-                                                top: sticker.y + "px"
+                                                width: sticker.width,
+                                                height: sticker.height,
+                                                x: sticker.x,
+                                                y: sticker.y
                                             }}
                                         />
                                     )}

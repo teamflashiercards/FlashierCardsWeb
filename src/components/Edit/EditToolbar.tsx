@@ -1,5 +1,5 @@
-import styles from "../styles/Deck.module.css";
-import BlueTooltip from "./BlueTooltip";
+import styles from "../../styles/Deck.module.css";
+import BlueTooltip from "../BlueTooltip";
 import { faPlus, faT, faHeart, faTrash, faFloppyDisk, faCircleXmark, faRightLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 

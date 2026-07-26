@@ -1,7 +1,7 @@
-import styles from "../styles/Deck.module.css";
-import GiphyLogo from "../assets/giphyLogo.png";
+import styles from "../../styles/Deck.module.css";
+import GiphyLogo from "../../assets/giphyLogo.png";
 import { useState } from "react";
-import type Giphy from "../interfaces/Giphy";
+import type Giphy from "../../interfaces/Giphy";
 
 /*
     Description: This is a sub-component that contains code for the sticker side panel in Edit component.

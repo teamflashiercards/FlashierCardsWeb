@@ -1,7 +1,7 @@
 import {useState} from 'react';
-import GiphyLogo from '../assets/giphyLogo.png'
-import styles from "../styles/Deck.module.css";
-import type Giphy from "../interfaces/Giphy";
+import GiphyLogo from '../../assets/giphyLogo.png'
+import styles from "../../styles/Deck.module.css";
+import type Giphy from "../../interfaces/Giphy";
 
 /*
     Description: This is a sub-component that contains code for the gif side panel in Edit component.

@@ -1,24 +1,28 @@
-import Navbar from "./Navbar";
+import Navbar from "../Navbar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons/faChevronRight";
 import { useEffect, useRef, useState } from "react";
-import styles from "../styles/Deck.module.css";
+import styles from "../../styles/Deck.module.css";
 import { useParams } from "react-router-dom";
 import { Stage, Layer, Text, Image } from 'react-konva';
 import useImage from "use-image";
-import UserAuth from "../AuthContext";
-import type Card from "../interfaces/Card";
-import FeedbackButton from "./FeedbackButton";
+import UserAuth from "../../AuthContext";
+import type Card from "../../interfaces/Card";
+import FeedbackButton from "../FeedbackButton";
 import StickerSidePanel from "./StickerSidePanel";
 import GifSidePanel from "./GifSidePanel";
 import EditToolbar from "./EditToolbar";
+import type Giphy from "../../interfaces/Giphy";
+import { motion } from "motion/react";
+import Signup from "../Signup";
 
 /*
     Description: This component allows the user create, update, or delete deck content.
     Last updated: 6/28/2026
 */
 
+/*
 type Giphy = {
     id: string;
     title: string;
@@ -39,7 +43,7 @@ function Giphy({ newImage, onDblClick, onDragEnd }: any) {
             onDragEnd={onDragEnd}
         />
     );
-}
+}*/
 
 function Edit() {
     // fetch related variables
@@ -78,6 +82,7 @@ function Edit() {
     const [stickerTools, setStickerTools] = useState(false);
     const [stickerResults, setStickerResults] = useState<Giphy[] | null>([]);
     const [stickerIndex, setStickerIndex] = useState<number | null>();
+
 
     const fetchDeckName = async () => {
         setLoading(true);
@@ -459,7 +464,38 @@ function Edit() {
                                     {/* loop through text and use motion.p to display text on frontCards */}
                                     {/* loop through text and use motion.img to display gifs on frontCards */}
                                     {/* loop through text and use motion.img to display stickers on frontCards */}
-                                    {/*  
+                                    {frontCards[cardNum - 1]?.sticker?.map((sticker, stickerIndex) =>
+                                        <motion.img
+                                            key={stickerIndex}
+                                            src={sticker.url}
+                                            drag
+                                            dragMomentum={false}
+                                            style={{
+                                                width: sticker.width,
+                                                height: sticker.height,
+                                                objectFit: "contain",
+                                                x: sticker.x,
+                                                y: sticker.y
+                                            }}
+                                            onDoubleClick={() => {
+                                                showSidePanel("sticker");
+                                                showStickerTools(true, stickerIndex, stickerResults);
+                                            }}
+                                            onDragEnd={(_event, info) => {
+                                                setFrontCards(prevCards =>
+                                                    prevCards.map((card, cardIndex) =>
+                                                        cardIndex === (cardNum - 1) ? {
+                                                            ...card,
+                                                            sticker: card.sticker.map((tmp, i) =>
+                                                                i === stickerIndex ? {...tmp, x: Math.round(tmp.x + info.offset.x), y: Math.round(tmp.y + info.offset.y)} : tmp
+                                                            )
+                                                        } : card
+                                                    )
+                                                );
+                                            }}
+                                        />
+                                    )}
+                                    {/*
                                     <Stage
                                         width={800}
                                         height={400}
@@ -523,29 +559,7 @@ function Edit() {
                                                     }}
                                                 />
                                             )}
-                                            {frontCards[cardNum - 1]?.sticker?.map((sticker, stickerIndex) =>
-                                                <Giphy
-                                                    key={stickerIndex}
-                                                    newImage={sticker}
-                                                    onDblClick={() => {
-                                                        showSidePanel("sticker");
-                                                        showStickerTools(true, stickerIndex, stickerResults);
-                                                    }}
-                                                    onDragEnd={(e: any) => {
-                                                        const { x, y } = e.target.position();
-                                                        setFrontCards(prevCards =>
-                                                            prevCards.map((card, cardIndex) =>
-                                                                cardIndex === (cardNum - 1) ? {
-                                                                    ...card,
-                                                                    sticker: card.sticker.map((tmp, i) =>
-                                                                        i === stickerIndex ? {...tmp, x: x, y: y} : tmp
-                                                                    )
-                                                                } : card
-                                                            )
-                                                        );
-                                                    }}
-                                                />
-                                            )}
+                                           
                                         </Layer>
                                     </Stage>*/}
                                 </div>
@@ -553,7 +567,40 @@ function Edit() {
                                     {/* loop through text and use motion.p to display text on backCards */}
                                     {/* loop through text and use motion.img to display gifs on backCards */}
                                     {/* loop through text and use motion.img to display stickers on backCards */}
-                                    {/*  
+                                    {backCards[cardNum - 1]?.sticker?.map((sticker, stickerIndex) =>
+                                        <motion.img
+                                            key={stickerIndex}
+                                            src={sticker.url}
+                                            alt="sticker"
+                                            drag
+                                            dragMomentum={false}
+                                            style={{
+                                                width: sticker.width,
+                                                height: sticker.height,
+                                                objectFit: "contain",
+                                                x: sticker.x,
+                                                y: sticker.y
+                                            }}
+                                            onDoubleClick={() => {
+                                                showSidePanel("sticker");
+                                                showStickerTools(true, stickerIndex, stickerResults);
+                                            }}
+                                            onDragEnd={(_event, info) => {
+                                                setBackCards(prevCards =>
+                                                    prevCards.map((card, cardIndex) =>
+                                                        cardIndex === (cardNum - 1) ? {
+                                                            ...card,
+                                                            sticker: card.sticker.map((tmp, i) =>
+                                                                i === stickerIndex ? {...tmp, x: Math.round(tmp.x + info.offset.x), y: Math.round(tmp.y + info.offset.y)} : tmp
+                                                            )
+                                                        } : card
+                                                    )
+                                                );
+                                            }}
+                                        />
+                                    )}
+                                    {/* 
+                                    
                                     <Stage
                                         width={800}
                                         height={400}
@@ -617,29 +664,7 @@ function Edit() {
                                                     }}
                                                 />
                                             )}
-                                            {backCards[cardNum - 1]?.sticker?.map((sticker, stickerIndex) =>
-                                                <Giphy
-                                                    key={stickerIndex}
-                                                    newImage={sticker}
-                                                    onDblClick={() => {
-                                                        showSidePanel("sticker");
-                                                        showStickerTools(true, stickerIndex, stickerResults);
-                                                    }}
-                                                    onDragEnd={(e: any) => {
-                                                        const { x, y } = e.target.position();
-                                                        setBackCards(prevCards =>
-                                                            prevCards.map((card, cardIndex) =>
-                                                                cardIndex === (cardNum - 1) ? {
-                                                                    ...card,
-                                                                    sticker: card.sticker.map((tmp, i) =>
-                                                                        i === stickerIndex ? {...tmp, x: x, y: y} : tmp
-                                                                    )
-                                                                } : card
-                                                            )
-                                                        );
-                                                    }}
-                                                />
-                                            )}
+                                           
                                         </Layer>
                                     </Stage>*/}
                                 </div>
