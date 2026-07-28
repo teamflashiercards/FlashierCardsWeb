@@ -80,14 +80,14 @@
 
 .homeButton {
     position: fixed;
-    top: 1.5rem;
-    left: 1.3rem;
+    top: 1.3rem;
+    left: 1rem;
     cursor: pointer;
 }
 
 .homeIcon {
     color: #004A94;
-    font-size: 45px;
+    font-size: 42px;
     transition: transform 0.1s ease;
 }
 

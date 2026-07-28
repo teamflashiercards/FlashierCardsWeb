@@ -1,17 +1,12 @@
-import styles from "../styles/Deck.module.css";
-import GiphyLogo from "../assets/giphyLogo.png";
+import styles from "../../styles/Deck.module.css";
+import GiphyLogo from "../../assets/giphyLogo.png";
 import { useState } from "react";
+import type Giphy from "../../interfaces/Giphy";
 
 /*
     Description: This is a sub-component that contains code for the sticker side panel in Edit component.
     Last updated: 7/13/2026
 */
-
-type Giphy = {
-    id: string;
-    title: string;
-    url: string;
-};
 
 function StickerSidePanel({ stickerPanel, stickerTools, createSticker, deleteSticker, setLoading, setError }: any) {
     const [giphyQuery, setGiphyQuery] = useState("");
@@ -41,7 +36,7 @@ function StickerSidePanel({ stickerPanel, stickerTools, createSticker, deleteSti
             setGiphyQuery("");
             setLoading(false);
         }
-    }
+    };
 
     return (
         <div className={styles.sidePanel} style={{ display: stickerPanel ? "flex" : "none" }}>

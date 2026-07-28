@@ -8,7 +8,7 @@ import ForgotPassword from "./components/ForgotPassword";
 import ResetPassword from "./components/ResetPassword";
 import Dashboard from "./components/Dashboard";
 import Study from "./components/Study";
-import Edit from "./components/Edit";
+import Edit from "./components/Edit/Edit";
 import AccountInformation from "./components/AccountInformation";
 import Theme from "./components/Theme";
 import ChangePassword from "./components/ChangePassword";
