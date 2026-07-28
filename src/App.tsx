@@ -14,7 +14,7 @@ import Theme from "./components/Theme";
 import ChangePassword from "./components/ChangePassword";
 import DeleteAccount from "./components/DeleteAccount";
 import About from "./components/About";
-import TestEdit from "./test/TestEdit";
+// import TestEdit from "./test/TestEdit";
 
 /*
     Description: This file contains all the public and private routes.
@@ -36,7 +36,7 @@ function App() {
                 <Route path="*" element={<Navigate to="/"/>} />
 
                 {/* public test routes */}
-                <Route path="/testEdit" element={<TestEdit />} />
+                {/* <Route path="/testEdit" element={<TestEdit />} /> */}
                 
                 {/* private routes */}
                 <Route element={<PrivateRoute />}>
