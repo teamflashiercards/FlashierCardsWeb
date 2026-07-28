@@ -6,7 +6,7 @@ import VerifyEmail from "./components/VerifyEmail";
 import Login from "./components/Login";
 import ForgotPassword from "./components/ForgotPassword";
 import ResetPassword from "./components/ResetPassword";
-import Dashboard from "./components/Dashboard";
+import Dashboard from "./components/Dashboard/Dashboard";
 import Study from "./components/Study";
 import Edit from "./components/Edit/Edit";
 import AccountInformation from "./components/AccountInformation";
