@@ -1,13 +1,14 @@
-import Navbar from "./Navbar";
+import Navbar from "../Navbar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState, type ChangeEvent } from 'react';
-import type Deck from "../interfaces/Deck";
-import styles from "../styles/Dashboard.module.css";
-import UserAuth from "../AuthContext";
+import type Deck from "../../interfaces/Deck";
+import styles from "../../styles/Dashboard.module.css";
+import UserAuth from "../../AuthContext";
 import DashboardAnimation from "./DashboardAnimation";
-import FeedbackButton from "./FeedbackButton";
+import FeedbackButton from "../FeedbackButton";
 import DashboardToolbar from "./DashboardToolbar";
+import CreateDeckForm from "./CreateDeckForm";
 
 function Dashboard() {
     const [error, setError] = useState({ status: false, message: "" });
@@ -250,36 +251,13 @@ function Dashboard() {
                             )
                         }
                     </div>
-                    <div className={styles.overlay} style={{ display: createOverlay ? "flex" : "none" }}>
-                        <div className={styles.exitBtn}>
-                            <FontAwesomeIcon 
-                                icon={faCircleXmark} 
-                                onClick={exitOverlay}
-                                style={{cursor: "pointer"}}
-                            />
-                        </div>
-                        <form className={styles.form} onSubmit={submitCreateForm}>
-                            <div>
-                                <div className={styles.formText}>
-                                    Name
-                                </div>
-                                <input 
-                                    type="text"
-                                    name="deckName"
-                                    value={deckName}
-                                    onChange={handleFormData}
-                                />
-                            </div>
-                            <button
-                                type="submit"
-                                className={"fancy-btn"}
-                            >
-                                <span className={"dark-blue-btn-shadow"}></span>
-                                <span className={"dark-blue-btn-edge"}></span>
-                                <span className={"dark-blue-btn-front"} style={{ minWidth: "150px"}}>Create deck</span>
-                            </button>
-                        </form>
-                    </div>
+                    <CreateDeckForm 
+                        createOverlay={createOverlay}
+                        exitOverlay={exitOverlay}
+                        deckName={deckName}
+                        setDeckName={setDeckName}
+                        submitCreateForm={submitCreateForm}
+                    />
                     <div className={styles.overlay} style={{ display: renameOverlay ? "flex" : "none" }}>
                         <div className={styles.exitBtn}>
                             <FontAwesomeIcon 
