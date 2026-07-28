@@ -1,4 +1,4 @@
-import styles from "../styles/Deck.module.css";
+import styles from "../../styles/Deck.module.css";
 
 /*
     Description: This is a sub-component that contains code for the text side panel in Edit component.

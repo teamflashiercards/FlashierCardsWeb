@@ -5,8 +5,6 @@ import { faChevronRight } from "@fortawesome/free-solid-svg-icons/faChevronRight
 import { useEffect, useRef, useState } from "react";
 import styles from "../../styles/Deck.module.css";
 import { useParams } from "react-router-dom";
-import { Stage, Layer, Text, Image } from 'react-konva';
-import useImage from "use-image";
 import UserAuth from "../../AuthContext";
 import type Card from "../../interfaces/Card";
 import FeedbackButton from "../FeedbackButton";
@@ -16,7 +14,6 @@ import GifSidePanel from "./GifSidePanel";
 import EditToolbar from "./EditToolbar";
 import type Giphy from "../../interfaces/Giphy";
 import { motion } from "motion/react";
-import Signup from "../Signup";
 
 /*
     Description: This component allows the user create, update, or delete deck content.
