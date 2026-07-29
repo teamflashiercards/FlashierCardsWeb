@@ -460,6 +460,38 @@ function Edit() {
                             <div className={styles.cardInner}>
                                 <div className={styles.cardFront}>
                                     {/* loop through text and use motion.p to display text on frontCards */}
+                                    {frontCards[cardNum - 1]?.text?.map((text, textIndex) =>
+                                        <motion.p
+                                            key={textIndex}
+                                            drag
+                                            dragMomentum={false}
+                                            style={{
+                                                width: text.width,
+                                                fontSize: text.font_size,
+                                                color: text.color,
+                                                x: text.x,
+                                                y: text.y
+                                            }}
+                                            onDoubleClick={() => {
+                                                showSidePanel("text");
+                                                showTextTools(true, textIndex, text.input);
+                                            }}
+                                            onDragEnd={(_event, info) => {
+                                                setFrontCards(prevCards =>
+                                                    prevCards.map((card, cardIndex) =>
+                                                        cardIndex === (cardNum - 1) ? {
+                                                            ...card,
+                                                            text: card.text.map((tmp, i) =>
+                                                                i === textIndex ? {...tmp, x: Math.round(tmp.x + info.offset.x), y: Math.round(tmp.y + info.offset.y)} : tmp
+                                                            )
+                                                        } : card
+                                                    )
+                                                );
+                                            }}
+                                        >
+                                            {text.input}
+                                        </motion.p>
+                                    )}
                                     {/* loop through text and use motion.img to display gifs on frontCards */}
                                     {/* loop through text and use motion.img to display stickers on frontCards */}
                                     {frontCards[cardNum - 1]?.sticker?.map((sticker, stickerIndex) =>
@@ -563,6 +595,38 @@ function Edit() {
                                 </div>
                                 <div className={styles.cardBack}>
                                     {/* loop through text and use motion.p to display text on backCards */}
+                                    {backCards[cardNum - 1]?.text?.map((text, textIndex) =>
+                                        <motion.p
+                                            key={textIndex}
+                                            drag
+                                            dragMomentum={false}
+                                            style={{
+                                                width: text.width,
+                                                fontSize: text.font_size,
+                                                color: text.color,
+                                                x: text.x,
+                                                y: text.y
+                                            }}
+                                            onDoubleClick={() => {
+                                                showSidePanel("text");
+                                                showTextTools(true, textIndex, text.input);
+                                            }}
+                                            onDragEnd={(_event, info) => {
+                                                setBackCards(prevCards =>
+                                                    prevCards.map((card, cardIndex) =>
+                                                        cardIndex === (cardNum - 1) ? {
+                                                            ...card,
+                                                            text: card.text.map((tmp, i) =>
+                                                                i === textIndex ? {...tmp, x: Math.round(tmp.x + info.offset.x), y: Math.round(tmp.y + info.offset.y)} : tmp
+                                                            )
+                                                        } : card
+                                                    )
+                                                );
+                                            }}
+                                        >
+                                            {text.input}
+                                        </motion.p>
+                                    )}
                                     {/* loop through text and use motion.img to display gifs on backCards */}
                                     {/* loop through text and use motion.img to display stickers on backCards */}
                                     {backCards[cardNum - 1]?.sticker?.map((sticker, stickerIndex) =>
