@@ -14,6 +14,7 @@ import Theme from "./components/Theme";
 import ChangePassword from "./components/ChangePassword";
 import DeleteAccount from "./components/DeleteAccount";
 import About from "./components/About";
+import Canvas from "./Canvas";
 // import TestEdit from "./test/TestEdit";
 
 /*
@@ -37,6 +38,7 @@ function App() {
 
                 {/* public test routes */}
                 {/* <Route path="/testEdit" element={<TestEdit />} /> */}
+                <Route path="/testCanvas" element={<Canvas />} />
                 
                 {/* private routes */}
                 <Route element={<PrivateRoute />}>
