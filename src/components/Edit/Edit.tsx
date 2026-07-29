@@ -81,7 +81,6 @@ function Edit() {
     const [stickerResults, setStickerResults] = useState<Giphy[] | null>([]);
     const [stickerIndex, setStickerIndex] = useState<number | null>();
 
-
     const fetchDeckName = async () => {
         setLoading(true);
 
@@ -160,6 +159,7 @@ function Edit() {
         }
     };
 
+    // card file
     function createCard() {
         if ((total + 1) <= 20) {
             setTotal(total + 1);
@@ -197,6 +197,7 @@ function Edit() {
         }
     }
 
+    // card file
     function updateCardNumbers() {
         setFrontCards(prevCards =>
             prevCards.map((card, index) => (
@@ -210,6 +211,7 @@ function Edit() {
         );
     }
 
+    // card file
     function deleteCard() {
         if ((total - 1) >= 1) {
             setTotal(total - 1);
@@ -250,6 +252,7 @@ function Edit() {
         }
     }
 
+    // text file
     function createText(fontSize: number, width: number) {
         if (cardSide === "Front") {
             let tmp = {id: null, card_id: frontCards[cardNum - 1].id, input: "Double click to edit text", width: width, x: 30, y: 30, font_size: fontSize, color: "#201002"};
@@ -268,12 +271,14 @@ function Edit() {
         }
     }
 
+    
     function showTextTools(request: boolean, textIndex: number | null, input: string) {
         setText(input);
         setTextIndex(textIndex);
         setTextTools(request); 
     }
 
+    // text file
     function changeTextColor(newColor: string) {
         if (cardSide === "Front") {
             setFrontCards(prevCards =>
@@ -294,6 +299,7 @@ function Edit() {
         }
     }
 
+    // text file
     function changeTextInput(e: any) {
         setText(e.target.value);
         if (cardSide === "Front") {
@@ -315,6 +321,7 @@ function Edit() {
         }
     }
 
+    //text file
     function deleteText() {
         if (cardSide === "Front") {
             setFrontCards(prevCards =>
@@ -342,6 +349,7 @@ function Edit() {
         setGifResults(gifResults);
     }
 
+    // gif file
     function createGif(gifUrl: string) {
         if (cardSide == "Front") {
             let tmp = {id: null, card_id: frontCards[cardNum - 1].id, url: gifUrl, width: 120, height: 120, x: 50, y: 50};
@@ -366,6 +374,7 @@ function Edit() {
         setStickerResults(stickerResults);
     }
 
+    // gif file
     function deleteGif() {
         if (cardSide === "Front") {
             setFrontCards(prevCards =>
@@ -387,6 +396,7 @@ function Edit() {
         showGifTools(false, null, gifResults);
     }
 
+    // sticker file
     function createSticker(stickerUrl: string) {
         if (cardSide == "Front") {
             let tmp = {id: null, card_id: frontCards[cardNum - 1].id, url: stickerUrl, width: 120, height: 120, x: 50, y: 50};
@@ -405,6 +415,7 @@ function Edit() {
         }
     }
 
+    // sticker file
     function deleteSticker() {
         if (cardSide === "Front") {
             setFrontCards(prevCards =>
