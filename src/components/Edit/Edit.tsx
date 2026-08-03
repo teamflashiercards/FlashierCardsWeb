@@ -17,31 +17,8 @@ import { motion } from "motion/react";
 
 /*
     Description: This component allows the user create, update, or delete deck content.
-    Last updated: 6/28/2026
+    Last updated: 8/3/2026
 */
-
-/*
-type Giphy = {
-    id: string;
-    title: string;
-    url: string;
-};
-
-function Giphy({ newImage, onDblClick, onDragEnd }: any) {
-    const [image] = useImage(newImage.url);
-    return (
-        <Image
-            image={image}
-            x={newImage.x}
-            y={newImage.y}
-            width={newImage.width}
-            height={newImage.height}
-            draggable
-            onDblClick={onDblClick}
-            onDragEnd={onDragEnd}
-        />
-    );
-}*/
 
 function Edit() {
     // fetch related variables
@@ -251,96 +228,11 @@ function Edit() {
             showStickerTools(false, null, null);
         }
     }
-
-    // text file
-    function createText(fontSize: number, width: number) {
-        if (cardSide === "Front") {
-            let tmp = {id: null, card_id: frontCards[cardNum - 1].id, input: "Double click to edit text", width: width, x: 30, y: 30, font_size: fontSize, color: "#201002"};
-            setFrontCards(prevCards =>
-                prevCards.map((card, index) =>
-                    index === (cardNum - 1) ? {...card, text: [...card.text, tmp]} : card
-                )
-            );
-        } else if (cardSide === "Back") {
-            let tmp = {id: null, card_id: backCards[cardNum - 1].id, input: "Double click to edit text", width: width, x: 30, y: 30, font_size: fontSize, color: "#201002"};
-            setBackCards(prevCards =>
-                prevCards.map((card, index) =>
-                    index === (cardNum - 1) ? {...card, text: [...card.text, tmp]} : card
-                )
-            );
-        }
-    }
-
     
     function showTextTools(request: boolean, textIndex: number | null, input: string) {
         setText(input);
         setTextIndex(textIndex);
         setTextTools(request); 
-    }
-
-    // text file
-    function changeTextColor(newColor: string) {
-        if (cardSide === "Front") {
-            setFrontCards(prevCards =>
-                prevCards.map((card, index) =>
-                    index === (cardNum - 1) ? {...card, text: card.text.map((cardText, i) =>
-                        i === textIndex ? {...cardText, color: newColor} : cardText
-                    )} : card
-                )
-            );
-        } else if (cardSide == "Back") {
-            setBackCards(prevCards =>
-                prevCards.map((card, index) =>
-                    index === (cardNum - 1) ? {...card, text: card.text.map((cardText, i) =>
-                        i === textIndex ? {...cardText, color: newColor} : cardText
-                    )} : card
-                )
-            );
-        }
-    }
-
-    // text file
-    function changeTextInput(e: any) {
-        setText(e.target.value);
-        if (cardSide === "Front") {
-            setFrontCards(prevCards =>
-                prevCards.map((card, index) =>
-                    index === (cardNum - 1) ? {...card, text: card.text.map((cardText, i) =>
-                        i === textIndex ? {...cardText, input: e.target.value} : cardText
-                    )} : card
-                )
-            );
-        } else if (cardSide == "Back") {
-            setBackCards(prevCards =>
-                prevCards.map((card, index) =>
-                    index === (cardNum - 1) ? {...card, text: card.text.map((cardText, i) =>
-                        i === textIndex ? {...cardText, input: e.target.value} : cardText
-                    )} : card
-                )
-            );
-        }
-    }
-
-    //text file
-    function deleteText() {
-        if (cardSide === "Front") {
-            setFrontCards(prevCards =>
-                prevCards.map((card, index) =>
-                    index === (cardNum - 1) ? {...card, text: card.text.filter((_, index) =>
-                        index != textIndex
-                    )} : card
-                )
-            );
-        } else if (cardSide == "Back") {
-            setBackCards(prevCards =>
-                prevCards.map((card, index) =>
-                    index === (cardNum - 1) ? {...card, text: card.text.filter((_, index) =>
-                        index != textIndex
-                    )} : card
-                )
-            );
-        }
-        showTextTools(false, null, "");
     }
 
     function showGifTools(request: boolean, gifIndex: number | null, gifResults: Giphy[] | null) {
@@ -757,10 +649,15 @@ function Edit() {
                         textPanel={textPanel}
                         textTools={textTools}
                         text={text}
-                        changeTextInput={changeTextInput}
-                        deleteText={deleteText}
-                        changeTextColor={changeTextColor}
-                        createText={createText}
+                        cardSide={cardSide}
+                        cardNum={cardNum}
+                        setText={setText}
+                        fontCards={frontCards}
+                        setFrontCard={setFrontCards}
+                        backCards={backCards}
+                        setBackCards={setBackCards}
+                        textIndex={textIndex}
+                        showTextTools={showTextTools}
                     />
                     <GifSidePanel
                         gifPanel={gifPanel}
