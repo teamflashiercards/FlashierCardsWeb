@@ -19,6 +19,8 @@ function GifSidePanel ({ gifPanel, createGif, gifTools, deleteGif, setLoading, s
         try {
             const response = await fetch(`https://api.giphy.com/v1/gifs/search?api_key=${import.meta.env.VITE_GIPHY_API_KEY}&q=${giphyQuery.trim()}&limit=12&rating=g`);
             const data = await response.json();
+            console.log("Response status:", response.status);
+            console.log("Giphy response:", data);
             if (!response.ok) throw new Error(data.message);
 
             const gifs = data.data.map((item: any) => ({

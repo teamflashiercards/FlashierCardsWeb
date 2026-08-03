@@ -14,6 +14,8 @@ import GifSidePanel from "./GifSidePanel";
 import EditToolbar from "./EditToolbar";
 import type Giphy from "../../interfaces/Giphy";
 import { motion } from "motion/react";
+import { createGif, deleteGif } from "./EditGifHelpers";
+import { createSticker, deleteSticker } from "./EditStickerHelpers";
 
 /*
     Description: This component allows the user create, update, or delete deck content.
@@ -74,12 +76,12 @@ function Edit() {
     // gif related variables
     const [gifTools, setGifTools] = useState(false);
     const [gifResults, setGifResults] = useState<Giphy[] | null>([]);
-    const [gifIndex, setGifIndex] = useState<number | null>();
+    const [gifIndex, setGifIndex] = useState<number | null>(null);
 
     // sticker realted tools
     const [stickerTools, setStickerTools] = useState(false);
     const [stickerResults, setStickerResults] = useState<Giphy[] | null>([]);
-    const [stickerIndex, setStickerIndex] = useState<number | null>();
+    const [stickerIndex, setStickerIndex] = useState<number | null>(null);
 
     const fetchDeckName = async () => {
         setLoading(true);
@@ -347,10 +349,13 @@ function Edit() {
         setGifIndex(gifIndex);
         setGifTools(request);
         setGifResults(gifResults);
-    }
+    } 
 
     // gif file
-    function createGif(gifUrl: string) {
+    function makeGif(url: string){
+        createGif(url, cardSide, cardNum, frontCards, backCards, setFrontCards, setBackCards )
+    }
+    /* function createGif(gifUrl: string) {
         if (cardSide == "Front") {
             let tmp = {id: null, card_id: frontCards[cardNum - 1].id, url: gifUrl, width: 120, height: 120, x: 50, y: 50};
             setFrontCards(prevCards =>
@@ -359,14 +364,14 @@ function Edit() {
                 )
             );
         } else if (cardSide === "Back") {
-            let tmp = {id: null, card_id: frontCards[cardNum - 1].id, url: gifUrl, width: 120, height: 120, x: 50, y: 50};
+            let tmp = {id: null, card_id: backCards[cardNum - 1].id, url: gifUrl, width: 120, height: 120, x: 50, y: 50};
             setBackCards(prevCards =>
                 prevCards.map((card, index) =>
                     index === (cardNum - 1) ? {...card, gif: [...card.gif, tmp]} : card
                 )
             );
         }
-    }
+    }*/
 
     function showStickerTools(request: boolean, stickerIndex: number | null, stickerResults: Giphy[] | null) {
         setStickerIndex(stickerIndex);
@@ -375,7 +380,7 @@ function Edit() {
     }
 
     // gif file
-    function deleteGif() {
+    /* function deleteGif() {
         if (cardSide === "Front") {
             setFrontCards(prevCards =>
                 prevCards.map((card, index) =>
@@ -394,10 +399,13 @@ function Edit() {
             );
         }
         showGifTools(false, null, gifResults);
+    } */
+    function removeGif () {
+        deleteGif(gifIndex, gifResults, showGifTools, cardSide, cardNum, setFrontCards, setBackCards)
     }
 
     // sticker file
-    function createSticker(stickerUrl: string) {
+    /* function createSticker(stickerUrl: string) {
         if (cardSide == "Front") {
             let tmp = {id: null, card_id: frontCards[cardNum - 1].id, url: stickerUrl, width: 120, height: 120, x: 50, y: 50};
             setFrontCards(prevCards =>
@@ -413,10 +421,13 @@ function Edit() {
                 )
             );
         }
-    }
+    } */
+   function makeSticker(stickerUrl: string){
+        createSticker(stickerUrl, cardSide, cardNum, frontCards, backCards, setFrontCards, setBackCards)
+   }
 
     // sticker file
-    function deleteSticker() {
+    /* function deleteSticker() {
         if (cardSide === "Front") {
             setFrontCards(prevCards =>
                 prevCards.map((card, index) =>
@@ -435,7 +446,12 @@ function Edit() {
             );
         }
         showStickerTools(false, null, stickerResults);
+    } */
+
+    function removeSticker(){
+        deleteSticker(stickerIndex, stickerResults, showStickerTools, cardSide, cardNum, setFrontCards, setBackCards)
     }
+
 
     useEffect(() => {
         fetchDeckName();
@@ -512,6 +528,7 @@ function Edit() {
                                             drag
                                             dragMomentum={false}
                                             style={{
+                                                position: "absolute",
                                                 width: sticker.width,
                                                 height: sticker.height,
                                                 objectFit: "contain",
@@ -603,6 +620,52 @@ function Edit() {
                                            
                                         </Layer>
                                     </Stage>*/}
+                                    {frontCards[cardNum - 1]?.gif?.map((gif, gifIndex) => (
+                                    <motion.img
+                                        key={gif.id ?? `front-gif-${gifIndex}`}
+                                        src={gif.url}
+                                        alt="Gif"
+                                        drag
+                                        dragMomentum={false}
+                                        dragElastic={0}
+                                        style={{
+                                            position: "absolute",
+                                            width: gif.width,
+                                            height: gif.height,
+                                            objectFit: "contain",
+                                            x: gif.x,
+                                            y: gif.y,
+                                            cursor: "grab"
+                                        }}
+                                        whileHover={{
+                                            boxShadow: "0px 0px 20px 5px rgba(78, 119, 162, 0.65)",
+                                            scale: 1.05
+                                        }}
+                                        whileDrag={{
+                                            scale: 1.03,
+                                            cursor: "grabbing"
+                                        }}
+                                        onDoubleClick={() => {
+                                            showSidePanel("gif");
+                                            showGifTools(true, gifIndex, gifResults);
+                                        }}
+                                        onDragEnd={(_event, info) => {
+                                            setFrontCards(prevCards =>
+                                                prevCards.map((card, cardIndex) =>
+                                                    cardIndex === cardNum - 1
+                                                        ? {
+                                                            ...card,
+                                                            gif: card.gif.map((tmpGif, index) =>
+                                                                index === gifIndex
+                                                                    ? {
+                                                                        ...tmpGif, x: Math.round(tmpGif.x + info.offset.x ), y: Math.round( tmpGif.y + info.offset.y )} : tmpGif)
+                                                        }
+                                                        : card
+                                                )
+                                            );
+                                        }}
+                                    />
+                                ))}
                                 </div>
                                 <div className={styles.cardBack}>
                                     {/* loop through text and use motion.p to display text on backCards */}
@@ -740,6 +803,51 @@ function Edit() {
                                            
                                         </Layer>
                                     </Stage>*/}
+                                    {backCards[cardNum - 1]?.gif?.map((gif, gifIndex) => (
+                                    <motion.img
+                                        key={gif.id ?? `back-gif-${gifIndex}`}
+                                        src={gif.url}
+                                        alt="Gif"
+                                        drag
+                                        dragMomentum={false}
+                                        dragElastic={0}
+                                        style={{
+                                            width: gif.width,
+                                            height: gif.height,
+                                            objectFit: "contain",
+                                            x: gif.x,
+                                            y: gif.y,
+                                            cursor: "grab"
+                                        }}
+                                        whileHover={{
+                                            boxShadow: "0px 0px 20px 5px rgba(78, 119, 162, 0.65)",
+                                            scale: 1.05
+                                        }}
+                                        whileDrag={{
+                                            scale: 1.03,
+                                            cursor: "grabbing"
+                                        }}
+                                        onDoubleClick={() => {
+                                            showSidePanel("gif");
+                                            showGifTools(true, gifIndex, gifResults);
+                                        }}
+                                        onDragEnd={(_event, info) => {
+                                            setBackCards(prevCards =>
+                                                prevCards.map((card, cardIndex) =>
+                                                    cardIndex === cardNum - 1
+                                                        ? {
+                                                            ...card,
+                                                            gif: card.gif.map((tmpGif, index) =>
+                                                                index === gifIndex
+                                                                    ? {
+                                                                        ...tmpGif, x: Math.round( tmpGif.x + info.offset.x ), y: Math.round(tmpGif.y + info.offset.y )} : tmpGif )
+                                                        }
+                                                        : card
+                                                )
+                                            );
+                                        }}
+                                    />
+                                    ))}
                                 </div>
                             </div>
                         </div>
@@ -764,17 +872,17 @@ function Edit() {
                     />
                     <GifSidePanel
                         gifPanel={gifPanel}
-                        createGif={createGif}
+                        createGif={makeGif}
                         gifTools={gifTools}
-                        deleteGif={deleteGif}
+                        deleteGif={removeGif}
                         setLoading={setLoading}
                         setError={setError}
                     />
                     <StickerSidePanel
                         stickerPanel={stickerPanel}
                         stickerTools={stickerTools}
-                        createSticker={createSticker}
-                        deleteSticker={deleteSticker}
+                        createSticker={makeSticker}
+                        deleteSticker={removeSticker}
                         setLoading={setLoading}
                         setError={setError}
                     />
