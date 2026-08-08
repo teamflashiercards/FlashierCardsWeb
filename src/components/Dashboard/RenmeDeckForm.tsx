@@ -2,7 +2,7 @@ import styles from "../../styles/Dashboard.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 
-function RenameOverlay ({renameOverlay, submitRenameForm, exitOverlay, deckName, handleFormData} :any){
+function RenameDeckForm ({renameOverlay, submitRenameForm, exitOverlay, deckName, handleFormData} :any){
  return (   
 <div className={styles.overlay} style={{ display: renameOverlay ? "flex" : "none" }}>
                         <div className={styles.exitBtn}>
@@ -37,4 +37,4 @@ function RenameOverlay ({renameOverlay, submitRenameForm, exitOverlay, deckName,
  )
 }
 
-export default RenameOverlay
+export default RenameDeckForm;
