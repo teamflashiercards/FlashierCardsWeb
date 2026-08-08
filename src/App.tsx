@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate} from "react-router-dom";
-import PrivateRoute from "./PrivateRoute";
+import PrivateRoute from "./util/PrivateRoute";
 import Home from "./components/UserAuth/Home";
 import Signup from "./components/UserAuth/Signup";
 import VerifyEmail from "./components/UserAuth/VerifyEmail";
