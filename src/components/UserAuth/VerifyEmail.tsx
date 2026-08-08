@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import UserAuth from "../AuthContext";
+import UserAuth from "../../AuthContext";
 import { useNavigate } from "react-router-dom";
-import styles from "../styles/Home.module.css";
+import styles from "../../styles/Home.module.css";
 
 /*
     Description: This component is used to verify user's email when they create an account.

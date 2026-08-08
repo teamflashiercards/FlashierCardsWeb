@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState, type ChangeEvent } from "react";
-import UserAuth from "../AuthContext";
+import UserAuth from "../../AuthContext";
 import styles from "../styles/Home.module.css";
-import BlueTooltip from "./BlueTooltip";
+import BlueTooltip from "../BlueTooltip";
 
 /*
     Description: This component is used to reset password from login route.

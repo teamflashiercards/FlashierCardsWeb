@@ -1,6 +1,6 @@
 import { useState } from "react";
-import UserAuth from "../AuthContext";
-import styles from "../styles/Home.module.css";
+import UserAuth from "../../AuthContext";
+import styles from "../../styles/Home.module.css";
 
 /*
     Description: This component is used to handle forgot password from login route.

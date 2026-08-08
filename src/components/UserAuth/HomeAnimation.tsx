@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import styles from "../styles/HomeAnimation.module.css";
+import styles from "../../styles/HomeAnimation.module.css";
 
 /*
     Description: This is an animation used on the Home, Signup, and Login components.

@@ -1,11 +1,11 @@
 import { BrowserRouter, Routes, Route, Navigate} from "react-router-dom";
 import PrivateRoute from "./PrivateRoute";
-import Home from "./components/Home";
-import Signup from "./components/Signup";
-import VerifyEmail from "./components/VerifyEmail";
-import Login from "./components/Login";
-import ForgotPassword from "./components/ForgotPassword";
-import ResetPassword from "./components/ResetPassword";
+import Home from "./components/UserAuth/Home";
+import Signup from "./components/UserAuth/Signup";
+import VerifyEmail from "./components/UserAuth/VerifyEmail";
+import Login from "./components/UserAuth/Login";
+import ForgotPassword from "./components/UserAuth/ForgotPassword";
+import ResetPassword from "./components/UserAuth/ResetPassword";
 import Dashboard from "./components/Dashboard/Dashboard";
 import Study from "./components/Study";
 import Edit from "./components/Edit/Edit";
