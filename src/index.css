@@ -139,3 +139,22 @@ body {
 .fancy-btn:active .dark-blue-btn-shadow {
     transform: translateY(2px);
 }
+
+/* css for home button */
+
+.home-button {
+    position: fixed;
+    top: 1.3rem;
+    left: 1rem;
+    cursor: pointer;
+}
+
+.home-icon {
+    color: #004A94;
+    font-size: 42px;
+    transition: transform 0.1s ease;
+}
+
+.home-button:hover .home-icon {
+    transform: scale(1.2);
+}

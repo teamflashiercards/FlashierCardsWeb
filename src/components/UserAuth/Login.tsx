@@ -72,8 +72,8 @@ function Login() {
         <>
             <HomeAnimation />
             <BlueTooltip title="Home" placement="bottom">
-                <div className={styles.homeButton}>
-                    <FontAwesomeIcon className={styles.homeIcon} icon={faHouse} onClick={() => navigate("/")} />
+                <div className="home-button">
+                    <FontAwesomeIcon className="home-icon" icon={faHouse} onClick={() => navigate("/")} />
                 </div>
             </BlueTooltip>
             <div className={styles.subContainer}>
