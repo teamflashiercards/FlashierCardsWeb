@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import styles from "../styles/ProfileNavbar.module.css";
+import styles from "../../styles/ProfileNavbar.module.css";
 
 /*
     Description: This is a reuable component that contains the code for profile navigation.

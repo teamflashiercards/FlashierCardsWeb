@@ -1,9 +1,9 @@
-import Navbar from "./Navbar";
+import Navbar from "../Navbar";
 import ProfileNavbar from "./ProfileNavbar";
-import styles from "../styles/Profile.module.css";
+import styles from "../../styles/Profile.module.css";
 import { useEffect, useState } from 'react';
-import UserAuth from "../AuthContext";
-import FeedbackButton from "./FeedbackButton";
+import UserAuth from "../../AuthContext";
+import FeedbackButton from "../FeedbackButton";
 
 /*
     Description: This component displays basic user information.

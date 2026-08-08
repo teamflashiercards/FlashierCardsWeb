@@ -1,10 +1,10 @@
-import Navbar from "./Navbar";
+import Navbar from "../Navbar";
 import ProfileNavbar from "./ProfileNavbar";
+import styles from "../../styles/Profile.module.css";
 import { useState, type ChangeEvent } from 'react';
-import styles from "../styles/Profile.module.css";
-import UserAuth from "../AuthContext";
-import FeedbackButton from "./FeedbackButton";
-import BlueTooltip from "./BlueTooltip";
+import UserAuth from "../../AuthContext";
+import FeedbackButton from "../FeedbackButton";
+import BlueTooltip from "../BlueTooltip";
 
 /*
     Description: This component allows user to change their password.

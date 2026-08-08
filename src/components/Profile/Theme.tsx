@@ -1,10 +1,10 @@
-import Navbar from "./Navbar";
+import Navbar from "../Navbar";
 import ProfileNavbar from "./ProfileNavbar";
-import styles from "../styles/Profile.module.css";
+import styles from "../../styles/Profile.module.css";
 import { useEffect, useState } from 'react';
-import UserAuth from "../AuthContext";
-import type Profile from "../interfaces/Profile";
-import FeedbackButton from "./FeedbackButton";
+import UserAuth from "../../AuthContext";
+import type Profile from "../../interfaces/Profile";
+import FeedbackButton from "../FeedbackButton";
 
 /*
     Description: This component allows user to change background animation.

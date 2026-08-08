@@ -1,12 +1,12 @@
-import Navbar from "./Navbar";
+import Navbar from "../Navbar";
 import ProfileNavbar from "./ProfileNavbar";
-import styles from "../styles/Profile.module.css";
+import styles from "../../styles/Profile.module.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faX } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { useState } from 'react';
-import UserAuth from "../AuthContext";
-import FeedbackButton from "./FeedbackButton";
+import UserAuth from "../../AuthContext";
+import FeedbackButton from "../FeedbackButton";
 
 /*
     Description: This component allows user to delete their account.
