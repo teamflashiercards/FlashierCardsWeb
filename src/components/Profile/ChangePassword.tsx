@@ -2,7 +2,7 @@ import Navbar from "../Navbar";
 import ProfileNavbar from "./ProfileNavbar";
 import styles from "../../styles/Profile.module.css";
 import { useState, type ChangeEvent } from 'react';
-import UserAuth from "../../AuthContext";
+import UserAuth from "../../util/AuthContext";
 import FeedbackButton from "../FeedbackButton";
 import BlueTooltip from "../BlueTooltip";
 

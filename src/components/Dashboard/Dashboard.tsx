@@ -4,7 +4,7 @@ import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState, type ChangeEvent } from 'react';
 import type Deck from "../../interfaces/Deck";
 import styles from "../../styles/Dashboard.module.css";
-import UserAuth from "../../AuthContext";
+import UserAuth from "../../util/AuthContext";
 import DashboardAnimation from "./DashboardAnimation";
 import FeedbackButton from "../FeedbackButton";
 import DashboardToolbar from "./DashboardToolbar";

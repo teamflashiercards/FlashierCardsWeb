@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState, type ChangeEvent } from "react";
-import UserAuth from "../../AuthContext";
-import styles from "../styles/Home.module.css";
+import UserAuth from "../../util/AuthContext";
+import styles from "../../styles/Home.module.css";
 import BlueTooltip from "../BlueTooltip";
 
 /*

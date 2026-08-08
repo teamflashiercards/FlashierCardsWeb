@@ -1,4 +1,4 @@
-import UserAuth from "../../AuthContext";
+import UserAuth from "../../util/AuthContext";
 import type Card from "../../interfaces/Card";
 
 /*

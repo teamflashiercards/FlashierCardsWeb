@@ -5,7 +5,7 @@ import { faChevronRight } from "@fortawesome/free-solid-svg-icons/faChevronRight
 import { useEffect, useRef, useState } from "react";
 import styles from "../../styles/Deck.module.css";
 import { useParams } from "react-router-dom";
-import UserAuth from "../../AuthContext";
+import UserAuth from "../../util/AuthContext";
 import type Card from "../../interfaces/Card";
 import FeedbackButton from "../FeedbackButton";
 import StickerSidePanel from "./StickerSidePanel";

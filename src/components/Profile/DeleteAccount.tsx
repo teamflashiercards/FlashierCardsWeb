@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faX } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { useState } from 'react';
-import UserAuth from "../../AuthContext";
+import UserAuth from "../../util/AuthContext";
 import FeedbackButton from "../FeedbackButton";
 
 /*

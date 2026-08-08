@@ -3,7 +3,7 @@ import { faChevronLeft, faChevronRight, faHouse } from "@fortawesome/free-solid-
 import { useRef, useState } from "react";
 import styles from "../styles/About.module.css";
 import Navbar from "./Navbar";
-import UserAuth from "../AuthContext";
+import UserAuth from "../util/AuthContext";
 import { useNavigate } from "react-router-dom";
 import GiphyLogo from "../assets/giphyLogo.png";
 import { motion } from "motion/react";

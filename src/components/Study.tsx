@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import styles from "../styles/Deck.module.css";
 import { useParams } from "react-router-dom";
 import type Card from "../interfaces/Card";
-import UserAuth from "../AuthContext";
+import UserAuth from "../util/AuthContext";
 import FeedbackButton from "./FeedbackButton";
 import { motion } from "motion/react";
 

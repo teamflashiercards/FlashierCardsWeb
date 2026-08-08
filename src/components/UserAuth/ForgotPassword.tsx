@@ -1,5 +1,5 @@
 import { useState } from "react";
-import UserAuth from "../../AuthContext";
+import UserAuth from "../../util/AuthContext";
 import styles from "../../styles/Home.module.css";
 
 /*

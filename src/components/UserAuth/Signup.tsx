@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useState, type ChangeEvent } from "react";
-import UserAuth from "../../AuthContext";
+import UserAuth from "../../util/AuthContext";
 import HomeAnimation from "./HomeAnimation";
 import { faHouse } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

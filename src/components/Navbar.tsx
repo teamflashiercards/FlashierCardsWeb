@@ -3,7 +3,7 @@ import { faBars, faFolder, faCircleUser, faRightFromBracket, faInfo } from "@for
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import styles from "../styles/Navbar.module.css";
-import UserAuth from "../AuthContext";
+import UserAuth from "../util/AuthContext";
 
 /*
     Description: This is a reuable component that contains the code for app navigation.

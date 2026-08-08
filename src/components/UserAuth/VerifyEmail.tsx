@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import UserAuth from "../../AuthContext";
+import UserAuth from "../../util/AuthContext";
 import { useNavigate } from "react-router-dom";
 import styles from "../../styles/Home.module.css";
 
