@@ -1,7 +1,5 @@
 import Navbar from "../Navbar";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
-import { useEffect, useState, type ChangeEvent } from 'react';
+import { useEffect, useState } from "react";
 import type Deck from "../../interfaces/Deck";
 import styles from "../../styles/Dashboard.module.css";
 import UserAuth from "../../util/AuthContext";
@@ -9,6 +7,7 @@ import DashboardAnimation from "./DashboardAnimation";
 import FeedbackButton from "../FeedbackButton";
 import DashboardToolbar from "./DashboardToolbar";
 import CreateDeckForm from "./CreateDeckForm";
+import RenameDeckForm from "./RenmeDeckForm";
 
 function Dashboard() {
     const [error, setError] = useState({ status: false, message: "" });
@@ -21,10 +20,6 @@ function Dashboard() {
     const [deckId, setDeckId] = useState<null | number>(null);
     const [decks, setDecks] = useState<Deck[]>([]);
     const [totalDecks, setTotalDecks] = useState(0);
-    
-    function handleFormData(e: ChangeEvent<HTMLInputElement>) {
-        setDeckName(e.target.value);
-    }
 
     function setDeckSelected(id: number | null, request: boolean) {
         setDeckId(id);
@@ -38,8 +33,10 @@ function Dashboard() {
             setRenameOverlay(false);
         }
         setDeckName("");
+        setDeckSelected(null, false);
     }
 
+    // function to fetch all decks user has created when dashboard is opened
     const fetchDeckData = async () => {
         setLoading(true);
 
@@ -65,6 +62,7 @@ function Dashboard() {
         }
     };
 
+    // function to create initial deck content when a new deck is created
     const createNewDeckContent = async (deckId: number) => {
         try {
             const response = await fetch(`${import.meta.env.VITE_FLASHIER_CARDS_API}/api/deck/${deckId}/create`, {
@@ -97,6 +95,7 @@ function Dashboard() {
         }
     };
 
+    // function to create a new deck
     const submitCreateForm = async (e: any) => {
         e.preventDefault();
         setLoading(true);
@@ -133,10 +132,10 @@ function Dashboard() {
         } finally {
             setLoading(false);
             exitOverlay();
-            setDeckSelected(null, false);
         } 
     };
 
+    // function to rename a deck
     const submitRenameForm = async (e: any) => {
         e.preventDefault();
         setLoading(true);
@@ -177,10 +176,10 @@ function Dashboard() {
         } finally {
             setLoading(false);
             exitOverlay();
-            setDeckSelected(null, false);
         }
     };
 
+    // function to delete a deck
     const deleteDeck = async () => {
         setLoading(true);
 
@@ -251,43 +250,22 @@ function Dashboard() {
                             )
                         }
                     </div>
-                    <CreateDeckForm 
-                        createOverlay={createOverlay}
-                        exitOverlay={exitOverlay}
-                        deckName={deckName}
-                        setDeckName={setDeckName}
-                        submitCreateForm={submitCreateForm}
-                    />
-                    <div className={styles.overlay} style={{ display: renameOverlay ? "flex" : "none" }}>
-                        <div className={styles.exitBtn}>
-                            <FontAwesomeIcon 
-                                icon={faCircleXmark} 
-                                onClick={exitOverlay}
-                                style={{cursor: "pointer"}}
-                            />
-                        </div>
-                        <form className={styles.form} onSubmit={submitRenameForm}>
-                            <div>
-                                <div className={styles.formText}>
-                                    Name
-                                </div>
-                                <input 
-                                    type="text"
-                                    name="deckName"
-                                    value={deckName}
-                                    onChange={handleFormData}
-                                />
-                            </div>
-                            <button
-                                type="submit"
-                                className={"fancy-btn"}
-                            >
-                                <span className={"dark-blue-btn-shadow"}></span>
-                                <span className={"dark-blue-btn-edge"}></span>
-                                <span className={"dark-blue-btn-front"} style={{ minWidth: "150px"}}>Rename deck</span>
-                            </button>
-                        </form>
-                    </div>
+                    { createOverlay &&
+                        <CreateDeckForm
+                            exitOverlay={exitOverlay}
+                            deckName={deckName}
+                            setDeckName={setDeckName}
+                            submitCreateForm={submitCreateForm}
+                        />
+                    }
+                    { renameOverlay &&
+                        <RenameDeckForm
+                            exitOverlay={exitOverlay}
+                            deckName={deckName}
+                            setDeckName={setDeckName}
+                            submitRenameForm={submitRenameForm}
+                        />
+                    }
                 </div>
             </div>
             <FeedbackButton />

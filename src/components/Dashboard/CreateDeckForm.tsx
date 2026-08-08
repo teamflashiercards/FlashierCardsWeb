@@ -7,9 +7,9 @@ import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
     Last updated: 7/28/2026
 */
 
-function CreateDeckForm({ createOverlay, exitOverlay, deckName, setDeckName, submitCreateForm }: any) {
+function CreateDeckForm({ exitOverlay, deckName, setDeckName, submitCreateForm }: any) {
     return (
-        <div className={styles.overlay} style={{ display: createOverlay ? "flex" : "none" }}>
+        <div className={styles.overlay}>
             <div className={styles.exitBtn}>
                 <FontAwesomeIcon 
                     icon={faCircleXmark} 
