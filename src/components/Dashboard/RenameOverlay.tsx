@@ -1,4 +1,4 @@
-import styles from "../styles/Dashboard.module.css";
+import styles from "../../styles/Dashboard.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 
