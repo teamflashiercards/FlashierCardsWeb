@@ -1,16 +1,17 @@
 import type Card from "../../interfaces/Card";
 import styles from "../../styles/Deck.module.css";
 import { setFrontCard, setBackCard, deleteFrontCard, deleteBackCard } from "./EditHelpers";
+import type TextSidePanelProps from "../../interfaces/TextSidePanelProps";
 
 /*
     Description: This is a sub-component that contains code for the text side panel in Edit component.
     Last updated: 8/9/2026
 */
 
-function TextSidePanel(props: any) {
+function TextSidePanel(props: TextSidePanelProps) {
     const { textTools, showTextTools, cardSide, cardNum, text, setText, textIndex, frontCards, setFrontCards, backCards, setBackCards } = props;
     
-    // function create text with helpers in util
+    // function create text with helpers in EditHelpers
     function createText(fontSize: number, width: number) {
         if (cardSide === "Front") {
             let content = {id: null, card_id: frontCards[cardNum - 1].id, input: "Double click to edit text", width: width, x: 30, y: 30, font_size: fontSize, color: "#201002"};
@@ -55,9 +56,9 @@ function TextSidePanel(props: any) {
     // function to delete text with helpers in util
     function deleteText() {
         if (cardSide === "Front") {
-            deleteFrontCard("text", textIndex, setFrontCards, cardNum);
+            deleteFrontCard("text", textIndex!, setFrontCards, cardNum);
         } else {
-            deleteBackCard("text", textIndex, setBackCards, cardNum);
+            deleteBackCard("text", textIndex!, setBackCards, cardNum);
         }
         showTextTools(false, null, "");
     }

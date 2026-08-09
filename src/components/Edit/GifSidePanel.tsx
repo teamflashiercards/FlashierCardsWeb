@@ -3,7 +3,7 @@ import GiphyLogo from '../../assets/giphyLogo.png'
 import styles from "../../styles/Deck.module.css";
 import type Giphy from "../../interfaces/Giphy";
 import { setFrontCard, setBackCard, deleteFrontCard, deleteBackCard } from './EditHelpers';
-import type GifSidePanelProps from '../../interfaces/Props';
+import type GifSidePanelProps from '../../interfaces/GifSidePanelProps';
 
 /*
     Description: This is a sub-component that contains code for the gif side panel in Edit component.

@@ -14,7 +14,6 @@ import GifSidePanel from "./GifSidePanel";
 import EditToolbar from "./EditToolbar";
 import type Giphy from "../../interfaces/Giphy";
 import { motion } from "motion/react";
-import { createGif, deleteGif } from "./EditGifHelpers";
 import { createSticker, deleteSticker } from "./EditStickerHelpers";
 
 /*
