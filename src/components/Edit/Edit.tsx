@@ -243,58 +243,10 @@ function Edit() {
         setGifResults(gifResults);
     } 
 
-
-    // gif file
-    function makeGif(url: string){
-        createGif(url, cardSide, cardNum, frontCards, backCards, setFrontCards, setBackCards )
-    }
-    /* function createGif(gifUrl: string) {
-        if (cardSide == "Front") {
-            let tmp = {id: null, card_id: frontCards[cardNum - 1].id, url: gifUrl, width: 120, height: 120, x: 50, y: 50};
-            setFrontCards(prevCards =>
-                prevCards.map((card, index) =>
-                    index === (cardNum - 1) ? {...card, gif: [...card.gif, tmp]} : card
-                )
-            );
-        } else if (cardSide === "Back") {
-            let tmp = {id: null, card_id: backCards[cardNum - 1].id, url: gifUrl, width: 120, height: 120, x: 50, y: 50};
-            setBackCards(prevCards =>
-                prevCards.map((card, index) =>
-                    index === (cardNum - 1) ? {...card, gif: [...card.gif, tmp]} : card
-                )
-            );
-        }
-    }*/
-
     function showStickerTools(request: boolean, stickerIndex: number | null, stickerResults: Giphy[] | null) {
         setStickerIndex(stickerIndex);
         setStickerTools(request);
         setStickerResults(stickerResults);
-    }
-
-    // gif file
-    /* function deleteGif() {
-        if (cardSide === "Front") {
-            setFrontCards(prevCards =>
-                prevCards.map((card, index) =>
-                    index === (cardNum - 1) ? {...card, gif: card.gif.filter((_, index) =>
-                        index != gifIndex
-                    )} : card
-                )
-            );
-        } else if (cardSide == "Back") {
-            setBackCards(prevCards =>
-                prevCards.map((card, index) =>
-                    index === (cardNum - 1) ? {...card, gif: card.gif.filter((_, index) =>
-                        index != gifIndex
-                    )} : card
-                )
-            );
-        }
-        showGifTools(false, null, gifResults);
-    } */
-    function removeGif () {
-        deleteGif(gifIndex, gifResults, showGifTools, cardSide, cardNum, setFrontCards, setBackCards)
     }
 
     // sticker file
@@ -660,11 +612,17 @@ function Edit() {
                     }
                     { gifPanel &&
                         <GifSidePanel
-                            createGif={makeGif}
-                            gifTools={gifTools}
-                            deleteGif={removeGif}
                             setLoading={setLoading}
                             setError={setError}
+                            gifTools={gifTools}
+                            showGifTools={showGifTools}
+                            cardSide={cardSide}
+                            cardNum={cardNum}
+                            gifIndex={gifIndex}
+                            frontCards={frontCards}
+                            setFrontCards={setFrontCards}
+                            backCards={backCards}
+                            setBackCards={setBackCards}
                         />
                     }
                     { stickerPanel &&

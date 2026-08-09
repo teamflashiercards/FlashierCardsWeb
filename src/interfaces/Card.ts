@@ -10,4 +10,4 @@ export default interface Card {
     text: Text[],
     gif: Gif[],
     sticker: Sticker[]
-}
+};

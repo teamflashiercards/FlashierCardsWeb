@@ -2,13 +2,16 @@ import {useState} from 'react';
 import GiphyLogo from '../../assets/giphyLogo.png'
 import styles from "../../styles/Deck.module.css";
 import type Giphy from "../../interfaces/Giphy";
+import { setFrontCard, setBackCard, deleteFrontCard, deleteBackCard } from './EditHelpers';
+import type GifSidePanelProps from '../../interfaces/Props';
 
 /*
     Description: This is a sub-component that contains code for the gif side panel in Edit component.
-    Last updated: 7/26/2026
+    Last updated: 8/9/2026
 */
 
-function GifSidePanel ({ createGif, gifTools, deleteGif, setLoading, setError }:any) {
+function GifSidePanel (props: GifSidePanelProps) {
+    const { setLoading, setError, gifTools, showGifTools, cardSide, cardNum, gifIndex, frontCards, setFrontCards, backCards, setBackCards } = props;
     const [gifResults, setGifResults] = useState<Giphy[] | null>([]);
     const [giphyQuery, setGiphyQuery] = useState("");    
 
@@ -37,6 +40,27 @@ function GifSidePanel ({ createGif, gifTools, deleteGif, setLoading, setError }:
             setLoading(false);
         }
     };
+
+    // function create gifs with helpers in EditHelpers
+    function createGif(gifUrl: string) {
+        if (cardSide === "Front") {
+            let content = {id: null, card_id: frontCards[cardNum - 1].id, url: gifUrl, width: 120, height: 120, x: 50, y: 50};
+            setFrontCard("gif", content, setFrontCards, cardNum);
+        } else {
+            let content = {id: null, card_id: backCards[cardNum - 1].id, url: gifUrl, width: 120, height: 120, x: 50, y: 50};
+            setBackCard("gif", content, setBackCards, cardNum);
+        }
+    }
+
+    // function to delete gifs with helpers in EditHelpers
+    function deleteGif() {
+        if (cardSide === "Front") {
+            deleteFrontCard("gif", gifIndex!, setFrontCards, cardNum);
+        } else {
+            deleteBackCard("gif", gifIndex!, setBackCards, cardNum);
+        }
+        showGifTools(false, null, gifResults);
+    }
 
     return (
         <div className={styles.sidePanel}>
