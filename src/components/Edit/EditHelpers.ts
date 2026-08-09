@@ -1,4 +1,4 @@
-import type Card from "../interfaces/Card";
+import type Card from "../../interfaces/Card";
 
 /*
     Description: These helper functions help create or delete text, gifs, and stickers in Edit side panel components.
