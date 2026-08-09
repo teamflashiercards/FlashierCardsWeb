@@ -14,7 +14,6 @@ import GifSidePanel from "./GifSidePanel";
 import EditToolbar from "./EditToolbar";
 import type Giphy from "../../interfaces/Giphy";
 import { motion } from "motion/react";
-import { createSticker, deleteSticker } from "./EditStickerHelpers";
 
 /*
     Description: This component allows the user create, update, or delete deck content.
@@ -247,55 +246,6 @@ function Edit() {
         setStickerTools(request);
         setStickerResults(stickerResults);
     }
-
-    // sticker file
-    /* function createSticker(stickerUrl: string) {
-        if (cardSide == "Front") {
-            let tmp = {id: null, card_id: frontCards[cardNum - 1].id, url: stickerUrl, width: 120, height: 120, x: 50, y: 50};
-            setFrontCards(prevCards =>
-                prevCards.map((card, index) =>
-                    index === (cardNum - 1) ? {...card, sticker: [...card.sticker, tmp]} : card
-                )
-            );
-        } else if (cardSide === "Back") {
-            let tmp = {id: null, card_id: backCards[cardNum - 1].id, url: stickerUrl, width: 120, height: 120, x: 50, y: 50};
-            setBackCards(prevCards =>
-                prevCards.map((card, index) =>
-                    index === (cardNum - 1) ? {...card, sticker: [...card.sticker, tmp]} : card
-                )
-            );
-        }
-    } */
-   function makeSticker(stickerUrl: string){
-        createSticker(stickerUrl, cardSide, cardNum, frontCards, backCards, setFrontCards, setBackCards)
-   }
-
-    // sticker file
-    /* function deleteSticker() {
-        if (cardSide === "Front") {
-            setFrontCards(prevCards =>
-                prevCards.map((card, index) =>
-                    index === (cardNum - 1) ? {...card, sticker: card.sticker.filter((_, index) =>
-                        index != stickerIndex
-                    )} : card
-                )
-            );
-        } else if (cardSide == "Back") {
-            setBackCards(prevCards =>
-                prevCards.map((card, index) =>
-                    index === (cardNum - 1) ? {...card, sticker: card.sticker.filter((_, index) =>
-                        index != stickerIndex
-                    )} : card
-                )
-            );
-        }
-        showStickerTools(false, null, stickerResults);
-    } */
-
-    function removeSticker(){
-        deleteSticker(stickerIndex, stickerResults, showStickerTools, cardSide, cardNum, setFrontCards, setBackCards)
-    }
-
 
     useEffect(() => {
         fetchDeckName();
@@ -626,11 +576,17 @@ function Edit() {
                     }
                     { stickerPanel &&
                         <StickerSidePanel
-                            stickerTools={stickerTools}
-                            createSticker={makeSticker}
-                            deleteSticker={removeSticker}
                             setLoading={setLoading}
                             setError={setError}
+                            stickerTools={stickerTools}
+                            showStickerTools={showStickerTools}
+                            cardSide={cardSide}
+                            cardNum={cardNum}
+                            stickerIndex={stickerIndex}
+                            frontCards={frontCards}
+                            setFrontCards={setFrontCards}
+                            backCards={backCards}
+                            setBackCards={setBackCards}
                         />
                     }
                 </div>

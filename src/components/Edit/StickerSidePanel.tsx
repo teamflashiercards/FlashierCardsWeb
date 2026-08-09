@@ -2,13 +2,16 @@ import styles from "../../styles/Deck.module.css";
 import GiphyLogo from "../../assets/giphyLogo.png";
 import { useState } from "react";
 import type Giphy from "../../interfaces/Giphy";
+import type StickerSidePanelProps from "../../interfaces/StickerSidePanelProps";
+import { setFrontCard, setBackCard, deleteFrontCard, deleteBackCard } from './EditHelpers';
 
 /*
     Description: This is a sub-component that contains code for the sticker side panel in Edit component.
-    Last updated: 7/13/2026
+    Last updated: 8/9/2026
 */
 
-function StickerSidePanel({ stickerTools, createSticker, deleteSticker, setLoading, setError }: any) {
+function StickerSidePanel(props: StickerSidePanelProps) {
+    const { setLoading, setError, stickerTools, showStickerTools, cardSide, cardNum, stickerIndex, frontCards, setFrontCards, backCards, setBackCards } = props;
     const [giphyQuery, setGiphyQuery] = useState("");
     const [stickerResults, setStickerResults] = useState<Giphy[] | null>([]);
 
@@ -37,6 +40,27 @@ function StickerSidePanel({ stickerTools, createSticker, deleteSticker, setLoadi
             setLoading(false);
         }
     };
+
+    // function create stickers with helpers in EditHelpers
+    function createSticker(stickerUrl: string) {
+        if (cardSide === "Front") {
+            let content = {id: null, card_id: frontCards[cardNum - 1].id, url: stickerUrl, width: 120, height: 120, x: 50, y: 50};
+            setFrontCard("sticker", content, setFrontCards, cardNum);
+        } else {
+            let content = {id: null, card_id: backCards[cardNum - 1].id, url: stickerUrl, width: 120, height: 120, x: 50, y: 50};
+            setBackCard("sticker", content, setBackCards, cardNum);
+        }
+    }
+
+    // function to delete stickers with helpers in EditHelpers
+    function deleteSticker() {
+        if (cardSide === "Front") {
+            deleteFrontCard("sticker", stickerIndex!, setFrontCards, cardNum);
+        } else {
+            deleteBackCard("sticker", stickerIndex!, setBackCards, cardNum);
+        }
+        showStickerTools(false, null, stickerResults);
+    }
 
     return (
         <div className={styles.sidePanel}>
