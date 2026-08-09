@@ -16,7 +16,6 @@ import type Giphy from "../../interfaces/Giphy";
 import { motion } from "motion/react";
 import { createGif, deleteGif } from "./EditGifHelpers";
 import { createSticker, deleteSticker } from "./EditStickerHelpers";
-import { createText } from "./EditTextHelpers";
 
 /*
     Description: This component allows the user create, update, or delete deck content.
@@ -35,11 +34,15 @@ function Edit() {
     const [frontCards, setFrontCards] = useState<Card[]>([]);
     const [backCards, setBackCards] = useState<Card[]>([]);
 
+    const [deck, setDeck] = useState({ deckName: null, frontCards: [], backCards: [] });
+
     // card related variables
     const cardRef = useRef<HTMLDivElement>(null);
     const [cardSide, setCardSide] = useState("Front");
     const [cardNum, setCardNum] = useState(1);
     const [total, setTotal] = useState(1);
+
+    const [card, setCard] = useState({ cardSide: "Front", cardNum: 1 });
 
     // side panel related variables
     const [textPanel, setTextPanel] = useState(false);
