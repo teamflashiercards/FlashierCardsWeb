@@ -16,6 +16,7 @@ function AccountInformation() {
     const [totalDecks, setTotalDecks] = useState(0);
     const { session } = UserAuth();
 
+    // function to get number of decks user has created
     const fetchDeckData = async () => {
         setLoading(true);
 

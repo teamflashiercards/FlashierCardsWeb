@@ -1,6 +1,6 @@
 /*
-    Description: This module contains css for profile AccountInformation, Theme, ChangePassword, and DeleteAccount.
-    Last updated: 6/10/2026
+    Description: This css module applies to profile AccountInformation, Theme, ChangePassword, and DeleteAccount components.
+    Last updated: 8/8/2026
 */
 
 .mainContainer {
@@ -130,4 +130,28 @@
     border: 2px solid #004A94;
     border-radius: 10px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+/* css for toolbar below */
+
+.navbar {
+    display: flex;
+    gap: 10px;
+    background-color: #004A94;
+    border-bottom: 2px solid #004A94;
+}
+
+.navOption {
+    background-color: #004A94;
+    font-size: 20px;
+    font-family: "Imprima", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    color: white;
+    border: none;
+    padding: 0.8rem 1rem;
+}
+
+.navOption:hover {
+    cursor: pointer;
 }

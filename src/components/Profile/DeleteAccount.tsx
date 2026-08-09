@@ -32,6 +32,7 @@ function DeleteAccount() {
         }
     };
 
+    // function to delete user's account
 	const submitForm = async (e: any) => {
         e.preventDefault();
         setLoading(true);
@@ -72,7 +73,7 @@ function DeleteAccount() {
                                 <></>
                         }
                         <div className={styles.subText}>
-                            If you no longer wish to use Flashier Cards, you can permanently delete your account.
+                            If you no longer wish to use Flashier Cards, you can permanently delete your account and data.
                         </div>
                         <button
                             type="submit"

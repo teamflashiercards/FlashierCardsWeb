@@ -17,6 +17,7 @@ function Theme() {
     const [loading, setLoading] = useState(false);
     const { session } = UserAuth();
 
+    // function to get data about background animation in study
     const fetchProfileData = async () => {
         setLoading(true);
 
@@ -40,6 +41,7 @@ function Theme() {
         }
     };
     
+    // function to update background animation in study
     const updateAnimation = async (animation: number) => {
         setLoading(true);
 
