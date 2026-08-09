@@ -16,6 +16,7 @@ import type Giphy from "../../interfaces/Giphy";
 import { motion } from "motion/react";
 import { createGif, deleteGif } from "./EditGifHelpers";
 import { createSticker, deleteSticker } from "./EditStickerHelpers";
+import { createText } from "./EditTextHelpers";
 
 /*
     Description: This component allows the user create, update, or delete deck content.
@@ -135,6 +136,24 @@ function Edit() {
 
         } finally {
             setLoading(false);
+        }
+    };
+
+    function createText(fontSize: number, width: number) {
+        if (cardSide === "Front") {
+            let tmp = {id: null, card_id: frontCards[cardNum - 1].id, input: "Double click to edit text", width: width, x: 30, y: 30, font_size: fontSize, color: "#201002"};
+            setFrontCards((prevCards: Card[]) =>
+                prevCards.map((card, index) =>
+                    index === (cardNum - 1) ? {...card, text: [...card.text, tmp]} : card
+                )
+            );
+        } else if (cardSide === "Back") {
+            let tmp = {id: null, card_id: backCards[cardNum - 1].id, input: "Double click to edit text", width: width, x: 30, y: 30, font_size: fontSize, color: "#201002"};
+            setBackCards((prevCards: Card[]) =>
+                prevCards.map((card, index) =>
+                    index === (cardNum - 1) ? {...card, text: [...card.text, tmp]} : card
+                )
+            );
         }
     };
 
@@ -378,13 +397,24 @@ function Edit() {
                         <div className={styles.card} ref={cardRef}>
                             <div className={styles.cardInner}>
                                 <div className={styles.cardFront}>
+                                    {/* <Stage
+                                        width={800}
+                                        height={400}
+                                        onClick={(e) => {
+                                            if (e.target === e.target.getStage()) {
+                                                showTextTools(false, null, "");
+                                            }
+                                        }}
+                                    ></Stage> */}
                                     {frontCards[cardNum - 1]?.text?.map((text, textIndex) =>
                                         <motion.p
                                             key={textIndex}
                                             drag
                                             dragMomentum={false}
                                             style={{
+                                                position: "fixed",
                                                 width: text.width,
+                                                fontFamily: "Imprima",
                                                 fontSize: text.font_size,
                                                 color: text.color,
                                                 x: text.x,
@@ -410,21 +440,73 @@ function Edit() {
                                             {text.input}
                                         </motion.p>
                                     )}
-                                    {/* loop through text and use motion.img to display gifs on frontCards */}
-                                    {/* loop through text and use motion.img to display stickers on frontCards */}
+                                    {frontCards[cardNum - 1]?.gif?.map((gif, gifIndex) =>
+                                        <motion.img
+                                            key={gifIndex}
+                                            src={gif.url}
+                                            alt="gif"
+                                            drag
+                                            dragMomentum={false}
+                                            // dragElastic={0}
+                                            style={{
+                                                position: "fixed",
+                                                width: gif.width,
+                                                height: gif.height,
+                                                objectFit: "contain",
+                                                x: gif.x,
+                                                y: gif.y
+                                            }}
+                                            whileHover={{
+                                                cursor: "grab",
+                                                boxShadow: "0px 0px 20px 5px rgba(78, 119, 162, 0.65)",
+                                                scale: 1.05
+                                            }}
+                                            whileDrag={{
+                                                scale: 1.03,
+                                                cursor: "grabbing"
+                                            }}
+                                            onDoubleClick={() => {
+                                                showSidePanel("gif");
+                                                showGifTools(true, gifIndex, gifResults);
+                                            }}
+                                            onDragEnd={(_event, info) => {
+                                                setFrontCards(prevCards =>
+                                                    prevCards.map((card, cardIndex) =>
+                                                        cardIndex === (cardNum - 1) ? {
+                                                            ...card,
+                                                            gif: card.gif.map((tmp, i) =>
+                                                                i === gifIndex ? {...tmp, x: Math.round(tmp.x + info.offset.x), y: Math.round(tmp.y + info.offset.y)} : tmp
+                                                            )
+                                                        } : card
+                                                    )
+                                                );
+                                            }}
+                                        />
+                                    )}
                                     {frontCards[cardNum - 1]?.sticker?.map((sticker, stickerIndex) =>
                                         <motion.img
                                             key={stickerIndex}
                                             src={sticker.url}
+                                            alt="sticker"
                                             drag
                                             dragMomentum={false}
+                                            // dragElastic={0}
                                             style={{
-                                                position: "absolute",
+                                                position: "fixed",
                                                 width: sticker.width,
                                                 height: sticker.height,
                                                 objectFit: "contain",
                                                 x: sticker.x,
                                                 y: sticker.y
+                                            }}
+                                            whileHover={{
+                                                cursor: "grab",
+                                                boxShadow: "0px 0px 20px 5px rgba(78, 119, 162, 0.65)",
+                                                scale: 1.05
+                                            }}
+                                            whileDrag={{
+                                                scale: 1.03,
+                                                cursor: "grabbing"
                                             }}
                                             onDoubleClick={() => {
                                                 showSidePanel("sticker");
@@ -444,129 +526,17 @@ function Edit() {
                                             }}
                                         />
                                     )}
-                                    {/*
-                                    <Stage
-                                        width={800}
-                                        height={400}
-                                        onClick={(e) => {
-                                            if (e.target === e.target.getStage()) {
-                                                showTextTools(false, null, "");
-                                            }
-                                        }}
-                                    >
-                                        <Layer>
-                                            {frontCards[cardNum - 1]?.text?.map((text, textIndex) =>
-                                                <Text
-                                                    key={textIndex}
-                                                    x={text.x}
-                                                    y={text.y}
-                                                    width={text.width}
-                                                    text={text.input}
-                                                    fontFamily="Imprima"
-                                                    fontSize={text.font_size}
-                                                    fill={text.color}
-                                                    draggable
-                                                    onDblClick={() => {
-                                                        showSidePanel("text");
-                                                        showTextTools(true, textIndex, text.input);
-                                                    }}
-                                                    onDragEnd={(e) => {
-                                                        const { x, y } = e.target.position();
-                                                        setFrontCards(prevCards =>
-                                                            prevCards.map((card, cardIndex) =>
-                                                                cardIndex === (cardNum - 1) ? {
-                                                                    ...card,
-                                                                    text: card.text.map((tmp, i) =>
-                                                                        i === textIndex ? {...tmp, x: x, y: y} : tmp
-                                                                    )
-                                                                } : card
-                                                            )
-                                                        );
-                                                    }}
-                                                />
-                                            )}
-                                            {frontCards[cardNum - 1]?.gif?.map((gif, gifIndex) =>
-                                                <Giphy
-                                                    key={gifIndex}
-                                                    newImage={gif}
-                                                    onDblClick={() => {
-                                                        showSidePanel("gif");
-                                                        showGifTools(true, gifIndex, gifResults);
-                                                    }}
-                                                    onDragEnd={(e: any) => {
-                                                        const { x, y } = e.target.position();
-                                                        setFrontCards(prevCards =>
-                                                            prevCards.map((card, cardIndex) =>
-                                                                cardIndex === (cardNum - 1) ? {
-                                                                    ...card,
-                                                                    gif: card.gif.map((tmp, i) =>
-                                                                        i === gifIndex ? {...tmp, x: x, y: y} : tmp
-                                                                    )
-                                                                } : card
-                                                            )
-                                                        );
-                                                    }}
-                                                />
-                                            )}
-                                           
-                                        </Layer>
-                                    </Stage>*/}
-                                    {frontCards[cardNum - 1]?.gif?.map((gif, gifIndex) => (
-                                    <motion.img
-                                        key={gif.id ?? `front-gif-${gifIndex}`}
-                                        src={gif.url}
-                                        alt="Gif"
-                                        drag
-                                        dragMomentum={false}
-                                        dragElastic={0}
-                                        style={{
-                                            position: "absolute",
-                                            width: gif.width,
-                                            height: gif.height,
-                                            objectFit: "contain",
-                                            x: gif.x,
-                                            y: gif.y,
-                                            cursor: "grab"
-                                        }}
-                                        whileHover={{
-                                            boxShadow: "0px 0px 20px 5px rgba(78, 119, 162, 0.65)",
-                                            scale: 1.05
-                                        }}
-                                        whileDrag={{
-                                            scale: 1.03,
-                                            cursor: "grabbing"
-                                        }}
-                                        onDoubleClick={() => {
-                                            showSidePanel("gif");
-                                            showGifTools(true, gifIndex, gifResults);
-                                        }}
-                                        onDragEnd={(_event, info) => {
-                                            setFrontCards(prevCards =>
-                                                prevCards.map((card, cardIndex) =>
-                                                    cardIndex === cardNum - 1
-                                                        ? {
-                                                            ...card,
-                                                            gif: card.gif.map((tmpGif, index) =>
-                                                                index === gifIndex
-                                                                    ? {
-                                                                        ...tmpGif, x: Math.round(tmpGif.x + info.offset.x ), y: Math.round( tmpGif.y + info.offset.y )} : tmpGif)
-                                                        }
-                                                        : card
-                                                )
-                                            );
-                                        }}
-                                    />
-                                ))}
                                 </div>
                                 <div className={styles.cardBack}>
-                                    {/* loop through text and use motion.p to display text on backCards */}
                                     {backCards[cardNum - 1]?.text?.map((text, textIndex) =>
                                         <motion.p
                                             key={textIndex}
                                             drag
                                             dragMomentum={false}
                                             style={{
+                                                position: "fixed",
                                                 width: text.width,
+                                                fontFamily: "Imprima",
                                                 fontSize: text.font_size,
                                                 color: text.color,
                                                 x: text.x,
@@ -592,8 +562,49 @@ function Edit() {
                                             {text.input}
                                         </motion.p>
                                     )}
-                                    {/* loop through text and use motion.img to display gifs on backCards */}
-                                    {/* loop through text and use motion.img to display stickers on backCards */}
+                                    {backCards[cardNum - 1]?.gif?.map((gif, gifIndex) =>
+                                        <motion.img
+                                            key={gifIndex}
+                                            src={gif.url}
+                                            alt="gif"
+                                            drag
+                                            dragMomentum={false}
+                                            // dragElastic={0}
+                                            style={{
+                                                position: "fixed",
+                                                width: gif.width,
+                                                height: gif.height,
+                                                objectFit: "contain",
+                                                x: gif.x,
+                                                y: gif.y
+                                            }}
+                                            whileHover={{
+                                                cursor: "grab",
+                                                boxShadow: "0px 0px 20px 5px rgba(78, 119, 162, 0.65)",
+                                                scale: 1.05
+                                            }}
+                                            whileDrag={{
+                                                scale: 1.03,
+                                                cursor: "grabbing"
+                                            }}
+                                            onDoubleClick={() => {
+                                                showSidePanel("gif");
+                                                showGifTools(true, gifIndex, gifResults);
+                                            }}
+                                            onDragEnd={(_event, info) => {
+                                                setBackCards(prevCards =>
+                                                    prevCards.map((card, cardIndex) =>
+                                                        cardIndex === (cardNum - 1) ? {
+                                                            ...card,
+                                                            gif: card.gif.map((tmp, i) =>
+                                                                i === gifIndex ? {...tmp, x: Math.round(tmp.x + info.offset.x), y: Math.round(tmp.y + info.offset.y)} : tmp
+                                                            )
+                                                        } : card
+                                                    )
+                                                );
+                                            }}
+                                        />
+                                    )}
                                     {backCards[cardNum - 1]?.sticker?.map((sticker, stickerIndex) =>
                                         <motion.img
                                             key={stickerIndex}
@@ -601,12 +612,23 @@ function Edit() {
                                             alt="sticker"
                                             drag
                                             dragMomentum={false}
+                                            // dragElastic={0}
                                             style={{
+                                                position: "fixed",
                                                 width: sticker.width,
                                                 height: sticker.height,
                                                 objectFit: "contain",
                                                 x: sticker.x,
                                                 y: sticker.y
+                                            }}
+                                            whileHover={{
+                                                cursor: "grab",
+                                                boxShadow: "0px 0px 20px 5px rgba(78, 119, 162, 0.65)",
+                                                scale: 1.05
+                                            }}
+                                            whileDrag={{
+                                                scale: 1.03,
+                                                cursor: "grabbing"
                                             }}
                                             onDoubleClick={() => {
                                                 showSidePanel("sticker");
@@ -626,119 +648,6 @@ function Edit() {
                                             }}
                                         />
                                     )}
-                                    {/* 
-                                    
-                                    <Stage
-                                        width={800}
-                                        height={400}
-                                        onClick={(e) => {
-                                            if (e.target === e.target.getStage()) {
-                                                showTextTools(false, null, "");
-                                            }
-                                        }}
-                                    >
-                                        <Layer>
-                                            {backCards[cardNum - 1]?.text?.map((text, textIndex) =>
-                                                <Text
-                                                    key={textIndex}
-                                                    x={text.x}
-                                                    y={text.y}
-                                                    width={text.width}
-                                                    text={text.input}
-                                                    fontFamily="Imprima"
-                                                    fontSize={text.font_size}
-                                                    fill={text.color}
-                                                    draggable
-                                                    onDblClick={() => {
-                                                        showSidePanel("text");
-                                                        showTextTools(true, textIndex, text.input);
-                                                    }}
-                                                    onDragEnd={(e) => {
-                                                        const { x, y } = e.target.position();
-                                                        setBackCards(prevCards =>
-                                                            prevCards.map((card, cardIndex) =>
-                                                                cardIndex === (cardNum - 1) ? {
-                                                                    ...card,
-                                                                    text: card.text.map((tmp, i) =>
-                                                                        i === textIndex ? {...tmp, x: x, y: y} : tmp
-                                                                    )
-                                                                } : card
-                                                            )
-                                                        );
-                                                    }}
-                                                />
-                                            )}
-                                            {backCards[cardNum - 1]?.gif?.map((gif, gifIndex) =>
-                                                <Giphy
-                                                    key={gifIndex}
-                                                    newImage={gif}
-                                                    onDblClick={() => {
-                                                        showSidePanel("gif");
-                                                        showGifTools(true, gifIndex, gifResults);
-                                                    }}
-                                                    onDragEnd={(e: any) => {
-                                                        const { x, y } = e.target.position();
-                                                        setBackCards(prevCards =>
-                                                            prevCards.map((card, cardIndex) =>
-                                                                cardIndex === (cardNum - 1) ? {
-                                                                    ...card,
-                                                                    gif: card.gif.map((tmp, i) =>
-                                                                        i === gifIndex ? {...tmp, x: x, y: y} : tmp
-                                                                    )
-                                                                } : card
-                                                            )
-                                                        );
-                                                    }}
-                                                />
-                                            )}
-                                           
-                                        </Layer>
-                                    </Stage>*/}
-                                    {backCards[cardNum - 1]?.gif?.map((gif, gifIndex) => (
-                                    <motion.img
-                                        key={gif.id ?? `back-gif-${gifIndex}`}
-                                        src={gif.url}
-                                        alt="Gif"
-                                        drag
-                                        dragMomentum={false}
-                                        dragElastic={0}
-                                        style={{
-                                            width: gif.width,
-                                            height: gif.height,
-                                            objectFit: "contain",
-                                            x: gif.x,
-                                            y: gif.y,
-                                            cursor: "grab"
-                                        }}
-                                        whileHover={{
-                                            boxShadow: "0px 0px 20px 5px rgba(78, 119, 162, 0.65)",
-                                            scale: 1.05
-                                        }}
-                                        whileDrag={{
-                                            scale: 1.03,
-                                            cursor: "grabbing"
-                                        }}
-                                        onDoubleClick={() => {
-                                            showSidePanel("gif");
-                                            showGifTools(true, gifIndex, gifResults);
-                                        }}
-                                        onDragEnd={(_event, info) => {
-                                            setBackCards(prevCards =>
-                                                prevCards.map((card, cardIndex) =>
-                                                    cardIndex === cardNum - 1
-                                                        ? {
-                                                            ...card,
-                                                            gif: card.gif.map((tmpGif, index) =>
-                                                                index === gifIndex
-                                                                    ? {
-                                                                        ...tmpGif, x: Math.round( tmpGif.x + info.offset.x ), y: Math.round(tmpGif.y + info.offset.y )} : tmpGif )
-                                                        }
-                                                        : card
-                                                )
-                                            );
-                                        }}
-                                    />
-                                    ))}
                                 </div>
                             </div>
                         </div>
@@ -754,6 +663,7 @@ function Edit() {
                     </div>
                     { textPanel &&
                         <TextSidePanel
+                            createText={createText}
                             textTools={textTools}
                             text={text}
                             cardSide={cardSide}

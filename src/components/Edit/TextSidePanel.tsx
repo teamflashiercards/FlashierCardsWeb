@@ -1,12 +1,12 @@
 import styles from "../../styles/Deck.module.css";
-import { createText, changeTextColor, changeTextInput, deleteText } from "./EditTextHelpers";
+import { changeTextColor, changeTextInput, deleteText } from "./EditTextHelpers";
 
 /*
     Description: This is a sub-component that contains code for the text side panel in Edit component.
     Last updated: 8/3/2026
 */
 
-function TextSidePanel({ textTools, text, cardSide, cardNum, setText, frontCards, setFrontCards, backCards, setBackCards, textIndex, showTextTools }: any) {
+function TextSidePanel({ createText, textTools, text, cardSide, cardNum, setText, frontCards, setFrontCards, backCards, setBackCards, textIndex, showTextTools }: any) {
     return (
         <div className={styles.sidePanel}>
             <div style={{ display: (textTools) ? "flex" : "none" }}>
@@ -36,9 +36,9 @@ function TextSidePanel({ textTools, text, cardSide, cardNum, setText, frontCards
             <div>
                 <div className={styles.sidePanelTitle}>Text Size</div>
                 <div className={styles.sidePanelOptions} style={{ marginBottom: "0rem" }}>
-                    <button className={styles.sidePanelBtn} onClick={() => createText(18, 300, cardSide, cardNum, frontCards, setFrontCards, backCards, setBackCards)}>Small</button>
-                    <button className={styles.sidePanelBtn} onClick={() => createText(28, 400, cardSide, cardNum, frontCards, setFrontCards, backCards, setBackCards)}>Medium</button>
-                    <button className={styles.sidePanelBtn} onClick={() => createText(38, 600, cardSide, cardNum, frontCards, setFrontCards, backCards, setBackCards)}>Large</button>
+                    <button className={styles.sidePanelBtn} onClick={() => createText(18, 300)}>Small</button>
+                    <button className={styles.sidePanelBtn} onClick={() => createText(28, 400)}>Medium</button>
+                    <button className={styles.sidePanelBtn} onClick={() => createText(38, 600)}>Large</button>
                 </div>
             </div>
         </div>
