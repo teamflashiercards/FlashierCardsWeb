@@ -1,9 +1,16 @@
 import type { Dispatch, SetStateAction } from "react";
 import type Card from "./Card";
 
+type TextTools= (
+    request: boolean,
+    textIndex: number | null,
+    input: string
+) => void;
+
+
 export default interface TextSidePanelProps {
     textTools: boolean,
-    showTextTools: any, 
+    showTextTools: TextTools, 
     cardSide: string,
     cardNum: number,
     text: string,
