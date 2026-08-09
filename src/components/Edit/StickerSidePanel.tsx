@@ -3,7 +3,7 @@ import GiphyLogo from "../../assets/giphyLogo.png";
 import { useState } from "react";
 import type Giphy from "../../interfaces/Giphy";
 import type StickerSidePanelProps from "../../interfaces/StickerSidePanelProps";
-import { setFrontCard, setBackCard, deleteFrontCard, deleteBackCard } from './EditHelpers';
+import { setFrontCard, setBackCard, deleteFrontCard, deleteBackCard } from './EditContentHelpers';
 
 /*
     Description: This is a sub-component that contains code for the sticker side panel in Edit component.

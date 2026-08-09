@@ -1,6 +1,6 @@
 import type Card from "../../interfaces/Card";
 import styles from "../../styles/Deck.module.css";
-import { setFrontCard, setBackCard, deleteFrontCard, deleteBackCard } from "./EditHelpers";
+import { setFrontCard, setBackCard, deleteFrontCard, deleteBackCard } from "./EditContentHelpers";
 import type TextSidePanelProps from "../../interfaces/TextSidePanelProps";
 
 /*

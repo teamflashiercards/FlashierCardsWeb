@@ -2,7 +2,7 @@ import {useState} from 'react';
 import GiphyLogo from '../../assets/giphyLogo.png'
 import styles from "../../styles/Deck.module.css";
 import type Giphy from "../../interfaces/Giphy";
-import { setFrontCard, setBackCard, deleteFrontCard, deleteBackCard } from './EditHelpers';
+import { setFrontCard, setBackCard, deleteFrontCard, deleteBackCard } from './EditContentHelpers';
 import type GifSidePanelProps from '../../interfaces/GifSidePanelProps';
 
 /*
