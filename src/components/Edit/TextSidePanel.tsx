@@ -1,6 +1,6 @@
 import type Card from "../../interfaces/Card";
 import styles from "../../styles/Deck.module.css";
-import { setFrontCard, setBackCard, deleteFrontCard, deleteBackCard } from "./EditTextHelpers";
+import { setFrontCard, setBackCard, deleteFrontCard, deleteBackCard } from "../../util/EditHelpers";
 
 /*
     Description: This is a sub-component that contains code for the text side panel in Edit component.
