@@ -34,15 +34,11 @@ function Edit() {
     const [frontCards, setFrontCards] = useState<Card[]>([]);
     const [backCards, setBackCards] = useState<Card[]>([]);
 
-    const [deck, setDeck] = useState({ deckName: null, frontCards: [], backCards: [] });
-
     // card related variables
     const cardRef = useRef<HTMLDivElement>(null);
     const [cardSide, setCardSide] = useState("Front");
     const [cardNum, setCardNum] = useState(1);
     const [total, setTotal] = useState(1);
-
-    const [card, setCard] = useState({ cardSide: "Front", cardNum: 1 });
 
     // side panel related variables
     const [textPanel, setTextPanel] = useState(false);
@@ -139,24 +135,6 @@ function Edit() {
 
         } finally {
             setLoading(false);
-        }
-    };
-
-    function createText(fontSize: number, width: number) {
-        if (cardSide === "Front") {
-            let tmp = {id: null, card_id: frontCards[cardNum - 1].id, input: "Double click to edit text", width: width, x: 30, y: 30, font_size: fontSize, color: "#201002"};
-            setFrontCards((prevCards: Card[]) =>
-                prevCards.map((card, index) =>
-                    index === (cardNum - 1) ? {...card, text: [...card.text, tmp]} : card
-                )
-            );
-        } else if (cardSide === "Back") {
-            let tmp = {id: null, card_id: backCards[cardNum - 1].id, input: "Double click to edit text", width: width, x: 30, y: 30, font_size: fontSize, color: "#201002"};
-            setBackCards((prevCards: Card[]) =>
-                prevCards.map((card, index) =>
-                    index === (cardNum - 1) ? {...card, text: [...card.text, tmp]} : card
-                )
-            );
         }
     };
 
@@ -264,6 +242,7 @@ function Edit() {
         setGifTools(request);
         setGifResults(gifResults);
     } 
+
 
     // gif file
     function makeGif(url: string){
@@ -666,18 +645,17 @@ function Edit() {
                     </div>
                     { textPanel &&
                         <TextSidePanel
-                            createText={createText}
                             textTools={textTools}
-                            text={text}
+                            showTextTools={showTextTools}
                             cardSide={cardSide}
                             cardNum={cardNum}
+                            text={text}
                             setText={setText}
-                            fontCards={frontCards}
-                            setFrontCard={setFrontCards}
+                            textIndex={textIndex}
+                            frontCards={frontCards}
+                            setFrontCards={setFrontCards}
                             backCards={backCards}
                             setBackCards={setBackCards}
-                            textIndex={textIndex}
-                            showTextTools={showTextTools}
                         />
                     }
                     { gifPanel &&

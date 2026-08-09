@@ -1,81 +1,89 @@
 import type Card from "../../interfaces/Card";
 
-export function createText(fontSize: number, width: number, cardSide: string, cardNum: number, frontCards: Card[], setFrontCards: any, backCards: Card[], setBackCards: any) {
-    if (cardSide === "Front") {
-        let tmp = {id: null, card_id: frontCards[cardNum - 1].id, input: "Double click to edit text", width: width, x: 30, y: 30, font_size: fontSize, color: "#201002"};
-        setFrontCards((prevCards: Card[]) =>
-            prevCards.map((card, index) =>
-                index === (cardNum - 1) ? {...card, text: [...card.text, tmp]} : card
-            )
-        );
-    } else if (cardSide === "Back") {
-        let tmp = {id: null, card_id: backCards[cardNum - 1].id, input: "Double click to edit text", width: width, x: 30, y: 30, font_size: fontSize, color: "#201002"};
-        setBackCards((prevCards: Card[]) =>
-            prevCards.map((card, index) =>
-                index === (cardNum - 1) ? {...card, text: [...card.text, tmp]} : card
-            )
-        );
-    }
-};
+// function to add text, gif, or sticker objects to frontCards array
+export function setFrontCard(contentType: string, content: any, setFrontCards: any, cardNum: number) {
+    setFrontCards((prevCards: Card[]) =>
+        prevCards.map((card, index) => {
+            if (index === (cardNum - 1)) {
+                if (contentType === "text") {
+                    return {...card, text: [...card.text, content]};
+                } else if (contentType === "gif") {
+                    return {...card, gif: [...card.gif, content]};
+                } else if (contentType === "sticker") {
+                    return {...card, sticker: [...card.sticker, content]};
+                }
+            } else {
+                return card;
+            }
+        })
+    );
+}
 
-export function changeTextColor(newColor: string, cardSide: string, cardNum: number, setFrontCards: any, setBackCards: any, textIndex: number) {
-    if (cardSide === "Front") {
-        setFrontCards((prevCards: Card[]) =>
-            prevCards.map((card, index) =>
-                index === (cardNum - 1) ? {...card, text: card.text.map((cardText, i) =>
-                    i === textIndex ? {...cardText, color: newColor} : cardText
-                )} : card
-            )
-        );
-    } else if (cardSide == "Back") {
-        setBackCards((prevCards: Card[]) =>
-            prevCards.map((card, index) =>
-                index === (cardNum - 1) ? {...card, text: card.text.map((cardText, i) =>
-                    i === textIndex ? {...cardText, color: newColor} : cardText
-                )} : card
-            )
-        );
-    }
-};
+// function to add text, gif, or sticker objects to backCards array
+export function setBackCard(contentType: string, content: any, setBackCards: any, cardNum: number) {
+    setBackCards((prevCards: Card[]) =>
+        prevCards.map((card, index) => {
+            if (index === (cardNum - 1)) {
+                if (contentType === "text") {
+                    return {...card, text: [...card.text, content]};
+                } else if (contentType === "gif") {
+                    return {...card, gif: [...card.gif, content]};
+                } else if (contentType === "sticker") {
+                    return {...card, sticker: [...card.sticker, content]};
+                }
+            } else {
+                return card;
+            }
+        })
+    );
+}
 
-export function changeTextInput(e: any, cardSide: string, cardNum: number, setText: any, setFrontCards: any, setBackCards: any, textIndex: number) {
-    setText(e.target.value);
-    if (cardSide === "Front") {
-        setFrontCards((prevCards: Card[]) =>
-            prevCards.map((card, index) =>
-                index === (cardNum - 1) ? {...card, text: card.text.map((cardText, i) =>
-                    i === textIndex ? {...cardText, input: e.target.value} : cardText
-                )} : card
-            )
-        );
-    } else if (cardSide == "Back") {
-        setBackCards((prevCards: Card[]) =>
-            prevCards.map((card, index) =>
-                index === (cardNum - 1) ? {...card, text: card.text.map((cardText, i) =>
-                    i === textIndex ? {...cardText, input: e.target.value} : cardText
-                )} : card
-            )
-        );
-    }
-};
+// function to delete text, gif, or sticker objects from frontCards array
+export function deleteFrontCard(contentType: string, contentIndex: number, setFrontCards: any, cardNum: number) {
+    setFrontCards((prevCards: Card[]) =>
+        prevCards.map((card, index) => {
+            if (index === (cardNum - 1)) {
+                if (contentType === "text") {
+                    return {...card, text: card.text.filter((_, index) =>
+                        index != contentIndex
+                    )};
+                } else if (contentType === "gif") {
+                    return {...card, gif: card.gif.filter((_, index) =>
+                        index != contentIndex
+                    )};
+                } else if (contentType === "sticker") {
+                    return {...card, sticker: card.sticker.filter((_, index) =>
+                        index != contentIndex
+                    )};
+                }
+            } else {
+                return card;
+            }
+        })
+    );
+}
 
-export function deleteText(cardSide: string, cardNum: number, setFrontCards: any, setBackCards: any, textIndex: number, showTextTools: any) {
-    if (cardSide === "Front") {
-        setFrontCards((prevCards: Card[]) =>
-            prevCards.map((card, index) =>
-                index === (cardNum - 1) ? {...card, text: card.text.filter((_, index) =>
-                    index != textIndex
-                )} : card
-            )
-        );
-    } else if (cardSide == "Back") {
-        setBackCards((prevCards: Card[]) =>
-            prevCards.map((card, index) =>
-                index === (cardNum - 1) ? {...card, text: card.text.filter((_, index) =>
-                    index != textIndex
-                )} : card
-            )
-        );
-    }
-    showTextTools(false, null, "");
-};
+// function to delete text, gif, or sticker objects from backCards array
+export function deleteBackCard(contentType: string, contentIndex: number, setBackCards: any, cardNum: number) {
+    setBackCards((prevCards: Card[]) =>
+        prevCards.map((card, index) => {
+            if (index === (cardNum - 1)) {
+                if (contentType === "text") {
+                    return {...card, text: card.text.filter((_, index) =>
+                        index != contentIndex
+                    )};
+                } else if (contentType === "gif") {
+                    return {...card, gif: card.gif.filter((_, index) =>
+                        index != contentIndex
+                    )};
+                } else if (contentType === "sticker") {
+                    return {...card, sticker: card.sticker.filter((_, index) =>
+                        index != contentIndex
+                    )};
+                }
+            } else {
+                return card;
+            }
+        })
+    );
+}
