@@ -11,7 +11,7 @@ import { motion } from "motion/react";
 
 /*
     Description: This component allows the user to study deck content.
-    Last updated: 6/28/2026
+    Last updated: 8/8/2026
 */
 
 function Study() {
@@ -166,30 +166,32 @@ function Study() {
                             <div className={styles.cardInner}>
                                 <div className={styles.cardFront}>
                                     {frontCards[cardNum - 1]?.text?.map((text, textId) =>
-                                        <div 
+                                        <motion.p
                                             key={textId}
                                             style={{
                                                 width: text.width + "px",
-                                                color: text.color,
-                                                fontSize: text.font_size,
                                                 fontFamily: "Imprima, sans-serif",
-                                                position: "absolute",
-                                                left: text.x + "px",
-                                                top: text.y + "px"
+                                                fontSize: text.font_size,
+                                                color: text.color,
+                                                position: "fixed",
+                                                x: text.x,
+                                                y: text.y
                                             }}
                                         >
                                             {text.input}
-                                        </div>
+                                        </motion.p>
                                     )}
                                     {frontCards[cardNum - 1]?.gif?.map((gif, gifId) =>
-                                        <img 
+                                        <motion.img 
                                             key={gifId}
                                             src={gif.url}
                                             alt="gif"
                                             style={{
                                                 width: gif.width + "px",
                                                 height: gif.height + "px",
-                                                transform: `translate(${gif.x}px, ${gif.y}px)`
+                                                position: "fixed",
+                                                x: gif.x,
+                                                y: gif.y
                                             }}
                                         />
                                     )}
@@ -201,6 +203,7 @@ function Study() {
                                             style={{
                                                 width: sticker.width,
                                                 height: sticker.height,
+                                                position: "fixed",
                                                 x: sticker.x,
                                                 y: sticker.y
                                             }}
@@ -209,32 +212,32 @@ function Study() {
                                 </div>
                                 <div className={styles.cardBack}>
                                     {backCards[cardNum - 1]?.text?.map((text, textId) =>
-                                        <div 
+                                        <motion.p
                                             key={textId}
                                             style={{
                                                 width: text.width + "px",
-                                                color: text.color,
-                                                fontSize: text.font_size,
                                                 fontFamily: "Imprima, sans-serif",
-                                                position: "absolute",
-                                                left: text.x + "px",
-                                                top: text.y + "px"
+                                                fontSize: text.font_size,
+                                                color: text.color,
+                                                position: "fixed",
+                                                x: text.x,
+                                                y: text.y
                                             }}
                                         >
                                             {text.input}
-                                        </div>
+                                        </motion.p>
                                     )}
                                     {backCards[cardNum - 1]?.gif?.map((gif, gifId) =>
-                                        <img 
+                                        <motion.img 
                                             key={gifId}
                                             src={gif.url}
                                             alt="gif"
                                             style={{
                                                 width: gif.width + "px",
                                                 height: gif.height + "px",
-                                                position: "absolute",
-                                                left: gif.x + "px",
-                                                top: gif.y + "px"
+                                                position: "fixed",
+                                                x: gif.x,
+                                                y: gif.y
                                             }}
                                         />
                                     )}
@@ -246,6 +249,7 @@ function Study() {
                                             style={{
                                                 width: sticker.width,
                                                 height: sticker.height,
+                                                position: "fixed",
                                                 x: sticker.x,
                                                 y: sticker.y
                                             }}
