@@ -378,7 +378,6 @@ function Edit() {
                         <div className={styles.card} ref={cardRef}>
                             <div className={styles.cardInner}>
                                 <div className={styles.cardFront}>
-                                    {/* loop through text and use motion.p to display text on frontCards */}
                                     {frontCards[cardNum - 1]?.text?.map((text, textIndex) =>
                                         <motion.p
                                             key={textIndex}
@@ -753,36 +752,39 @@ function Edit() {
                             </button>
                         </div>
                     </div>
-                    <TextSidePanel
-                        textPanel={textPanel}
-                        textTools={textTools}
-                        text={text}
-                        cardSide={cardSide}
-                        cardNum={cardNum}
-                        setText={setText}
-                        fontCards={frontCards}
-                        setFrontCard={setFrontCards}
-                        backCards={backCards}
-                        setBackCards={setBackCards}
-                        textIndex={textIndex}
-                        showTextTools={showTextTools}
-                    />
-                    <GifSidePanel
-                        gifPanel={gifPanel}
-                        createGif={makeGif}
-                        gifTools={gifTools}
-                        deleteGif={removeGif}
-                        setLoading={setLoading}
-                        setError={setError}
-                    />
-                    <StickerSidePanel
-                        stickerPanel={stickerPanel}
-                        stickerTools={stickerTools}
-                        createSticker={makeSticker}
-                        deleteSticker={removeSticker}
-                        setLoading={setLoading}
-                        setError={setError}
-                    />
+                    { textPanel &&
+                        <TextSidePanel
+                            textTools={textTools}
+                            text={text}
+                            cardSide={cardSide}
+                            cardNum={cardNum}
+                            setText={setText}
+                            fontCards={frontCards}
+                            setFrontCard={setFrontCards}
+                            backCards={backCards}
+                            setBackCards={setBackCards}
+                            textIndex={textIndex}
+                            showTextTools={showTextTools}
+                        />
+                    }
+                    { gifPanel &&
+                        <GifSidePanel
+                            createGif={makeGif}
+                            gifTools={gifTools}
+                            deleteGif={removeGif}
+                            setLoading={setLoading}
+                            setError={setError}
+                        />
+                    }
+                    { stickerPanel &&
+                        <StickerSidePanel
+                            stickerTools={stickerTools}
+                            createSticker={makeSticker}
+                            deleteSticker={removeSticker}
+                            setLoading={setLoading}
+                            setError={setError}
+                        />
+                    }
                 </div>
             </div>
             <FeedbackButton />

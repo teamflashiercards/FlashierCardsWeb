@@ -8,7 +8,7 @@ import type Giphy from "../../interfaces/Giphy";
     Last updated: 7/26/2026
 */
 
-function GifSidePanel ({ gifPanel, createGif, gifTools, deleteGif, setLoading, setError }:any) {
+function GifSidePanel ({ createGif, gifTools, deleteGif, setLoading, setError }:any) {
     const [gifResults, setGifResults] = useState<Giphy[] | null>([]);
     const [giphyQuery, setGiphyQuery] = useState("");    
 
@@ -39,7 +39,7 @@ function GifSidePanel ({ gifPanel, createGif, gifTools, deleteGif, setLoading, s
     };
 
     return (
-        <div className={styles.sidePanel} style={{ display: gifPanel ? "flex" : "none" }}>
+        <div className={styles.sidePanel}>
             <div style={{ display: (gifTools) ? "flex" : "none" }}>
                 <div className={styles.sidePanelTitle}>Giph Deletion</div>
                 <div className={styles.sidePanelOptions}>

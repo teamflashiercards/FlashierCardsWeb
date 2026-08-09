@@ -8,7 +8,7 @@ import type Giphy from "../../interfaces/Giphy";
     Last updated: 7/13/2026
 */
 
-function StickerSidePanel({ stickerPanel, stickerTools, createSticker, deleteSticker, setLoading, setError }: any) {
+function StickerSidePanel({ stickerTools, createSticker, deleteSticker, setLoading, setError }: any) {
     const [giphyQuery, setGiphyQuery] = useState("");
     const [stickerResults, setStickerResults] = useState<Giphy[] | null>([]);
 
@@ -39,7 +39,7 @@ function StickerSidePanel({ stickerPanel, stickerTools, createSticker, deleteSti
     };
 
     return (
-        <div className={styles.sidePanel} style={{ display: stickerPanel ? "flex" : "none" }}>
+        <div className={styles.sidePanel}>
             <div style={{ display: (stickerTools) ? "flex" : "none" }}>
                 <div className={styles.sidePanelTitle}>Sticker Deletion</div>
                 <div className={styles.sidePanelOptions}>

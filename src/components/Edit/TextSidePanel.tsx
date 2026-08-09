@@ -6,9 +6,9 @@ import { createText, changeTextColor, changeTextInput, deleteText } from "./Edit
     Last updated: 8/3/2026
 */
 
-function TextSidePanel({ textPanel, textTools, text, cardSide, cardNum, setText, frontCards, setFrontCards, backCards, setBackCards, textIndex, showTextTools }: any) {
+function TextSidePanel({ textTools, text, cardSide, cardNum, setText, frontCards, setFrontCards, backCards, setBackCards, textIndex, showTextTools }: any) {
     return (
-        <div className={styles.sidePanel} style={{ display: textPanel ? "flex" : "none" }}>
+        <div className={styles.sidePanel}>
             <div style={{ display: (textTools) ? "flex" : "none" }}>
                 <div className={styles.sidePanelTitle}>Text Input</div>
                 <div className={styles.textInput}>
