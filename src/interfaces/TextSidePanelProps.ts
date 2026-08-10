@@ -6,11 +6,11 @@ export default interface TextSidePanelProps {
     cardSide: string,
     cardNum: number,
     text: string,
-    setText: Dispatch<SetStateAction<string>>, 
-    textIndex: number | null | undefined,
-    frontCards: Card[], 
-    setFrontCards: any, 
-    backCards: Card[], 
+    setText: Dispatch<SetStateAction<string>>,
+    textIndex: number | null,
+    frontCards: Card[],
+    setFrontCards: any,
+    backCards: Card[],
     setBackCards: any,
     deleteText: any
 };

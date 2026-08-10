@@ -10,11 +10,11 @@ export default interface StickerSidePanelProps {
     setLoading: Dispatch<SetStateAction<boolean>>,
     setError: Dispatch<SetStateAction<Error>>,
     stickerTools: boolean,
-    cardSide: string, 
+    cardSide: string,
     cardNum: number,
-    frontCards: Card[], 
-    setFrontCards: Dispatch<SetStateAction<Card[]>>, 
-    backCards: Card[], 
+    frontCards: Card[],
+    setFrontCards: Dispatch<SetStateAction<Card[]>>,
+    backCards: Card[],
     setBackCards: Dispatch<SetStateAction<Card[]>>,
     deleteSticker: any
 };

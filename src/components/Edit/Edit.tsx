@@ -44,8 +44,8 @@ function Edit() {
     const [stickerPanel, setStickerPanel] = useState(false);
 
     // text related variables
-    const [textTools, setTextTools] = useState(false);
     const [text, setText] = useState("");
+    const [textTools, setTextTools] = useState(false);
     const [textIndex, setTextIndex] = useState<number | null>(null);
     
     // gif related variables
@@ -269,9 +269,9 @@ function Edit() {
                                             }}
                                             onDoubleClick={() => {
                                                 openSidePanel("text");
-                                                setTextIndex(textIndex);
-                                                setTextTools(true);
                                                 setText(text.input);
+                                                setTextIndex(textIndex);
+                                                setTextTools(true);                                                
                                             }}
                                             onDragEnd={(_event, info) => {
                                                 setFrontCards(prevCards =>
@@ -395,9 +395,9 @@ function Edit() {
                                             }}
                                             onDoubleClick={() => {
                                                 openSidePanel("text");
+                                                setText(text.input);
                                                 setTextIndex(textIndex);
                                                 setTextTools(true);
-                                                setText(text.input);
                                             }}
                                             onDragEnd={(_event, info) => {
                                                 setBackCards(prevCards =>
