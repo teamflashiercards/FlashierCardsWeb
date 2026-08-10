@@ -1,7 +1,6 @@
 import Navbar from "../Navbar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
-import { faChevronRight } from "@fortawesome/free-solid-svg-icons/faChevronRight";
+import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useRef, useState } from "react";
 import styles from "../../styles/Deck.module.css";
 import { useParams } from "react-router-dom";
@@ -14,11 +13,10 @@ import GifSidePanel from "./GifSidePanel";
 import EditToolbar from "./EditToolbar";
 import type Giphy from "../../interfaces/Giphy";
 import { motion } from "motion/react";
-import { fetchDeckName, fetchDeckContent } from "./EditFetchHelpers";
 
 /*
     Description: This component allows the user create, update, or delete deck content.
-    Last updated: 8/3/2026
+    Last updated: 8/9/2026
 */
 
 function Edit() {
@@ -58,6 +56,85 @@ function Edit() {
     const [stickerTools, setStickerTools] = useState(false);
     const [stickerResults, setStickerResults] = useState<Giphy[] | null>([]);
     const [stickerIndex, setStickerIndex] = useState<number | null>(null);
+
+    // function to fetch deck name from Supabase
+    const fetchDeckName = async () => {
+        setLoading(true);
+
+        try {
+            const response = await fetch(`${import.meta.env.VITE_FLASHIER_CARDS_API}/api/deck/${deckId}`, {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${session.access_token}`
+                }
+            });
+
+            const data = await response.json();
+            if (!response.ok) throw new Error(data.message);
+            setDeckName(data[0].name);
+        
+        } catch(error: any) {
+            setError({ status: true, message: error.message });
+
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // function to fetch all the deck content from Supabase
+    const fetchDeckContent = async () => {
+        setLoading(true);
+
+        try {
+            const response = await fetch(`${import.meta.env.VITE_FLASHIER_CARDS_API}/api/deck/${deckId}/content`, {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${session.access_token}`
+                }
+            });
+
+            const data = await response.json();
+            if (!response.ok) throw new Error(data.message);
+
+            setFrontCards(data.front_cards);
+            setBackCards(data.back_cards);
+            setTotal(data.front_cards.length);
+
+        } catch(error: any) {
+            setError({ status: true, message: error.message });
+
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // function to save deck content in Supabase
+    const saveDeckContent = async () => {
+        setLoading(true);
+    
+        try {
+            const response = await fetch(`${import.meta.env.VITE_FLASHIER_CARDS_API}/api/deck/${deckId}/save`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${session.access_token}`
+                },
+                body: JSON.stringify({
+                    front_cards: frontCards,
+                    back_cards: backCards
+                })
+            });
+    
+            const data = await response.json();
+            if (!response.ok) throw new Error(data.message);
+    
+        } catch(error: any) {
+            setError({ status: true, message: error.message });
+    
+        } finally {
+            setLoading(false);
+        }
+    };
 
     function flipCard() {
         if (cardRef.current) {
@@ -131,8 +208,8 @@ function Edit() {
     }
 
     useEffect(() => {
-        fetchDeckName(session, setLoading, setError, deckId, setDeckName);
-        fetchDeckContent(session, setLoading, setError, deckId, setFrontCards, setBackCards, setTotal);
+        fetchDeckName();
+        fetchDeckContent();
     }, []);
 
     return (
@@ -166,6 +243,7 @@ function Edit() {
                     setCardNum={setCardNum}
                     session={session}
                     setLoading={setLoading}
+                    saveDeckContent={saveDeckContent}
                 />
                 <div className={styles.mainPanel}>
                     <div className={styles.deck}>

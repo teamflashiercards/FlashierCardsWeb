@@ -2,7 +2,7 @@ import styles from "../../styles/Deck.module.css";
 import BlueTooltip from "../BlueTooltip";
 import { faPlus, faT, faHeart, faTrash, faFloppyDisk, faCircleXmark, faRightLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { createCard, deleteCard, saveDeckContent } from "./EditToolbarHelpers";
+import { createCard, deleteCard } from "./EditToolbarHelpers";
 
 /*
     Description: This is a sub-component that contains code for the Edit component's toolbar.
@@ -10,7 +10,7 @@ import { createCard, deleteCard, saveDeckContent } from "./EditToolbarHelpers";
 */
 
 function EditToolbar (props: any) {
-    const { showSidePanel, flipCard, closeSidePanel, deckId, total, setTotal, frontCards, setFrontCards, backCards, setBackCards, setError, cardNum, setCardNum, session, setLoading } = props;
+    const { showSidePanel, flipCard, closeSidePanel, deckId, total, setTotal, frontCards, setFrontCards, backCards, setBackCards, setError, cardNum, setCardNum, session, setLoading, saveDeckContent } = props;
     return (
         <div className={styles.toolbar}>
             <BlueTooltip title="Add Card">
@@ -95,7 +95,7 @@ function EditToolbar (props: any) {
                 <button
                     type="button"
                     className={styles.toolOption} 
-                    onClick={() => saveDeckContent(session, setLoading, setError, deckId, frontCards, backCards)}                       
+                    onClick={saveDeckContent}                       
                 >
                     <span className={styles.shadow}></span>
                     <span className={styles.edge}></span>

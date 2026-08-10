@@ -59,30 +59,3 @@ function updateCardNumbers(
         ))
     );
 };
-
-export const saveDeckContent = async (session: any, setLoading: any, setError: any, deckId: number, frontCards: Card[], backCards: Card[]) => {
-    setLoading(true);
-
-    try {
-        const response = await fetch(`${import.meta.env.VITE_FLASHIER_CARDS_API}/api/deck/${deckId}/save`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${session.access_token}`
-            },
-            body: JSON.stringify({
-                front_cards: frontCards,
-                back_cards: backCards
-            })
-        });
-
-        const data = await response.json();
-        if (!response.ok) throw new Error(data.message);
-
-    } catch(error: any) {
-        setError({ status: true, message: error.message });
-
-    } finally {
-        setLoading(false);
-    }
-};
