@@ -13,6 +13,7 @@ import GifSidePanel from "./GifSidePanel";
 import EditToolbar from "./EditToolbar";
 import type Giphy from "../../interfaces/Giphy";
 import { motion } from "motion/react";
+import { createCard, deleteCard } from "./EditCardHelpers";
 
 /*
     Description: This component allows the user create, update, or delete deck content.
@@ -143,19 +144,23 @@ function Edit() {
         }
     }
 
+    // TODO: may be set all tools to null
     function showNextCard() {
         if ((cardNum + 1) <= total) {
             showTextTools(false, null, "");
             setCardNum(cardNum + 1);
+
             if (cardSide === "Back") {
                 flipCard();
             }
         }
     }
 
+    // TODO: may be set all tools to null
     function showPrevCard() {
         if ((cardNum - 1) >= 1) {
             showTextTools(false, null, "");
+
             setCardNum(cardNum - 1);
             if (cardSide === "Back") {
                 flipCard();
@@ -163,14 +168,16 @@ function Edit() {
         }
     }
 
-    function showSidePanel(panel: string) {
-        // close any open side panels first
+    function openSidePanel(panel: string) {
+        // close any open side panel first
         closeSidePanel();
 
         if (panel === "text") {
             setTextPanel(true);
+
         } else if (panel === "gif") {
             setGifPanel(true);
+            
         } else if (panel === "sticker") {
             setStickerPanel(true);
         }
@@ -180,9 +187,11 @@ function Edit() {
         if (textPanel) {
             setTextPanel(false);
             showTextTools(false, null, "");
+
         } else if (gifPanel) {
             setGifPanel(false);
             showGifTools(false, null, null);
+
         } else if (stickerPanel) {
             setStickerPanel(false);
             showStickerTools(false, null, null);
@@ -228,22 +237,12 @@ function Edit() {
                         <></>
                 }
                 <EditToolbar
-                    showSidePanel={showSidePanel}
+                    createCard={() => createCard(deckId, total, setTotal, frontCards, setFrontCards, backCards, setBackCards, setError)}
+                    openSidePanel={openSidePanel}
+                    deleteCard={() => deleteCard(total, setTotal, cardNum, setCardNum, setFrontCards, setBackCards)}
                     flipCard={flipCard}
-                    closeSidePanel={closeSidePanel}
-                    deckId={deckId}
-                    total={total}
-                    setTotal={setTotal}
-                    frontCards={frontCards}
-                    setFrontCards={setFrontCards}
-                    backCards={backCards}
-                    setBackCards={setBackCards}
-                    setError={setError}
-                    cardNum={cardNum}
-                    setCardNum={setCardNum}
-                    session={session}
-                    setLoading={setLoading}
                     saveDeckContent={saveDeckContent}
+                    closeSidePanel={closeSidePanel}
                 />
                 <div className={styles.mainPanel}>
                     <div className={styles.deck}>
@@ -274,7 +273,7 @@ function Edit() {
                                                 y: text.y
                                             }}
                                             onDoubleClick={() => {
-                                                showSidePanel("text");
+                                                openSidePanel("text");
                                                 showTextTools(true, textIndex, text.input);
                                             }}
                                             onDragEnd={(_event, info) => {
@@ -319,7 +318,7 @@ function Edit() {
                                                 cursor: "grabbing"
                                             }}
                                             onDoubleClick={() => {
-                                                showSidePanel("gif");
+                                                openSidePanel("gif");
                                                 showGifTools(true, gifIndex, gifResults);
                                             }}
                                             onDragEnd={(_event, info) => {
@@ -362,7 +361,7 @@ function Edit() {
                                                 cursor: "grabbing"
                                             }}
                                             onDoubleClick={() => {
-                                                showSidePanel("sticker");
+                                                openSidePanel("sticker");
                                                 showStickerTools(true, stickerIndex, stickerResults);
                                             }}
                                             onDragEnd={(_event, info) => {
@@ -396,7 +395,7 @@ function Edit() {
                                                 y: text.y
                                             }}
                                             onDoubleClick={() => {
-                                                showSidePanel("text");
+                                                openSidePanel("text");
                                                 showTextTools(true, textIndex, text.input);
                                             }}
                                             onDragEnd={(_event, info) => {
@@ -441,7 +440,7 @@ function Edit() {
                                                 cursor: "grabbing"
                                             }}
                                             onDoubleClick={() => {
-                                                showSidePanel("gif");
+                                                openSidePanel("gif");
                                                 showGifTools(true, gifIndex, gifResults);
                                             }}
                                             onDragEnd={(_event, info) => {
@@ -484,7 +483,7 @@ function Edit() {
                                                 cursor: "grabbing"
                                             }}
                                             onDoubleClick={() => {
-                                                showSidePanel("sticker");
+                                                openSidePanel("sticker");
                                                 showStickerTools(true, stickerIndex, stickerResults);
                                             }}
                                             onDragEnd={(_event, info) => {

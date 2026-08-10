@@ -2,22 +2,22 @@ import styles from "../../styles/Deck.module.css";
 import BlueTooltip from "../BlueTooltip";
 import { faPlus, faT, faHeart, faTrash, faFloppyDisk, faCircleXmark, faRightLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { createCard, deleteCard } from "./EditToolbarHelpers";
 
 /*
     Description: This is a sub-component that contains code for the Edit component's toolbar.
-    Last updated: 7/26/2026
+    Last updated: 8/9/2026
 */
 
 function EditToolbar (props: any) {
-    const { showSidePanel, flipCard, closeSidePanel, deckId, total, setTotal, frontCards, setFrontCards, backCards, setBackCards, setError, cardNum, setCardNum, session, setLoading, saveDeckContent } = props;
+    const { createCard, openSidePanel, deleteCard, flipCard, saveDeckContent, closeSidePanel } = props;
+
     return (
         <div className={styles.toolbar}>
             <BlueTooltip title="Add Card">
                 <button
                     type="button"
                     className={styles.toolOption}
-                    onClick={() => createCard(deckId, total, setTotal, frontCards, setFrontCards, backCards, setBackCards, setError)}
+                    onClick={createCard}
                 >
                     <span className={styles.shadow}></span>
                     <span className={styles.edge}></span>
@@ -30,7 +30,7 @@ function EditToolbar (props: any) {
                 <button
                     type="button"
                     className={styles.toolOption}
-                    onClick={() => showSidePanel("text")}
+                    onClick={() => openSidePanel("text")}
                 >
                     <span className={styles.shadow}></span>
                     <span className={styles.edge}></span>
@@ -43,7 +43,7 @@ function EditToolbar (props: any) {
                 <button
                     type="button"
                     className={styles.toolOption}
-                    onClick={() => showSidePanel("gif")}
+                    onClick={() => openSidePanel("gif")}
                 >
                     <span className={styles.shadow}></span>
                     <span className={styles.edge}></span>
@@ -56,7 +56,7 @@ function EditToolbar (props: any) {
                 <button
                     type="button"
                     className={styles.toolOption}
-                    onClick={() => showSidePanel("sticker")}
+                    onClick={() => openSidePanel("sticker")}
                 >
                     <span className={styles.shadow}></span>
                     <span className={styles.edge}></span>
@@ -69,7 +69,7 @@ function EditToolbar (props: any) {
                 <button
                     type="button"
                     className={styles.toolOption}
-                    onClick={() => deleteCard(total, setTotal, cardNum, setCardNum, setFrontCards, setBackCards)}
+                    onClick={deleteCard}
                 >
                     <span className={styles.shadow}></span>
                     <span className={styles.edge}></span>
@@ -82,7 +82,7 @@ function EditToolbar (props: any) {
                 <button
                     type="button"
                     className={styles.toolOption}
-                    onClick={() => flipCard()}
+                    onClick={flipCard}
                 >
                     <span className={styles.shadow}></span>
                     <span className={styles.edge}></span>
