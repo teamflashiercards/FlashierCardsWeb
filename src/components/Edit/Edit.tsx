@@ -267,6 +267,12 @@ function Edit() {
                                                 x: text.x,
                                                 y: text.y
                                             }}
+                                            whileHover={{
+                                                cursor: "grab",
+                                            }}
+                                            whileDrag={{
+                                                cursor: "grabbing"
+                                            }}
                                             onDoubleClick={() => {
                                                 openSidePanel("text");
                                                 setText(text.input);
@@ -307,11 +313,10 @@ function Edit() {
                                             }}
                                             whileHover={{
                                                 cursor: "grab",
-                                                boxShadow: "0px 0px 20px 5px rgba(78, 119, 162, 0.65)",
+                                                boxShadow: "0px 0px 20px 5px rgba(78, 119, 162, 0.33)",
                                                 scale: 1.05
                                             }}
                                             whileDrag={{
-                                                scale: 1.03,
                                                 cursor: "grabbing"
                                             }}
                                             onDoubleClick={() => {
@@ -351,11 +356,10 @@ function Edit() {
                                             }}
                                             whileHover={{
                                                 cursor: "grab",
-                                                boxShadow: "0px 0px 20px 5px rgba(78, 119, 162, 0.65)",
+                                                boxShadow: "0px 0px 20px 5px rgba(78, 119, 162, 0.33)",
                                                 scale: 1.05
                                             }}
                                             whileDrag={{
-                                                scale: 1.03,
                                                 cursor: "grabbing"
                                             }}
                                             onDoubleClick={() => {
@@ -392,6 +396,12 @@ function Edit() {
                                                 color: text.color,
                                                 x: text.x,
                                                 y: text.y
+                                            }}
+                                            whileHover={{
+                                                cursor: "grab",
+                                            }}
+                                            whileDrag={{
+                                                cursor: "grabbing"
                                             }}
                                             onDoubleClick={() => {
                                                 openSidePanel("text");
@@ -433,11 +443,10 @@ function Edit() {
                                             }}
                                             whileHover={{
                                                 cursor: "grab",
-                                                boxShadow: "0px 0px 20px 5px rgba(78, 119, 162, 0.65)",
+                                                boxShadow: "0px 0px 20px 5px rgba(78, 119, 162, 0.33)",
                                                 scale: 1.05
                                             }}
                                             whileDrag={{
-                                                scale: 1.03,
                                                 cursor: "grabbing"
                                             }}
                                             onDoubleClick={() => {
@@ -477,11 +486,10 @@ function Edit() {
                                             }}
                                             whileHover={{
                                                 cursor: "grab",
-                                                boxShadow: "0px 0px 20px 5px rgba(78, 119, 162, 0.65)",
+                                                boxShadow: "0px 0px 20px 5px rgba(78, 119, 162, 0.33)",
                                                 scale: 1.05
                                             }}
                                             whileDrag={{
-                                                scale: 1.03,
                                                 cursor: "grabbing"
                                             }}
                                             onDoubleClick={() => {
