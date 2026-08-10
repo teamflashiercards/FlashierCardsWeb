@@ -2,7 +2,6 @@ import {useState} from 'react';
 import GiphyLogo from '../../assets/giphyLogo.png'
 import styles from "../../styles/Deck.module.css";
 import type Giphy from "../../interfaces/Giphy";
-import { setFrontCard, setBackCard } from './EditContentHelpers';
 import type GifSidePanelProps from '../../interfaces/GifSidePanelProps';
 
 /*
@@ -11,7 +10,7 @@ import type GifSidePanelProps from '../../interfaces/GifSidePanelProps';
 */
 
 function GifSidePanel (props: GifSidePanelProps) {
-    const { setLoading, setError, gifTools, cardSide, cardNum, frontCards, setFrontCards, backCards, setBackCards, deleteGif } = props;
+    const { setLoading, setError, gifTools, createGif, deleteGif } = props;
     const [gifResults, setGifResults] = useState<Giphy[] | null>([]);
     const [giphyQuery, setGiphyQuery] = useState("");    
 
@@ -41,17 +40,6 @@ function GifSidePanel (props: GifSidePanelProps) {
         }
     };
 
-    // function create gifs with helpers in EditHelpers
-    function createGif(gifUrl: string) {
-        if (cardSide === "Front") {
-            let content = {id: null, card_id: frontCards[cardNum - 1].id, url: gifUrl, width: 120, height: 120, x: 50, y: 50};
-            setFrontCard("gif", content, setFrontCards, cardNum);
-        } else {
-            let content = {id: null, card_id: backCards[cardNum - 1].id, url: gifUrl, width: 120, height: 120, x: 50, y: 50};
-            setBackCard("gif", content, setBackCards, cardNum);
-        }
-    }
-
     return (
         <div className={styles.sidePanel}>
             <div style={{ display: (gifTools) ? "flex" : "none" }}>
@@ -77,7 +65,7 @@ function GifSidePanel (props: GifSidePanelProps) {
                             key={gif.id}
                             src={gif.url}
                             alt={gif.title}
-                            onClick={() => createGif(gif.url)}
+                            onClick={() => createGif("gif", {url: gif.url, width: 120, height: 120, x: 50, y: 50})}
                         />
                     ))}
                 </div>

@@ -1,6 +1,5 @@
 import type Card from "../../interfaces/Card";
 import styles from "../../styles/Deck.module.css";
-import { setFrontCard, setBackCard } from "./EditContentHelpers";
 import type TextSidePanelProps from "../../interfaces/TextSidePanelProps";
 
 /*
@@ -9,18 +8,7 @@ import type TextSidePanelProps from "../../interfaces/TextSidePanelProps";
 */
 
 function TextSidePanel(props: TextSidePanelProps) {
-    const { textTools, cardSide, cardNum, text, setText, textIndex, frontCards, setFrontCards, backCards, setBackCards, deleteText } = props;
-    
-    // function create text with helpers in EditHelpers
-    function createText(fontSize: number, width: number) {
-        if (cardSide === "Front") {
-            let content = {id: null, card_id: frontCards[cardNum - 1].id, input: "Double click to edit text", width: width, x: 30, y: 30, font_size: fontSize, color: "#201002"};
-            setFrontCard("text", content, setFrontCards, cardNum);
-        } else {
-            let content = {id: null, card_id: backCards[cardNum - 1].id, input: "Double click to edit text", width: width, x: 30, y: 30, font_size: fontSize, color: "#201002"};
-            setBackCard("text", content, setBackCards, cardNum);
-        }
-    }
+    const { textTools, cardSide, cardNum, text, setText, textIndex, setFrontCards, setBackCards, createText, deleteText } = props;
 
     // function to update text color or input with helper function below
     function updateText(updateType: string, updateValue: string) {
@@ -82,9 +70,9 @@ function TextSidePanel(props: TextSidePanelProps) {
             <div>
                 <div className={styles.sidePanelTitle}>Text Size</div>
                 <div className={styles.sidePanelOptions} style={{ marginBottom: "0rem" }}>
-                    <button className={styles.sidePanelBtn} onClick={() => createText(18, 300)}>Small</button>
-                    <button className={styles.sidePanelBtn} onClick={() => createText(28, 400)}>Medium</button>
-                    <button className={styles.sidePanelBtn} onClick={() => createText(38, 600)}>Large</button>
+                    <button className={styles.sidePanelBtn} onClick={() => createText("text", {input: "Double click to edit text", width: 300, x: 30, y: 30, font_size: 18, color: "#201002"})}>Small</button>
+                    <button className={styles.sidePanelBtn} onClick={() => createText("text", {input: "Double click to edit text", width: 400, x: 30, y: 30, font_size: 28, color: "#201002"})}>Medium</button>
+                    <button className={styles.sidePanelBtn} onClick={() => createText("text", {input: "Double click to edit text", width: 600, x: 30, y: 30, font_size: 38, color: "#201002"})}>Large</button>
                 </div>
             </div>
         </div>

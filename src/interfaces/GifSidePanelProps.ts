@@ -10,11 +10,6 @@ export default interface GifSidePanelProps {
     setLoading: Dispatch<SetStateAction<boolean>>,
     setError: Dispatch<SetStateAction<Error>>,
     gifTools: boolean,
-    cardSide: string, 
-    cardNum: number,
-    frontCards: Card[], 
-    setFrontCards: Dispatch<SetStateAction<Card[]>>, 
-    backCards: Card[], 
-    setBackCards: Dispatch<SetStateAction<Card[]>>,
+    createGif: any,
     deleteGif: any
 };

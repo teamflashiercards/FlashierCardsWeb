@@ -8,9 +8,8 @@ export default interface TextSidePanelProps {
     text: string,
     setText: Dispatch<SetStateAction<string>>,
     textIndex: number | null,
-    frontCards: Card[],
     setFrontCards: any,
-    backCards: Card[],
     setBackCards: any,
+    createText: any,
     deleteText: any
 };

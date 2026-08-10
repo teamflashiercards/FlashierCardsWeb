@@ -3,7 +3,6 @@ import GiphyLogo from "../../assets/giphyLogo.png";
 import { useState } from "react";
 import type Giphy from "../../interfaces/Giphy";
 import type StickerSidePanelProps from "../../interfaces/StickerSidePanelProps";
-import { setFrontCard, setBackCard } from './EditContentHelpers';
 
 /*
     Description: This is a sub-component that contains code for the sticker side panel in Edit component.
@@ -11,7 +10,7 @@ import { setFrontCard, setBackCard } from './EditContentHelpers';
 */
 
 function StickerSidePanel(props: StickerSidePanelProps) {
-    const { setLoading, setError, stickerTools, cardSide, cardNum, frontCards, setFrontCards, backCards, setBackCards, deleteSticker } = props;
+    const { setLoading, setError, stickerTools, createSticker, deleteSticker } = props;
     const [giphyQuery, setGiphyQuery] = useState("");
     const [stickerResults, setStickerResults] = useState<Giphy[] | null>([]);
 
@@ -41,17 +40,6 @@ function StickerSidePanel(props: StickerSidePanelProps) {
         }
     };
 
-    // function create stickers with helpers in EditHelpers
-    function createSticker(stickerUrl: string) {
-        if (cardSide === "Front") {
-            let content = {id: null, card_id: frontCards[cardNum - 1].id, url: stickerUrl, width: 120, height: 120, x: 50, y: 50};
-            setFrontCard("sticker", content, setFrontCards, cardNum);
-        } else {
-            let content = {id: null, card_id: backCards[cardNum - 1].id, url: stickerUrl, width: 120, height: 120, x: 50, y: 50};
-            setBackCard("sticker", content, setBackCards, cardNum);
-        }
-    }
-
     return (
         <div className={styles.sidePanel}>
             <div style={{ display: (stickerTools) ? "flex" : "none" }}>
@@ -77,7 +65,7 @@ function StickerSidePanel(props: StickerSidePanelProps) {
                             key={sticker.id}
                             src={sticker.url}
                             alt={sticker.title}
-                            onClick={() => createSticker(sticker.url)}
+                            onClick={() => createSticker("sticker", {url: sticker.url, width: 120, height: 120, x: 50, y: 50})}
                         />
                     ))}
                 </div>

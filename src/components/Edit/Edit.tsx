@@ -13,7 +13,7 @@ import GifSidePanel from "./GifSidePanel";
 import EditToolbar from "./EditToolbar";
 import { motion } from "motion/react";
 import { createCard, deleteCard } from "./EditCardHelpers";
-import { deleteFrontCard, deleteBackCard } from "./EditContentHelpers";
+import { setFrontCard, setBackCard, deleteFrontCard, deleteBackCard } from "./EditContentHelpers";
 
 /*
     Description: This component allows the user create, update, or delete deck content.
@@ -134,6 +134,17 @@ function Edit() {
             setLoading(false);
         }
     };
+
+    // function to create text, gifs, and stickers with helpers in EditHelpers
+    function createContent(contentType: string, initialContent: any) {
+        if (cardSide === "Front") {
+            let content = {id: null, card_id: frontCards[cardNum - 1].id, ...initialContent};
+            setFrontCard(contentType, content, setFrontCards, cardNum);
+        } else {
+            let content = {id: null, card_id: backCards[cardNum - 1].id, ...initialContent};
+            setBackCard(contentType, content, setBackCards, cardNum);
+        }
+    }
 
     // function to delete text, gifs, and stickers with helpers in EditHelpers
     function deleteContent(contentType: string, index: number) {
@@ -532,10 +543,9 @@ function Edit() {
                             text={text}
                             setText={setText}
                             textIndex={textIndex}
-                            frontCards={frontCards}
                             setFrontCards={setFrontCards}
-                            backCards={backCards}
                             setBackCards={setBackCards}
+                            createText={createContent}
                             deleteText={() => deleteContent("text", textIndex!)}
                         />
                     }
@@ -544,12 +554,7 @@ function Edit() {
                             setLoading={setLoading}
                             setError={setError}
                             gifTools={gifTools}
-                            cardSide={cardSide}
-                            cardNum={cardNum}
-                            frontCards={frontCards}
-                            setFrontCards={setFrontCards}
-                            backCards={backCards}
-                            setBackCards={setBackCards}
+                            createGif={createContent}
                             deleteGif={() => deleteContent("gif", gifIndex!)}
                         />
                     }
@@ -558,12 +563,7 @@ function Edit() {
                             setLoading={setLoading}
                             setError={setError}
                             stickerTools={stickerTools}
-                            cardSide={cardSide}
-                            cardNum={cardNum}
-                            frontCards={frontCards}
-                            setFrontCards={setFrontCards}
-                            backCards={backCards}
-                            setBackCards={setBackCards}
+                            createSticker={createContent}
                             deleteSticker={() => deleteContent("sticker", stickerIndex!)}
                         />
                     }
