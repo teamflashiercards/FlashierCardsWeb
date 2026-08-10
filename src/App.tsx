@@ -14,7 +14,7 @@ import Theme from "./components/Profile/Theme";
 import ChangePassword from "./components/Profile/ChangePassword";
 import DeleteAccount from "./components/Profile/DeleteAccount";
 import About from "./components/About";
-import Canvas from "./Canvas";
+//import Canvas from "./test/Canvas";
 // import TestEdit from "./test/TestEdit";
 
 /*
@@ -38,7 +38,7 @@ function App() {
 
                 {/* public test routes */}
                 {/* <Route path="/testEdit" element={<TestEdit />} /> */}
-                <Route path="/testCanvas" element={<Canvas />} />
+                {/* <Route path="/testCanvas" element={<Canvas />} /> */}
                 
                 {/* private routes */}
                 <Route element={<PrivateRoute />}>
