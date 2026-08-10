@@ -2,7 +2,7 @@ import {useState} from 'react';
 import GiphyLogo from '../../assets/giphyLogo.png'
 import styles from "../../styles/Deck.module.css";
 import type Giphy from "../../interfaces/Giphy";
-import { setFrontCard, setBackCard, deleteFrontCard, deleteBackCard } from './EditContentHelpers';
+import { setFrontCard, setBackCard } from './EditContentHelpers';
 import type GifSidePanelProps from '../../interfaces/GifSidePanelProps';
 
 /*
@@ -11,7 +11,7 @@ import type GifSidePanelProps from '../../interfaces/GifSidePanelProps';
 */
 
 function GifSidePanel (props: GifSidePanelProps) {
-    const { setLoading, setError, gifTools, showGifTools, cardSide, cardNum, gifIndex, frontCards, setFrontCards, backCards, setBackCards } = props;
+    const { setLoading, setError, gifTools, cardSide, cardNum, frontCards, setFrontCards, backCards, setBackCards, deleteGif } = props;
     const [gifResults, setGifResults] = useState<Giphy[] | null>([]);
     const [giphyQuery, setGiphyQuery] = useState("");    
 
@@ -52,20 +52,10 @@ function GifSidePanel (props: GifSidePanelProps) {
         }
     }
 
-    // function to delete gifs with helpers in EditHelpers
-    function deleteGif() {
-        if (cardSide === "Front") {
-            deleteFrontCard("gif", gifIndex!, setFrontCards, cardNum);
-        } else {
-            deleteBackCard("gif", gifIndex!, setBackCards, cardNum);
-        }
-        showGifTools(false, null, gifResults);
-    }
-
     return (
         <div className={styles.sidePanel}>
             <div style={{ display: (gifTools) ? "flex" : "none" }}>
-                <div className={styles.sidePanelTitle}>Giph Deletion</div>
+                <div className={styles.sidePanelTitle}>Gif Deletion</div>
                 <div className={styles.sidePanelOptions}>
                     <button className={styles.sidePanelBtn} onClick={deleteGif}>Delete</button>
                 </div>

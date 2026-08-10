@@ -1,6 +1,6 @@
 import type Card from "../../interfaces/Card";
 import styles from "../../styles/Deck.module.css";
-import { setFrontCard, setBackCard, deleteFrontCard, deleteBackCard } from "./EditContentHelpers";
+import { setFrontCard, setBackCard } from "./EditContentHelpers";
 import type TextSidePanelProps from "../../interfaces/TextSidePanelProps";
 
 /*
@@ -9,7 +9,7 @@ import type TextSidePanelProps from "../../interfaces/TextSidePanelProps";
 */
 
 function TextSidePanel(props: TextSidePanelProps) {
-    const { textTools, showTextTools, cardSide, cardNum, text, setText, textIndex, frontCards, setFrontCards, backCards, setBackCards } = props;
+    const { textTools, cardSide, cardNum, text, setText, textIndex, frontCards, setFrontCards, backCards, setBackCards, deleteText } = props;
     
     // function create text with helpers in EditHelpers
     function createText(fontSize: number, width: number) {
@@ -51,16 +51,6 @@ function TextSidePanel(props: TextSidePanelProps) {
                 }
             })} : card
         );
-    }
-
-    // function to delete text with helpers in util
-    function deleteText() {
-        if (cardSide === "Front") {
-            deleteFrontCard("text", textIndex!, setFrontCards, cardNum);
-        } else {
-            deleteBackCard("text", textIndex!, setBackCards, cardNum);
-        }
-        showTextTools(false, null, "");
     }
 
     return (

@@ -11,9 +11,9 @@ import StickerSidePanel from "./StickerSidePanel";
 import TextSidePanel from "./TextSidePanel";
 import GifSidePanel from "./GifSidePanel";
 import EditToolbar from "./EditToolbar";
-import type Giphy from "../../interfaces/Giphy";
 import { motion } from "motion/react";
 import { createCard, deleteCard } from "./EditCardHelpers";
+import { deleteFrontCard, deleteBackCard } from "./EditContentHelpers";
 
 /*
     Description: This component allows the user create, update, or delete deck content.
@@ -46,16 +46,14 @@ function Edit() {
     // text related variables
     const [textTools, setTextTools] = useState(false);
     const [text, setText] = useState("");
-    const [textIndex, setTextIndex] = useState<number | null>();
+    const [textIndex, setTextIndex] = useState<number | null>(null);
     
     // gif related variables
     const [gifTools, setGifTools] = useState(false);
-    const [gifResults, setGifResults] = useState<Giphy[] | null>([]);
     const [gifIndex, setGifIndex] = useState<number | null>(null);
 
     // sticker realted tools
     const [stickerTools, setStickerTools] = useState(false);
-    const [stickerResults, setStickerResults] = useState<Giphy[] | null>([]);
     const [stickerIndex, setStickerIndex] = useState<number | null>(null);
 
     // function to fetch deck name from Supabase
@@ -137,6 +135,16 @@ function Edit() {
         }
     };
 
+    // function to delete text, gifs, and stickers with helpers in EditHelpers
+    function deleteContent(contentType: string, index: number) {
+        if (cardSide === "Front") {
+            deleteFrontCard(contentType, index, setFrontCards, cardNum);
+        } else {
+            deleteBackCard(contentType, index, setBackCards, cardNum);
+        }
+        hideSidePanelTools();
+    }
+
     function flipCard() {
         if (cardRef.current) {
             cardRef.current.classList.toggle(styles.flip);
@@ -144,10 +152,9 @@ function Edit() {
         }
     }
 
-    // TODO: may be set all tools to null
     function showNextCard() {
         if ((cardNum + 1) <= total) {
-            showTextTools(false, null, "");
+            hideSidePanelTools();
             setCardNum(cardNum + 1);
 
             if (cardSide === "Back") {
@@ -156,12 +163,11 @@ function Edit() {
         }
     }
 
-    // TODO: may be set all tools to null
     function showPrevCard() {
         if ((cardNum - 1) >= 1) {
-            showTextTools(false, null, "");
-
+            hideSidePanelTools();
             setCardNum(cardNum - 1);
+
             if (cardSide === "Back") {
                 flipCard();
             }
@@ -184,36 +190,34 @@ function Edit() {
     }
 
     function closeSidePanel() {
+        // hide any tools open in side panels first
+        hideSidePanelTools();
+
         if (textPanel) {
             setTextPanel(false);
-            showTextTools(false, null, "");
 
         } else if (gifPanel) {
             setGifPanel(false);
-            showGifTools(false, null, null);
 
         } else if (stickerPanel) {
             setStickerPanel(false);
-            showStickerTools(false, null, null);
         }
     }
-    
-    function showTextTools(request: boolean, textIndex: number | null, input: string) {
-        setText(input);
-        setTextIndex(textIndex);
-        setTextTools(request); 
-    }
 
-    function showGifTools(request: boolean, gifIndex: number | null, gifResults: Giphy[] | null) {
-        setGifIndex(gifIndex);
-        setGifTools(request);
-        setGifResults(gifResults);
-    } 
+    function hideSidePanelTools() {
+        if (textPanel) {
+            setTextIndex(null);
+            setTextTools(false); 
+            setText("");
 
-    function showStickerTools(request: boolean, stickerIndex: number | null, stickerResults: Giphy[] | null) {
-        setStickerIndex(stickerIndex);
-        setStickerTools(request);
-        setStickerResults(stickerResults);
+        } else if (gifPanel) {
+            setGifIndex(null);
+            setGifTools(false);
+
+        } else if (stickerPanel) {
+            setStickerIndex(null);
+            setStickerTools(false);
+        }
     }
 
     useEffect(() => {
@@ -249,15 +253,6 @@ function Edit() {
                         <div className={styles.card} ref={cardRef}>
                             <div className={styles.cardInner}>
                                 <div className={styles.cardFront}>
-                                    {/* <Stage
-                                        width={800}
-                                        height={400}
-                                        onClick={(e) => {
-                                            if (e.target === e.target.getStage()) {
-                                                showTextTools(false, null, "");
-                                            }
-                                        }}
-                                    ></Stage> */}
                                     {frontCards[cardNum - 1]?.text?.map((text, textIndex) =>
                                         <motion.p
                                             key={textIndex}
@@ -274,7 +269,9 @@ function Edit() {
                                             }}
                                             onDoubleClick={() => {
                                                 openSidePanel("text");
-                                                showTextTools(true, textIndex, text.input);
+                                                setTextIndex(textIndex);
+                                                setTextTools(true);
+                                                setText(text.input);
                                             }}
                                             onDragEnd={(_event, info) => {
                                                 setFrontCards(prevCards =>
@@ -319,7 +316,8 @@ function Edit() {
                                             }}
                                             onDoubleClick={() => {
                                                 openSidePanel("gif");
-                                                showGifTools(true, gifIndex, gifResults);
+                                                setGifIndex(gifIndex);
+                                                setGifTools(true);
                                             }}
                                             onDragEnd={(_event, info) => {
                                                 setFrontCards(prevCards =>
@@ -362,7 +360,8 @@ function Edit() {
                                             }}
                                             onDoubleClick={() => {
                                                 openSidePanel("sticker");
-                                                showStickerTools(true, stickerIndex, stickerResults);
+                                                setStickerIndex(stickerIndex);
+                                                setStickerTools(true);
                                             }}
                                             onDragEnd={(_event, info) => {
                                                 setFrontCards(prevCards =>
@@ -396,7 +395,9 @@ function Edit() {
                                             }}
                                             onDoubleClick={() => {
                                                 openSidePanel("text");
-                                                showTextTools(true, textIndex, text.input);
+                                                setTextIndex(textIndex);
+                                                setTextTools(true);
+                                                setText(text.input);
                                             }}
                                             onDragEnd={(_event, info) => {
                                                 setBackCards(prevCards =>
@@ -441,7 +442,8 @@ function Edit() {
                                             }}
                                             onDoubleClick={() => {
                                                 openSidePanel("gif");
-                                                showGifTools(true, gifIndex, gifResults);
+                                                setGifIndex(gifIndex);
+                                                setGifTools(true);
                                             }}
                                             onDragEnd={(_event, info) => {
                                                 setBackCards(prevCards =>
@@ -484,7 +486,8 @@ function Edit() {
                                             }}
                                             onDoubleClick={() => {
                                                 openSidePanel("sticker");
-                                                showStickerTools(true, stickerIndex, stickerResults);
+                                                setStickerIndex(stickerIndex);
+                                                setStickerTools(true);
                                             }}
                                             onDragEnd={(_event, info) => {
                                                 setBackCards(prevCards =>
@@ -516,7 +519,6 @@ function Edit() {
                     { textPanel &&
                         <TextSidePanel
                             textTools={textTools}
-                            showTextTools={showTextTools}
                             cardSide={cardSide}
                             cardNum={cardNum}
                             text={text}
@@ -526,6 +528,7 @@ function Edit() {
                             setFrontCards={setFrontCards}
                             backCards={backCards}
                             setBackCards={setBackCards}
+                            deleteText={() => deleteContent("text", textIndex!)}
                         />
                     }
                     { gifPanel &&
@@ -533,14 +536,13 @@ function Edit() {
                             setLoading={setLoading}
                             setError={setError}
                             gifTools={gifTools}
-                            showGifTools={showGifTools}
                             cardSide={cardSide}
                             cardNum={cardNum}
-                            gifIndex={gifIndex}
                             frontCards={frontCards}
                             setFrontCards={setFrontCards}
                             backCards={backCards}
                             setBackCards={setBackCards}
+                            deleteGif={() => deleteContent("gif", gifIndex!)}
                         />
                     }
                     { stickerPanel &&
@@ -548,14 +550,13 @@ function Edit() {
                             setLoading={setLoading}
                             setError={setError}
                             stickerTools={stickerTools}
-                            showStickerTools={showStickerTools}
                             cardSide={cardSide}
                             cardNum={cardNum}
-                            stickerIndex={stickerIndex}
                             frontCards={frontCards}
                             setFrontCards={setFrontCards}
                             backCards={backCards}
                             setBackCards={setBackCards}
+                            deleteSticker={() => deleteContent("sticker", stickerIndex!)}
                         />
                     }
                 </div>
