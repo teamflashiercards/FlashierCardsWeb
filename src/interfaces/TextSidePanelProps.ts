@@ -1,5 +1,4 @@
 import type { Dispatch, SetStateAction } from "react";
-import type Card from "./Card";
 
 export default interface TextSidePanelProps {
     textTools: boolean,

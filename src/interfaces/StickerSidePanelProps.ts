@@ -1,5 +1,4 @@
 import type { Dispatch, SetStateAction } from "react";
-import type Card from "./Card";
 
 interface Error {
     status: boolean, 
