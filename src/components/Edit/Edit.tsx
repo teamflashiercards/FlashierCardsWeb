@@ -14,6 +14,7 @@ import GifSidePanel from "./GifSidePanel";
 import EditToolbar from "./EditToolbar";
 import type Giphy from "../../interfaces/Giphy";
 import { motion } from "motion/react";
+import { fetchDeckName, fetchDeckContent } from "./EditFetchHelpers";
 
 /*
     Description: This component allows the user create, update, or delete deck content.
@@ -57,56 +58,6 @@ function Edit() {
     const [stickerTools, setStickerTools] = useState(false);
     const [stickerResults, setStickerResults] = useState<Giphy[] | null>([]);
     const [stickerIndex, setStickerIndex] = useState<number | null>(null);
-
-    const fetchDeckName = async () => {
-        setLoading(true);
-
-        try {
-            // get specific deck from Supabase
-            const response = await fetch(`${import.meta.env.VITE_FLASHIER_CARDS_API}/api/deck/${deckId}`, {
-                method: "GET",
-                headers: {
-                    "Authorization": `Bearer ${session.access_token}`
-                }
-            });
-
-            const data = await response.json();
-            if (!response.ok) throw new Error(data.message);
-            setDeckName(data[0].name);
-        
-        } catch(error: any) {
-            setError({ status: true, message: error.message });
-
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const fetchDeckContent = async () => {
-        setLoading(true);
-
-        try {
-            const response = await fetch(`${import.meta.env.VITE_FLASHIER_CARDS_API}/api/deck/${deckId}/content`, {
-                method: "GET",
-                headers: {
-                    "Authorization": `Bearer ${session.access_token}`
-                }
-            });
-
-            const data = await response.json();
-            if (!response.ok) throw new Error(data.message);
-
-            setFrontCards(data.front_cards);
-            setBackCards(data.back_cards);
-            setTotal(data.front_cards.length);
-
-        } catch(error: any) {
-            setError({ status: true, message: error.message });
-
-        } finally {
-            setLoading(false);
-        }
-    };
 
     const saveDeckContent = async () => {
         setLoading(true);
@@ -248,8 +199,8 @@ function Edit() {
     }
 
     useEffect(() => {
-        fetchDeckName();
-        fetchDeckContent();
+        fetchDeckName(session, setLoading, setError, deckId, setDeckName);
+        fetchDeckContent(session, setLoading, setError, deckId, setFrontCards, setBackCards, setTotal);
     }, []);
 
     return (
