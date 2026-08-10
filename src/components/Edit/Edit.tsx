@@ -59,45 +59,6 @@ function Edit() {
     const [stickerResults, setStickerResults] = useState<Giphy[] | null>([]);
     const [stickerIndex, setStickerIndex] = useState<number | null>(null);
 
-    const saveDeckContent = async () => {
-        setLoading(true);
-
-        try {
-            const response = await fetch(`${import.meta.env.VITE_FLASHIER_CARDS_API}/api/deck/${deckId}/save`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${session.access_token}`
-                },
-                body: JSON.stringify({
-                    front_cards: frontCards,
-                    back_cards: backCards
-                })
-            });
-
-            const data = await response.json();
-            if (!response.ok) throw new Error(data.message);
-            //fetchDeckContent();
-
-        } catch(error: any) {
-            setError({ status: true, message: error.message });
-
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    // card file
-    function createCard() {
-        if ((total + 1) <= 20) {
-            setTotal(total + 1);
-            setFrontCards([...frontCards, {id: null, deck_id: Number(deckId), card_num: (total + 1), card_side: "front", text: [], gif: [], sticker: []}]);
-            setBackCards([...backCards, {id: null, deck_id: Number(deckId), card_num: (total + 1), card_side: "back", text: [], gif: [], sticker: []}]);
-        } else {
-            setError({ status: true, message: "You can only create up to 20 cards in a deck." });
-        }
-    }
-
     function flipCard() {
         if (cardRef.current) {
             cardRef.current.classList.toggle(styles.flip);
@@ -121,35 +82,6 @@ function Edit() {
             setCardNum(cardNum - 1);
             if (cardSide === "Back") {
                 flipCard();
-            }
-        }
-    }
-
-    // card file
-    function updateCardNumbers() {
-        setFrontCards(prevCards =>
-            prevCards.map((card, index) => (
-                {...card, card_num: (index + 1)}
-            ))
-        );
-        setBackCards(prevCards =>
-            prevCards.map((card, index) => (
-                {...card, card_num: (index + 1)}
-            ))
-        );
-    }
-
-    // card file
-    function deleteCard() {
-        if ((total - 1) >= 1) {
-            setTotal(total - 1);
-            setFrontCards(prev => prev.filter((_, index) => index != (cardNum - 1)));
-            setBackCards(prev => prev.filter((_, index) => index != (cardNum - 1)));
-            updateCardNumbers();
-            if (cardNum > 1) {
-                setCardNum(cardNum - 1);
-            } else {
-                setCardNum(1);
             }
         }
     }
@@ -219,12 +151,21 @@ function Edit() {
                         <></>
                 }
                 <EditToolbar
-                    createCard={createCard}
                     showSidePanel={showSidePanel}
-                    deleteCard={deleteCard}
                     flipCard={flipCard}
-                    saveDeckContent={saveDeckContent}
                     closeSidePanel={closeSidePanel}
+                    deckId={deckId}
+                    total={total}
+                    setTotal={setTotal}
+                    frontCards={frontCards}
+                    setFrontCards={setFrontCards}
+                    backCards={backCards}
+                    setBackCards={setBackCards}
+                    setError={setError}
+                    cardNum={cardNum}
+                    setCardNum={setCardNum}
+                    session={session}
+                    setLoading={setLoading}
                 />
                 <div className={styles.mainPanel}>
                     <div className={styles.deck}>

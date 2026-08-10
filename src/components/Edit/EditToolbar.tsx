@@ -2,20 +2,22 @@ import styles from "../../styles/Deck.module.css";
 import BlueTooltip from "../BlueTooltip";
 import { faPlus, faT, faHeart, faTrash, faFloppyDisk, faCircleXmark, faRightLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { createCard, deleteCard, saveDeckContent } from "./EditToolbarHelpers";
 
 /*
     Description: This is a sub-component that contains code for the Edit component's toolbar.
     Last updated: 7/26/2026
 */
 
-function EditToolbar ({ createCard, showSidePanel, deleteCard, flipCard, saveDeckContent, closeSidePanel }: any) {
+function EditToolbar (props: any) {
+    const { showSidePanel, flipCard, closeSidePanel, deckId, total, setTotal, frontCards, setFrontCards, backCards, setBackCards, setError, cardNum, setCardNum, session, setLoading } = props;
     return (
         <div className={styles.toolbar}>
             <BlueTooltip title="Add Card">
                 <button
                     type="button"
                     className={styles.toolOption}
-                    onClick={createCard}
+                    onClick={() => createCard(deckId, total, setTotal, frontCards, setFrontCards, backCards, setBackCards, setError)}
                 >
                     <span className={styles.shadow}></span>
                     <span className={styles.edge}></span>
@@ -67,7 +69,7 @@ function EditToolbar ({ createCard, showSidePanel, deleteCard, flipCard, saveDec
                 <button
                     type="button"
                     className={styles.toolOption}
-                    onClick={deleteCard}
+                    onClick={() => deleteCard(total, setTotal, cardNum, setCardNum, setFrontCards, setBackCards)}
                 >
                     <span className={styles.shadow}></span>
                     <span className={styles.edge}></span>
@@ -93,7 +95,7 @@ function EditToolbar ({ createCard, showSidePanel, deleteCard, flipCard, saveDec
                 <button
                     type="button"
                     className={styles.toolOption} 
-                    onClick={saveDeckContent}                       
+                    onClick={() => saveDeckContent(session, setLoading, setError, deckId, frontCards, backCards)}                       
                 >
                     <span className={styles.shadow}></span>
                     <span className={styles.edge}></span>
