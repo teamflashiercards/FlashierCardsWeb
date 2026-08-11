@@ -1,4 +1,3 @@
-import type Card from "../../interfaces/Card";
 import styles from "../../styles/Deck.module.css";
 import type TextSidePanelProps from "../../interfaces/TextSidePanelProps";
 
@@ -8,63 +7,39 @@ import type TextSidePanelProps from "../../interfaces/TextSidePanelProps";
 */
 
 function TextSidePanel(props: TextSidePanelProps) {
-    const { textTools, cardSide, cardNum, text, setText, textIndex, setFrontCards, setBackCards, createText, deleteText } = props;
-
-    // function to update text color or input with helper function below
-    function updateText(updateType: string, updateValue: string) {
-        if (cardSide === "Front") {
-            setFrontCards((prevCards: Card[]) =>
-                updateTextHelper(prevCards, updateType, updateValue)
-            );
-        } else {
-            setBackCards((prevCards: Card[]) =>
-                updateTextHelper(prevCards, updateType, updateValue)
-            );
-        }
-    }
-
-    // helper function to update text color or input on front or back of cards
-    function updateTextHelper(prevCards: Card[], updateType: string, updateValue: string) {
-        return prevCards.map((card, index) =>
-            index === (cardNum - 1) ? {...card, text: card.text.map((cardText, i) => {
-                if (i === textIndex) {
-                    if (updateType === "changeColor") {
-                        return {...cardText, color: updateValue};
-                    } else if (updateType === "changeInput") {
-                        setText(updateValue);
-                        return {...cardText, input: updateValue};
-                    }
-                } else {
-                    return cardText;
-                }
-            })} : card
-        );
-    }
+    const { textTools, text, setText, textIndex, createText, updateText, deleteText } = props;
 
     return (
         <div className={styles.sidePanel}>
             <div style={{ display: (textTools) ? "flex" : "none" }}>
                 <div className={styles.sidePanelTitle}>Text Input</div>
                 <div className={styles.textInput}>
-                    <textarea placeholder="Enter text here" value={text} onChange={ (e) => updateText("changeInput", e.target.value) } />
+                    <textarea 
+                        placeholder="Enter text here" 
+                        value={text} 
+                        onChange={ (e) => {
+                            updateText("text", "input", e.target.value, textIndex);
+                            setText(e.target.value);
+                        }} 
+                    />
                 </div>
             </div>
             <div style={{ display: (textTools) ? "flex" : "none" }}>
                 <div className={styles.sidePanelTitle}>Text Deletion</div>
                 <div className={styles.sidePanelOptions}>
-                    <button className={styles.sidePanelBtn} onClick={deleteText}>Delete</button>
+                    <button className={styles.sidePanelBtn} onClick={() => deleteText("text", textIndex)}>Delete</button>
                 </div>
             </div>
             <div style={{ display: (textTools) ? "flex" : "none" }}>
                 <div className={styles.sidePanelTitle}>Text Color</div>
                 <div className={styles.sidePanelOptions}>
-                    <div style={{ backgroundColor: "#201002" }} onClick={() => updateText("changeColor", "#201002")}></div>
-                    <div style={{ backgroundColor: "#FF2511" }} onClick={() => updateText("changeColor", "#FF2511")}></div>
-                    <div style={{ backgroundColor: "#FED43F" }} onClick={() => updateText("changeColor", "#FED43F")}></div>
-                    <div style={{ backgroundColor: "#016236" }} onClick={() => updateText("changeColor", "#016236")}></div>
-                    <div style={{ backgroundColor: "#E43480" }} onClick={() => updateText("changeColor", "#E43480")}></div>
-                    <div style={{ backgroundColor: "#621590" }} onClick={() => updateText("changeColor", "#621590")}></div>
-                    <div style={{ backgroundColor: "#1F6CB0" }} onClick={() => updateText("changeColor", "#1F6CB0")}></div>
+                    <div style={{ backgroundColor: "#201002" }} onClick={() => updateText("text", "color", "#201002", textIndex)}></div>
+                    <div style={{ backgroundColor: "#FF2511" }} onClick={() => updateText("text", "color", "#FF2511", textIndex)}></div>
+                    <div style={{ backgroundColor: "#FED43F" }} onClick={() => updateText("text", "color", "#FED43F", textIndex)}></div>
+                    <div style={{ backgroundColor: "#016236" }} onClick={() => updateText("text", "color", "#016236", textIndex)}></div>
+                    <div style={{ backgroundColor: "#E43480" }} onClick={() => updateText("text", "color", "#E43480", textIndex)}></div>
+                    <div style={{ backgroundColor: "#621590" }} onClick={() => updateText("text", "color", "#621590", textIndex)}></div>
+                    <div style={{ backgroundColor: "#1F6CB0" }} onClick={() => updateText("text", "color", "#1F6CB0", textIndex)}></div>
                 </div>
             </div>
             <div>

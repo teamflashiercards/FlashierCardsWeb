@@ -13,11 +13,13 @@ import GifSidePanel from "./GifSidePanel";
 import EditToolbar from "./EditToolbar";
 import { motion } from "motion/react";
 import { createCard, deleteCard } from "./EditCardHelpers";
-import { setFrontCard, setBackCard, deleteFrontCard, deleteBackCard } from "./EditContentHelpers";
+import { setFrontCard, setBackCard } from "./EditContentHelpers";
+import { updateFrontCard, updateBackCard } from "./EditContentHelpers";
+import { deleteFrontCard, deleteBackCard } from "./EditContentHelpers";
 
 /*
     Description: This component allows the user create, update, or delete deck content.
-    Last updated: 8/9/2026
+    Last updated: 8/10/2026
 */
 
 function Edit() {
@@ -146,12 +148,21 @@ function Edit() {
         }
     }
 
-    // function to delete text, gifs, and stickers with helpers in EditHelpers
-    function deleteContent(contentType: string, index: number) {
+    // function to update text, gifs, and stickers with helpers in EditHelpers
+    function updateContent(contentType: string, contentKey: string, contentValue: string, contentIndex: number,) {
         if (cardSide === "Front") {
-            deleteFrontCard(contentType, index, setFrontCards, cardNum);
+            updateFrontCard(contentType, contentKey, contentValue, contentIndex, setFrontCards, cardNum);
         } else {
-            deleteBackCard(contentType, index, setBackCards, cardNum);
+            updateBackCard(contentType, contentKey, contentValue, contentIndex, setBackCards, cardNum);
+        }
+    }
+
+    // function to delete text, gifs, and stickers with helpers in EditHelpers
+    function deleteContent(contentType: string, contentIndex: number) {
+        if (cardSide === "Front") {
+            deleteFrontCard(contentType, contentIndex, setFrontCards, cardNum);
+        } else {
+            deleteBackCard(contentType, contentIndex, setBackCards, cardNum);
         }
         hideSidePanelTools();
     }
@@ -538,15 +549,12 @@ function Edit() {
                     { textPanel &&
                         <TextSidePanel
                             textTools={textTools}
-                            cardSide={cardSide}
-                            cardNum={cardNum}
                             text={text}
                             setText={setText}
                             textIndex={textIndex}
-                            setFrontCards={setFrontCards}
-                            setBackCards={setBackCards}
                             createText={createContent}
-                            deleteText={() => deleteContent("text", textIndex!)}
+                            updateText={updateContent}
+                            deleteText={deleteContent}
                         />
                     }
                     { gifPanel &&
@@ -554,8 +562,9 @@ function Edit() {
                             setLoading={setLoading}
                             setError={setError}
                             gifTools={gifTools}
+                            gifIndex={gifIndex}
                             createGif={createContent}
-                            deleteGif={() => deleteContent("gif", gifIndex!)}
+                            deleteGif={deleteContent}
                         />
                     }
                     { stickerPanel &&
@@ -563,8 +572,9 @@ function Edit() {
                             setLoading={setLoading}
                             setError={setError}
                             stickerTools={stickerTools}
+                            stickerIndex={stickerIndex}
                             createSticker={createContent}
-                            deleteSticker={() => deleteContent("sticker", stickerIndex!)}
+                            deleteSticker={deleteContent}
                         />
                     }
                 </div>

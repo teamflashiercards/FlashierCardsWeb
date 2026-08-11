@@ -1,4 +1,4 @@
 export default interface Profile {
-    id: number,
+    id: number
     animation: number
 };

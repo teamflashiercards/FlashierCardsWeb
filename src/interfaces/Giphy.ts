@@ -1,5 +1,5 @@
 export default interface Giphy {
-    id: string,
-    title: string,
+    id: string
+    title: string
     url: string
 };

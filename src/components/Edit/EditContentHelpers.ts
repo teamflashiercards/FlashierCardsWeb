@@ -2,7 +2,7 @@ import type Card from "../../interfaces/Card";
 
 /*
     Description: These functions help create or delete text, gifs, and stickers in Edit side panel components.
-    Last updated: 8/9/2026
+    Last updated: 8/10/2026
 */
 
 // adds text, gif, or sticker objects to frontCards array
@@ -35,6 +35,56 @@ export function setBackCard(contentType: string, content: any, setBackCards: any
                     return {...card, gif: [...card.gif, content]};
                 } else if (contentType === "sticker") {
                     return {...card, sticker: [...card.sticker, content]};
+                }
+            } else {
+                return card;
+            }
+        })
+    );
+};
+
+// udates text, gif, or sticker objects in frontCards array
+export function updateFrontCard(contentType: string, contentKey: string, contentValue: string, contentIndex: number, setFrontCards: any, cardNum: number) {
+    setFrontCards((prevCards: Card[]) =>
+        prevCards.map((card, index) => {
+            if (index === (cardNum - 1)) {
+                if (contentType === "text") {
+                    return {...card, text: card.text.map((cardText, textIndex) => {
+                        if (textIndex === contentIndex) {
+                            return {...cardText, [contentKey]: contentValue};
+                        } else {
+                            return cardText;
+                        }
+                    })};
+                } else if (contentType === "gif") {
+                    return null;
+                } else if (contentType === "sticker") {
+                    return null;
+                }
+            } else {
+                return card;
+            }
+        })
+    );
+};
+
+// udates text, gif, or sticker objects in backCards array
+export function updateBackCard(contentType: string, contentKey: string, contentValue: string, contentIndex: number, setBackCards: any, cardNum: number) {
+    setBackCards((prevCards: Card[]) =>
+        prevCards.map((card, index) => {
+            if (index === (cardNum - 1)) {
+                if (contentType === "text") {
+                    return {...card, text: card.text.map((cardText, textIndex) => {
+                        if (textIndex === contentIndex) {
+                            return {...cardText, [contentKey]: contentValue};
+                        } else {
+                            return cardText;
+                        }
+                    })};
+                } else if (contentType === "gif") {
+                    return null;
+                } else if (contentType === "sticker") {
+                    return null;
                 }
             } else {
                 return card;
