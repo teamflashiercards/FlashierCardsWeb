@@ -1,4 +1,4 @@
-# Flashier Cards
+# Flashier Cards*
 
 ```
 npm install
