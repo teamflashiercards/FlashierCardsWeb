@@ -1,7 +1,5 @@
 export default interface Text {
-    id: number | null
-    card_id: number | null
-    input: string
+    value: string
     width: number
     font_size: number
     color: string
