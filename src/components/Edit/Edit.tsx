@@ -16,6 +16,9 @@ import { createCard, deleteCard } from "./EditCardHelpers";
 import { setFrontCard, setBackCard } from "./EditContentHelpers";
 import { updateFrontCard, updateBackCard } from "./EditContentHelpers";
 import { deleteFrontCard, deleteBackCard } from "./EditContentHelpers";
+import Alert from '@mui/material/Alert';
+
+// https://mui.com/material-ui/react-alert/
 
 /*
     Description: This component allows the user create, update, or delete deck content.
@@ -58,6 +61,9 @@ function Edit() {
     const [stickerTools, setStickerTools] = useState(false);
     const [stickerIndex, setStickerIndex] = useState<number | null>(null);
 
+    // to alert user if data has been changed but not saved
+    const [dataChanged, setDataChanged] = useState(false);
+
     // function to fetch deck name from Supabase
     const fetchDeckName = async () => {
         setLoading(true);
@@ -99,6 +105,8 @@ function Edit() {
 
             setFrontCards(data.front_cards);
             setBackCards(data.back_cards);
+
+            // convert the string into an array
             setTotal(data.front_cards.length);
 
         } catch(error: any) {
@@ -134,6 +142,7 @@ function Edit() {
     
         } finally {
             setLoading(false);
+            setDataChanged(false);  // modified data has been saved
         }
     };
 
@@ -142,9 +151,11 @@ function Edit() {
         if (cardSide === "Front") {
             let content = {id: null, card_id: frontCards[cardNum - 1].id, ...initialContent};
             setFrontCard(contentType, content, setFrontCards, cardNum);
+            setDataChanged(true);
         } else {
             let content = {id: null, card_id: backCards[cardNum - 1].id, ...initialContent};
             setBackCard(contentType, content, setBackCards, cardNum);
+            setDataChanged(true);
         }
     }
 
@@ -152,8 +163,10 @@ function Edit() {
     function updateContent(contentType: string, contentKey: string, contentValue: string, contentIndex: number,) {
         if (cardSide === "Front") {
             updateFrontCard(contentType, contentKey, contentValue, contentIndex, setFrontCards, cardNum);
+            setDataChanged(true);
         } else {
             updateBackCard(contentType, contentKey, contentValue, contentIndex, setBackCards, cardNum);
+            setDataChanged(true);
         }
     }
 
@@ -161,8 +174,10 @@ function Edit() {
     function deleteContent(contentType: string, contentIndex: number) {
         if (cardSide === "Front") {
             deleteFrontCard(contentType, contentIndex, setFrontCards, cardNum);
+            setDataChanged(true);
         } else {
             deleteBackCard(contentType, contentIndex, setBackCards, cardNum);
+            setDataChanged(true);
         }
         hideSidePanelTools();
     }
@@ -247,6 +262,7 @@ function Edit() {
         fetchDeckContent();
     }, []);
 
+
     return (
         <div className={styles.mainContainer}>
             <Navbar />
@@ -262,10 +278,16 @@ function Edit() {
                     :
                         <></>
                 }
+                { dataChanged && 
+                    <Alert severity="warning" onClose={() => {}} style={{marginBottom: "1rem"}}>
+                        Warning: You have not saved your work.
+                    </Alert>
+                }
+                
                 <EditToolbar
-                    createCard={() => createCard(deckId, total, setTotal, frontCards, setFrontCards, backCards, setBackCards, setError)}
+                    createCard={() => createCard(setDataChanged, deckId, total, setTotal, frontCards, setFrontCards, backCards, setBackCards, setError)}
                     openSidePanel={openSidePanel}
-                    deleteCard={() => deleteCard(total, setTotal, cardNum, setCardNum, setFrontCards, setBackCards)}
+                    deleteCard={() => deleteCard(setDataChanged, total, setTotal, cardNum, setCardNum, setFrontCards, setBackCards)}
                     flipCard={flipCard}
                     saveDeckContent={saveDeckContent}
                     closeSidePanel={closeSidePanel}
@@ -312,6 +334,7 @@ function Edit() {
                                                         } : card
                                                     )
                                                 );
+                                                setDataChanged(true);
                                             }}
                                         >
                                             {text.input}
@@ -357,6 +380,7 @@ function Edit() {
                                                         } : card
                                                     )
                                                 );
+                                                setDataChanged(true);
                                             }}
                                         />
                                     )}
@@ -400,6 +424,7 @@ function Edit() {
                                                         } : card
                                                     )
                                                 );
+                                                setDataChanged(true);
                                             }}
                                         />
                                     )}
@@ -442,6 +467,7 @@ function Edit() {
                                                         } : card
                                                     )
                                                 );
+                                                setDataChanged(true);
                                             }}
                                         >
                                             {text.input}
@@ -487,6 +513,7 @@ function Edit() {
                                                         } : card
                                                     )
                                                 );
+                                                setDataChanged(true);
                                             }}
                                         />
                                     )}
@@ -530,6 +557,7 @@ function Edit() {
                                                         } : card
                                                     )
                                                 );
+                                                setDataChanged(true);
                                             }}
                                         />
                                     )}
