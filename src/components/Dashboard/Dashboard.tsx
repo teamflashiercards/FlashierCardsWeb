@@ -62,39 +62,6 @@ function Dashboard() {
         }
     };
 
-    // function to create initial deck content when a new deck is created
-    const createNewDeckContent = async (deckId: number) => {
-        try {
-            const response = await fetch(`${import.meta.env.VITE_FLASHIER_CARDS_API}/api/deck/${deckId}/create`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${session.access_token}`
-                },
-                body: JSON.stringify({
-                    front_card: {
-                        id: null,
-                        deck_id: deckId,
-                        card_num: 1,
-                        card_side: "front"
-                    },
-                    back_card: {
-                        id: null,
-                        deck_id: deckId,
-                        card_num: 1,
-                        card_side: "back"
-                    }
-                })
-            });
-            
-            const data = await response.json();
-            if (!response.ok)  throw new Error(data.message);
-
-        } catch (error: any) {
-            throw new Error(error.message);
-        }
-    };
-
     // function to create a new deck
     const submitCreateForm = async (e: any) => {
         e.preventDefault();
@@ -117,13 +84,13 @@ function Dashboard() {
                 },
                 body: JSON.stringify({
                     name: deckName.trim()
+                    // TODO: add initial content here
                 })
             });
 
             const data = await response.json();
             if (!response.ok) throw new Error(data.message);
             setDecks(prev => [...prev, data[0]]);
-            createNewDeckContent(data[0].id);
             setError({ status: false, message: "" });
 
         } catch(error: any) {
@@ -147,7 +114,7 @@ function Dashboard() {
             }
 
             // update a deck in Supabase
-            const response = await fetch(`${import.meta.env.VITE_FLASHIER_CARDS_API}/api/deck/${deckId}`, {
+            const response = await fetch(`${import.meta.env.VITE_FLASHIER_CARDS_API}/api/deck/${deckId}/name`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",

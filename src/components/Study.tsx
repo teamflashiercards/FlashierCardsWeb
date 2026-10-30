@@ -8,6 +8,7 @@ import type Card from "../interfaces/Card";
 import UserAuth from "../util/AuthContext";
 import FeedbackButton from "./FeedbackButton";
 import { motion } from "motion/react";
+import type Deck from "../interfaces/Deck";
 
 /*
     Description: This component allows the user to study deck content.
@@ -32,6 +33,9 @@ function Study() {
     const [cardSide, setCardSide] = useState("Front");
     const [cardNum, setCardNum] = useState(1);
     const [total, setTotal] = useState(1);
+
+    // IMPORTANT
+    const [deckContent, setDeckContent] = useState<Deck[]>();
 
     function flipCard() {
         if (cardRef.current) {
@@ -58,6 +62,7 @@ function Study() {
         }
     }
 
+    // TODO: remove this once deck name is being set in fetchDeckContenf function
     const fetchDeckName = async () => {
         setLoading(true);
 
@@ -86,7 +91,7 @@ function Study() {
         setLoading(true);
 
         try {
-            const response = await fetch(`${import.meta.env.VITE_FLASHIER_CARDS_API}/api/deck/${deckId}/content`, {
+            const response = await fetch(`${import.meta.env.VITE_FLASHIER_CARDS_API}/api/deck/${deckId}`, {
                 method: "GET",
                 headers: {
                     "Authorization": `Bearer ${session.access_token}`
@@ -95,6 +100,13 @@ function Study() {
 
             const data = await response.json();
             if (!response.ok) throw new Error(data.message);
+
+            // TODO: set deck name here
+
+            // TODO: set deck content here by contentvering content into an array
+            // try to see which build in functions can you use
+
+            // TODO: set total here
 
             setFrontCards(data.front_cards);
             setBackCards(data.back_cards);
@@ -164,7 +176,11 @@ function Study() {
                     <div className={styles.deck}>
                         <div className={styles.card} onClick={() => flipCard()} ref={cardRef}>
                             <div className={styles.cardInner}>
+                                
                                 <div className={styles.cardFront}>
+                                    {/* TODO: will have to adjust how deck content is mapped here
+                                        if you can't figure this part out, leave it
+                                    */}
                                     {frontCards[cardNum - 1]?.text?.map((text, textId) =>
                                         <motion.p
                                             key={textId}
@@ -178,9 +194,10 @@ function Study() {
                                                 y: text.y
                                             }}
                                         >
-                                            {text.input}
+                                            {text.value}
                                         </motion.p>
                                     )}
+                                    {/* TODO: will have to adjust how deck content is mapped here */}
                                     {frontCards[cardNum - 1]?.gif?.map((gif, gifId) =>
                                         <motion.img 
                                             key={gifId}
@@ -195,6 +212,7 @@ function Study() {
                                             }}
                                         />
                                     )}
+                                    {/* TODO: will have to adjust how deck content is mapped here */}
                                     {frontCards[cardNum - 1]?.sticker?.map((sticker, stickerId) =>
                                         <motion.img 
                                             key={stickerId}
@@ -211,6 +229,7 @@ function Study() {
                                     )}
                                 </div>
                                 <div className={styles.cardBack}>
+                                    {/* TODO: will have to adjust how deck content is mapped here */}
                                     {backCards[cardNum - 1]?.text?.map((text, textId) =>
                                         <motion.p
                                             key={textId}
@@ -224,9 +243,10 @@ function Study() {
                                                 y: text.y
                                             }}
                                         >
-                                            {text.input}
+                                            {text.value}
                                         </motion.p>
                                     )}
+                                    {/* TODO: will have to adjust how deck content is mapped here */}
                                     {backCards[cardNum - 1]?.gif?.map((gif, gifId) =>
                                         <motion.img 
                                             key={gifId}
@@ -241,6 +261,7 @@ function Study() {
                                             }}
                                         />
                                     )}
+                                    {/* TODO: will have to adjust how deck content is mapped here */}
                                     {backCards[cardNum - 1]?.sticker?.map((sticker, stickerId) =>
                                         <motion.img 
                                             key={stickerId}
