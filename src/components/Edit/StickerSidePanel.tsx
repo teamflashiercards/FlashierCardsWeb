@@ -2,15 +2,14 @@ import styles from "../../styles/Deck.module.css";
 import GiphyLogo from "../../assets/giphyLogo.png";
 import { useState } from "react";
 import type Giphy from "../../interfaces/Giphy";
-import type StickerSidePanelProps from "../../interfaces/StickerSidePanelProps";
 
 /*
     Description: This is a sub-component that contains code for the sticker side panel in Edit component.
-    Last updated: 8/9/2026
+    Last updated: 10/31/2026
 */
 
-function StickerSidePanel(props: StickerSidePanelProps) {
-    const { setLoading, setError, stickerTools, insertSticker, deleteSticker } = props;
+function StickerSidePanel(props: any) {
+    const { setLoading, setError, showStickerTools, insertSticker, deleteSticker } = props;
     const [giphyQuery, setGiphyQuery] = useState("");
     const [stickerResults, setStickerResults] = useState<Giphy[] | null>([]);
 
@@ -20,6 +19,7 @@ function StickerSidePanel(props: StickerSidePanelProps) {
 
         try {
             const response = await fetch(`https://api.giphy.com/v1/stickers/search?api_key=${import.meta.env.VITE_GIPHY_API_KEY}&q=${giphyQuery.trim()}&limit=12&rating=g`);
+            
             const data = await response.json();
             if (!response.ok) throw new Error(data.message);
 
@@ -42,7 +42,7 @@ function StickerSidePanel(props: StickerSidePanelProps) {
 
     return (
         <div className={styles.sidePanel}>
-            <div style={{ display: (stickerTools) ? "flex" : "none" }}>
+            <div style={{ display: (showStickerTools) ? "flex" : "none" }}>
                 <div className={styles.sidePanelTitle}>Sticker Deletion</div>
                 <div className={styles.sidePanelOptions}>
                     <button className={styles.sidePanelBtn} onClick={() => deleteSticker("sticker")}>Delete</button>

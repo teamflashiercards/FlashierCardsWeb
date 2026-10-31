@@ -35,23 +35,18 @@ function Edit() {
     const cardRef = useRef<HTMLDivElement>(null);
     const [cardSide, setCardSide] = useState("Front");
 
-    // side panel related variables
-    const [textPanel, setTextPanel] = useState(false);
-    const [gifPanel, setGifPanel] = useState(false);
-    const [stickerPanel, setStickerPanel] = useState(false);
+    // manage when side panels and their tools are shown
+    const [showTextTools, setShowTextTools] = useState(false);
+    const [showTextPanel, setShowTextPanel] = useState(false);
 
-    // text related variables
+    const [showGifTools, setShowGifTools] = useState(false);
+    const [showGifPanel, setShowGifPanel] = useState(false);
+
+    const [showStickerTools, setShowStickerTools] = useState(false);
+    const [showStickerPanel, setShowStickerPanel] = useState(false);
+
+    // to manage text input
     const [text, setText] = useState("");
-    const [textTools, setTextTools] = useState(false);
-    const [textIndex, setTextIndex] = useState<number | null>(null);
-    
-    // gif related variables
-    const [gifTools, setGifTools] = useState(false);
-    const [gifIndex, setGifIndex] = useState<number | null>(null);
-
-    // sticker realted tools
-    const [stickerTools, setStickerTools] = useState(false);
-    const [stickerIndex, setStickerIndex] = useState<number | null>(null);
 
     // to alert user if data has been changed but not saved
     const [dataChanged, setDataChanged] = useState(false);
@@ -77,7 +72,6 @@ function Edit() {
         setLoading(true);
 
         try {
-            console.log(deckId);
             const response = await fetch(`${import.meta.env.VITE_FLASHIER_CARDS_API}/api/deck/${deckId}`, {
                 method: "GET",
                 headers: {
@@ -161,47 +155,40 @@ function Edit() {
     function openSidePanel(panel: string) {
         // close any open side panel first
         closeSidePanel();
-
+     
         if (panel === "text") {
-            setTextPanel(true);
-
+            setShowTextPanel(true);
         } else if (panel === "gif") {
-            setGifPanel(true);
-            
+            setShowGifPanel(true);
         } else if (panel === "sticker") {
-            setStickerPanel(true);
+            setShowStickerPanel(true);
         }
     }
 
     function closeSidePanel() {
-        // hide any tools open in side panels first
+        // hide any tools open in side panel first
         hideSidePanelTools();
 
-        if (textPanel) {
-            setTextPanel(false);
-
-        } else if (gifPanel) {
-            setGifPanel(false);
-
-        } else if (stickerPanel) {
-            setStickerPanel(false);
+        if (showTextPanel) {
+            setShowTextPanel(false);
+        } else if (showGifPanel) {
+            setShowGifPanel(false);
+        } else if (showStickerPanel) {
+            setShowStickerPanel(false);
         }
     }
 
     function hideSidePanelTools() {
+        // set any selected object to null
         setContentIndex(null);
-        if (textPanel) {
-            setTextIndex(null);
-            setTextTools(false); 
+
+        if (showTextPanel) {
+            setShowTextTools(false); 
             setText("");
-
-        } else if (gifPanel) {
-            setGifIndex(null);
-            setGifTools(false);
-
-        } else if (stickerPanel) {
-            setStickerIndex(null);
-            setStickerTools(false);
+        } else if (showGifPanel) {
+            setShowGifTools(false);
+        } else if (showStickerPanel) {
+            setShowStickerTools(false);
         }
     }
 
@@ -367,7 +354,7 @@ function Edit() {
                                                 openSidePanel("text");
                                                 setText(text.value);
                                                 setContentIndex(textIndex);
-                                                setTextTools(true);                                                
+                                                setShowTextTools(true);                                           
                                             }}
                                             onDragStart={(_) => {
                                                 setContentIndex(textIndex);
@@ -405,9 +392,8 @@ function Edit() {
                                             }}
                                             onDoubleClick={() => {
                                                 openSidePanel("gif");
-                                                //setGifIndex(gifIndex);
                                                 setContentIndex(gifIndex);
-                                                setGifTools(true);
+                                                setShowGifTools(true);
                                             }}
                                             onDragStart={(_) => {
                                                 setContentIndex(gifIndex);
@@ -444,7 +430,7 @@ function Edit() {
                                             onDoubleClick={() => {
                                                 openSidePanel("sticker");
                                                 setContentIndex(stickerIndex);
-                                                setStickerTools(true);
+                                                setShowStickerTools(true);
                                             }}
                                             onDragStart={(_) => {
                                                 setContentIndex(stickerIndex);
@@ -481,7 +467,7 @@ function Edit() {
                                                 openSidePanel("text");
                                                 setText(text.value);
                                                 setContentIndex(textIndex);
-                                                setTextTools(true);                                                
+                                                setShowTextTools(true);                                                
                                             }}
                                             onDragStart={(_) => {
                                                 setContentIndex(textIndex);
@@ -520,7 +506,7 @@ function Edit() {
                                             onDoubleClick={() => {
                                                 openSidePanel("gif");
                                                 setContentIndex(gifIndex);
-                                                setGifTools(true);
+                                                setShowGifTools(true);
                                             }}
                                             onDragStart={(_) => {
                                                 setContentIndex(gifIndex);
@@ -557,7 +543,7 @@ function Edit() {
                                             onDoubleClick={() => {
                                                 openSidePanel("sticker");
                                                 setContentIndex(stickerIndex);
-                                                setStickerTools(true);
+                                                setShowStickerTools(true);
                                             }}
                                             onDragStart={(_) => {
                                                 setContentIndex(stickerIndex);
@@ -581,30 +567,30 @@ function Edit() {
                             </button>
                         </div>
                     </div>
-                   { textPanel &&
+                   { showTextPanel &&
                         <TextSidePanel
-                            textTools={textTools}
                             text={text}
                             setText={setText}
+                            showTextTools={showTextTools}
                             insertText={insertContent}
                             updateText={updateContent}
                             deleteText={deleteContent}
                         />
                     }
-                    { gifPanel &&
+                    { showGifPanel &&
                         <GifSidePanel
                             setLoading={setLoading}
                             setError={setError}
-                            gifTools={gifTools}
+                            showGifTools={showGifTools}
                             insertGif={insertContent}
                             deleteGif={deleteContent}
                         />
                     }
-                    { stickerPanel &&
+                    { showStickerPanel &&
                         <StickerSidePanel
                             setLoading={setLoading}
                             setError={setError}
-                            stickerTools={stickerTools}
+                            showStickerTools={showStickerTools}
                             insertSticker={insertContent}
                             deleteSticker={deleteContent}
                         />

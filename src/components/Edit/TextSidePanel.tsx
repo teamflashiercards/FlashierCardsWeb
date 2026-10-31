@@ -1,17 +1,16 @@
 import styles from "../../styles/Deck.module.css";
-import type TextSidePanelProps from "../../interfaces/TextSidePanelProps";
 
 /*
     Description: This is a sub-component that contains code for the text side panel in Edit component.
-    Last updated: 8/9/2026
+    Last updated: 10/31/2026
 */
 
-function TextSidePanel(props: TextSidePanelProps) {
-    const { textTools, text, setText, insertText, updateText, deleteText } = props;
+function TextSidePanel(props: any) {
+    const { text, setText, showTextTools, insertText, updateText, deleteText } = props;
 
     return (
         <div className={styles.sidePanel}>
-            <div style={{ display: (textTools) ? "flex" : "none" }}>
+            <div style={{ display: (showTextTools) ? "flex" : "none" }}>
                 <div className={styles.sidePanelTitle}>Text Input</div>
                 <div className={styles.textInput}>
                     <textarea 
@@ -24,13 +23,13 @@ function TextSidePanel(props: TextSidePanelProps) {
                     />
                 </div>
             </div>
-            <div style={{ display: (textTools) ? "flex" : "none" }}>
+            <div style={{ display: (showTextTools) ? "flex" : "none" }}>
                 <div className={styles.sidePanelTitle}>Text Deletion</div>
                 <div className={styles.sidePanelOptions}>
                     <button className={styles.sidePanelBtn} onClick={() => deleteText("text")}>Delete</button>
                 </div>
             </div>
-            <div style={{ display: (textTools) ? "flex" : "none" }}>
+            <div style={{ display: (showTextTools) ? "flex" : "none" }}>
                 <div className={styles.sidePanelTitle}>Text Color</div>
                 <div className={styles.sidePanelOptions}>
                     <div style={{ backgroundColor: "#201002" }} onClick={() => updateText("text", "color", "#201002")}></div>

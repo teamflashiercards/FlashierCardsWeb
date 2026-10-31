@@ -7,7 +7,7 @@ import FeedbackButton from "../FeedbackButton";
 import DashboardToolbar from "./DashboardToolbar";
 import CreateDeckForm from "./CreateDeckForm";
 import RenameDeckForm from "./RenmeDeckForm";
-import type Dashboard from "../../interfaces/Dashboard";
+import type Deck from "../../interfaces/Deck";
 
 function Dashboard() {
     // manage user session, error handling, data loading
@@ -21,7 +21,7 @@ function Dashboard() {
     const [renameOverlay, setRenameOverlay] = useState(false);
     
     // stores id and name of all decks user has created
-    const [decks, setDecks] = useState<Dashboard[]>([]);
+    const [decks, setDecks] = useState<Deck[]>([]);
 
     // to track number of decks user has created
     // user can only create 6 decks
