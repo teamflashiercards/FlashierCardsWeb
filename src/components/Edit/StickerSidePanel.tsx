@@ -45,7 +45,7 @@ function StickerSidePanel(props: StickerSidePanelProps) {
             <div style={{ display: (stickerTools) ? "flex" : "none" }}>
                 <div className={styles.sidePanelTitle}>Sticker Deletion</div>
                 <div className={styles.sidePanelOptions}>
-                    <button className={styles.sidePanelBtn} onClick={deleteSticker}>Delete</button>
+                    <button className={styles.sidePanelBtn} onClick={() => deleteSticker("sticker")}>Delete</button>
                 </div>
             </div>
             <div>

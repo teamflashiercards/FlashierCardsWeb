@@ -45,7 +45,7 @@ function GifSidePanel (props: GifSidePanelProps) {
             <div style={{ display: (gifTools) ? "flex" : "none" }}>
                 <div className={styles.sidePanelTitle}>Gif Deletion</div>
                 <div className={styles.sidePanelOptions}>
-                    <button className={styles.sidePanelBtn} onClick={deleteGif}>Delete</button>
+                    <button className={styles.sidePanelBtn} onClick={() => deleteGif("gif")}>Delete</button>
                 </div>
             </div>
             <div>

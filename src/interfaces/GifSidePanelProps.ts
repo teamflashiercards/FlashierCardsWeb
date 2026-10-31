@@ -9,7 +9,6 @@ export default interface GifSidePanelProps {
     setLoading: Dispatch<SetStateAction<boolean>>
     setError: Dispatch<SetStateAction<Error>>
     gifTools: boolean
-    gifIndex: number | null
     insertGif: any
     deleteGif: any
 };

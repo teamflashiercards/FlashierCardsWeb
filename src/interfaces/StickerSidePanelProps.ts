@@ -9,7 +9,6 @@ export default interface StickerSidePanelProps {
     setLoading: Dispatch<SetStateAction<boolean>>
     setError: Dispatch<SetStateAction<Error>>
     stickerTools: boolean
-    stickerIndex: number | null
     insertSticker: any
     deleteSticker: any
 };

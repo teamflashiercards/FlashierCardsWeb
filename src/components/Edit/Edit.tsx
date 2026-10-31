@@ -91,12 +91,7 @@ function Edit() {
 
             setDeckName(data[0].name);
             setContent(data[0].content);
-
-            // setFrontCards(data.front_cards);
-            // setBackCards(data.back_cards);
-
-            // // convert the string into an array
-            // setTotal(data.front_cards.length);
+            setTotalCards(data[0].content.length);
 
         } catch(error: any) {
             setError({ status: true, message: error.message });
@@ -448,7 +443,6 @@ function Edit() {
                                             }}
                                             onDoubleClick={() => {
                                                 openSidePanel("sticker");
-                                                //setGifIndex(gifIndex);
                                                 setContentIndex(stickerIndex);
                                                 setStickerTools(true);
                                             }}
@@ -525,7 +519,6 @@ function Edit() {
                                             }}
                                             onDoubleClick={() => {
                                                 openSidePanel("gif");
-                                                //setGifIndex(gifIndex);
                                                 setContentIndex(gifIndex);
                                                 setGifTools(true);
                                             }}
@@ -563,7 +556,6 @@ function Edit() {
                                             }}
                                             onDoubleClick={() => {
                                                 openSidePanel("sticker");
-                                                //setGifIndex(gifIndex);
                                                 setContentIndex(stickerIndex);
                                                 setStickerTools(true);
                                             }}
@@ -594,7 +586,6 @@ function Edit() {
                             textTools={textTools}
                             text={text}
                             setText={setText}
-                            textIndex={textIndex}
                             insertText={insertContent}
                             updateText={updateContent}
                             deleteText={deleteContent}
@@ -605,7 +596,6 @@ function Edit() {
                             setLoading={setLoading}
                             setError={setError}
                             gifTools={gifTools}
-                            gifIndex={gifIndex}
                             insertGif={insertContent}
                             deleteGif={deleteContent}
                         />
@@ -615,7 +605,6 @@ function Edit() {
                             setLoading={setLoading}
                             setError={setError}
                             stickerTools={stickerTools}
-                            stickerIndex={stickerIndex}
                             insertSticker={insertContent}
                             deleteSticker={deleteContent}
                         />

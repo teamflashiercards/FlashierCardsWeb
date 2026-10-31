@@ -7,7 +7,7 @@ import type TextSidePanelProps from "../../interfaces/TextSidePanelProps";
 */
 
 function TextSidePanel(props: TextSidePanelProps) {
-    const { textTools, text, setText, textIndex, insertText, updateText, deleteText } = props;
+    const { textTools, text, setText, insertText, updateText, deleteText } = props;
 
     return (
         <div className={styles.sidePanel}>
