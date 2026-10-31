@@ -10,7 +10,7 @@ import type GifSidePanelProps from '../../interfaces/GifSidePanelProps';
 */
 
 function GifSidePanel (props: GifSidePanelProps) {
-    const { setLoading, setError, gifTools, createGif, deleteGif } = props;
+    const { setLoading, setError, gifTools, insertGif, deleteGif } = props;
     const [gifResults, setGifResults] = useState<Giphy[] | null>([]);
     const [giphyQuery, setGiphyQuery] = useState("");    
 
@@ -65,7 +65,7 @@ function GifSidePanel (props: GifSidePanelProps) {
                             key={gif.id}
                             src={gif.url}
                             alt={gif.title}
-                            onClick={() => createGif("gif", {url: gif.url, width: 120, height: 120, x: 50, y: 50})}
+                            onClick={() => insertGif("gif", {url: gif.url, width: 120, height: 120, x: 50, y: 50})}
                         />
                     ))}
                 </div>

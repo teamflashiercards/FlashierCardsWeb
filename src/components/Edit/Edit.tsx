@@ -12,11 +12,11 @@ import TextSidePanel from "./TextSidePanel";
 import GifSidePanel from "./GifSidePanel";
 import EditToolbar from "./EditToolbar";
 import { motion } from "motion/react";
-import { createCard, deleteCard } from "./EditCardHelpers";
-import { setFrontCard, setBackCard } from "./EditContentHelpers";
-import { updateFrontCard, updateBackCard } from "./EditContentHelpers";
-import { deleteFrontCard, deleteBackCard } from "./EditContentHelpers";
 import Alert from '@mui/material/Alert';
+import type Content from "../../interfaces/Content";
+import type Text from "../../interfaces/Text";
+import type Gif from "../../interfaces/Gif";
+import type Sticker from "../../interfaces/Sticker";
 
 // https://mui.com/material-ui/react-alert/
 
@@ -26,22 +26,14 @@ import Alert from '@mui/material/Alert';
 */
 
 function Edit() {
-    // fetch related variables
+    // manage user session, error handling, and data loading
+    const { session } = UserAuth();
     const [error, setError] = useState({ status: false, message: "" });
     const [loading, setLoading] = useState(false);
-    const { session } = UserAuth();
-
-    // deck conntent related variables
-    const { deckId } = useParams();
-    const [deckName, setDeckName] = useState();
-    const [frontCards, setFrontCards] = useState<Card[]>([]);
-    const [backCards, setBackCards] = useState<Card[]>([]);
-
+    
     // card related variables
     const cardRef = useRef<HTMLDivElement>(null);
     const [cardSide, setCardSide] = useState("Front");
-    const [cardNum, setCardNum] = useState(1);
-    const [total, setTotal] = useState(1);
 
     // side panel related variables
     const [textPanel, setTextPanel] = useState(false);
@@ -64,11 +56,28 @@ function Edit() {
     // to alert user if data has been changed but not saved
     const [dataChanged, setDataChanged] = useState(false);
 
-    // function to fetch deck name from Supabase
-    const fetchDeckName = async () => {
+    // get id to fetch deck content
+    const { deckId } = useParams();
+
+    // stores deck name to display as title
+    const [deckName, setDeckName] = useState<string>("");
+
+    // stores deck content
+    const [content, setContent] = useState<Content[]>([]);
+
+    // to track current card
+    const [cardNum, setCardNum] = useState(1);
+    const [totalCards, setTotalCards] = useState(1);
+
+    // to track text, gif, or sticker selected
+    const [contentIndex, setContentIndex] = useState<number | null>(null);
+
+    // function to fetch all the deck content from Supabase
+    const fetchDeckContent = async () => {
         setLoading(true);
 
         try {
+            console.log(deckId);
             const response = await fetch(`${import.meta.env.VITE_FLASHIER_CARDS_API}/api/deck/${deckId}`, {
                 method: "GET",
                 headers: {
@@ -76,38 +85,18 @@ function Edit() {
                 }
             });
 
+            // returns an array with one object
             const data = await response.json();
             if (!response.ok) throw new Error(data.message);
+
             setDeckName(data[0].name);
-        
-        } catch(error: any) {
-            setError({ status: true, message: error.message });
+            setContent(data[0].content);
 
-        } finally {
-            setLoading(false);
-        }
-    };
+            // setFrontCards(data.front_cards);
+            // setBackCards(data.back_cards);
 
-    // function to fetch all the deck content from Supabase
-    const fetchDeckContent = async () => {
-        setLoading(true);
-
-        try {
-            const response = await fetch(`${import.meta.env.VITE_FLASHIER_CARDS_API}/api/deck/${deckId}/content`, {
-                method: "GET",
-                headers: {
-                    "Authorization": `Bearer ${session.access_token}`
-                }
-            });
-
-            const data = await response.json();
-            if (!response.ok) throw new Error(data.message);
-
-            setFrontCards(data.front_cards);
-            setBackCards(data.back_cards);
-
-            // convert the string into an array
-            setTotal(data.front_cards.length);
+            // // convert the string into an array
+            // setTotal(data.front_cards.length);
 
         } catch(error: any) {
             setError({ status: true, message: error.message });
@@ -122,15 +111,14 @@ function Edit() {
         setLoading(true);
     
         try {
-            const response = await fetch(`${import.meta.env.VITE_FLASHIER_CARDS_API}/api/deck/${deckId}/save`, {
-                method: "POST",
+            const response = await fetch(`${import.meta.env.VITE_FLASHIER_CARDS_API}/api/deck/${deckId}/content`, {
+                method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${session.access_token}`
                 },
                 body: JSON.stringify({
-                    front_cards: frontCards,
-                    back_cards: backCards
+                    content: content
                 })
             });
     
@@ -146,42 +134,6 @@ function Edit() {
         }
     };
 
-    // function to create text, gifs, and stickers with helpers in EditHelpers
-    function createContent(contentType: string, initialContent: any) {
-        if (cardSide === "Front") {
-            let content = {id: null, card_id: frontCards[cardNum - 1].id, ...initialContent};
-            setFrontCard(contentType, content, setFrontCards, cardNum);
-            setDataChanged(true);
-        } else {
-            let content = {id: null, card_id: backCards[cardNum - 1].id, ...initialContent};
-            setBackCard(contentType, content, setBackCards, cardNum);
-            setDataChanged(true);
-        }
-    }
-
-    // function to update text, gifs, and stickers with helpers in EditHelpers
-    function updateContent(contentType: string, contentKey: string, contentValue: string, contentIndex: number,) {
-        if (cardSide === "Front") {
-            updateFrontCard(contentType, contentKey, contentValue, contentIndex, setFrontCards, cardNum);
-            setDataChanged(true);
-        } else {
-            updateBackCard(contentType, contentKey, contentValue, contentIndex, setBackCards, cardNum);
-            setDataChanged(true);
-        }
-    }
-
-    // function to delete text, gifs, and stickers with helpers in EditHelpers
-    function deleteContent(contentType: string, contentIndex: number) {
-        if (cardSide === "Front") {
-            deleteFrontCard(contentType, contentIndex, setFrontCards, cardNum);
-            setDataChanged(true);
-        } else {
-            deleteBackCard(contentType, contentIndex, setBackCards, cardNum);
-            setDataChanged(true);
-        }
-        hideSidePanelTools();
-    }
-
     function flipCard() {
         if (cardRef.current) {
             cardRef.current.classList.toggle(styles.flip);
@@ -190,7 +142,7 @@ function Edit() {
     }
 
     function showNextCard() {
-        if ((cardNum + 1) <= total) {
+        if ((cardNum + 1) <= totalCards) {
             hideSidePanelTools();
             setCardNum(cardNum + 1);
 
@@ -242,6 +194,7 @@ function Edit() {
     }
 
     function hideSidePanelTools() {
+        setContentIndex(null);
         if (textPanel) {
             setTextIndex(null);
             setTextTools(false); 
@@ -257,11 +210,110 @@ function Edit() {
         }
     }
 
+    // create a new card in the deck
+    function addCard() {
+        if (totalCards + 1 <= 15) {
+            const newCard = {
+                "front_card": { "text": [], "gif": [], "sticker": [] },
+                "back_card": { "text": [], "gif": [], "sticker": [] }
+            };
+            setContent(prevContent => [...prevContent, newCard]);
+            setTotalCards(prevTotal => prevTotal + 1);
+        } else {
+            setError({ status: true, message: "You can only create up to 15 cards in a deck." });
+        }        
+    }
+
+    // deletes current card in the deck
+    function deleteCard() {
+        if (totalCards - 1 >= 1) {
+            setContent(prevContent => prevContent.filter((_, cardIndex) => cardIndex != cardNum - 1));
+            (cardNum > 1) ? setCardNum(prevCardNum => prevCardNum - 1) : setCardNum(1);
+            setTotalCards(prevTotal => prevTotal - 1);
+        }
+    }
+
+    // adds text, gifs, or stickers to card
+    function insertCardContent(type: string, card: Card, newContent: Text | Gif | Sticker) {
+        if (type === "text") {
+            return {...card, text: [...card.text, newContent as Text]};
+        } else if (type === "gif") {
+            return {...card, gif: [...card.gif, newContent as Gif]};
+        } else if (type === "sticker") {
+            return {...card, sticker: [...card.sticker, newContent as Sticker]};
+        }
+        return card;
+    }
+
+    // adds text, gifs, or stickers to front or back card
+    function insertContent(type: string, newContent: Text | Gif | Sticker) {
+        setContent(prevContent => prevContent.map((card: Content, cardIndex) =>
+            (cardIndex === cardNum - 1) ? (cardSide === "Front") ?
+                {...card, front_card: insertCardContent(type, card.front_card, newContent)}
+                : {...card, back_card: insertCardContent(type, card.back_card, newContent)}
+            : card
+        ));
+        setDataChanged(true);
+    }
+
+    // updates text, gifs, or stickers on card
+    function updateCardContent(type: string, card: Card, key: string, value: string | number) {
+        if (type === "text") {
+            return {...card, text: card.text.map((cardText, textIndex) =>
+                (textIndex === contentIndex) ? {...cardText, [key]: value} : cardText
+            )};
+        } else if (type === "gif") {
+            return {...card, gif: card.gif.map((cardGif, gifIndex) =>
+                (gifIndex === contentIndex) ? {...cardGif, [key]: value} : cardGif
+            )};
+        } else if (type === "sticker") {
+            return {...card, sticker: card.sticker.map((cardSticker, stickerIndex) =>
+                (stickerIndex === contentIndex) ? {...cardSticker, [key]: value} : cardSticker
+            )};
+        }
+        return card;
+    }
+
+    // updates text, gifs, or stickers on front or back card
+    function updateContent(type: string, key: string, value: string | number) {
+        setContent(prevContent => prevContent.map((card: Content, cardIndex) =>
+            (cardIndex === cardNum - 1) ? (cardSide === "Front") ?
+                {...card, front_card: updateCardContent(type, card.front_card, key, value)}
+                : {...card, back_card: updateCardContent(type, card.back_card, key, value)}
+            : card
+        ));
+        setDataChanged(true);
+    }
+
+    // deletes text, gifs, or stickers on card
+    function deleteCardContent(type: string, card: Card) {
+        if (type === "text") {
+            return {...card, text: card.text.filter((_, index) => index != contentIndex)};
+        } else if (type === "gif") {
+            return {...card, gif: card.gif.filter((_, index) => index != contentIndex)};
+        } else if (type === "sticker") {
+            return {...card, sticker: card.sticker.filter((_, index) => index != contentIndex)};
+        }
+        return card;
+    }
+
+    // deletes text, gifs, or stickers on front or back card
+    function deleteContent(type: string) {
+        setContent(prevContent => prevContent.map((card: Content, cardIndex) =>
+            (cardIndex === cardNum - 1) ? (cardSide === "Front") ?
+                {...card, front_card: deleteCardContent(type, card.front_card)}
+                : {...card, back_card: deleteCardContent(type, card.back_card)}
+            : card
+        ));
+        setDataChanged(true);
+        hideSidePanelTools();
+    }
+
+    console.log(content);
+
     useEffect(() => {
-        fetchDeckName();
         fetchDeckContent();
     }, []);
-
 
     return (
         <div className={styles.mainContainer}>
@@ -283,11 +335,10 @@ function Edit() {
                         Warning: You have not saved your work.
                     </Alert>
                 }
-                
                 <EditToolbar
-                    createCard={() => createCard(setDataChanged, deckId, total, setTotal, frontCards, setFrontCards, backCards, setBackCards, setError)}
+                    addCard={addCard}
                     openSidePanel={openSidePanel}
-                    deleteCard={() => deleteCard(setDataChanged, total, setTotal, cardNum, setCardNum, setFrontCards, setBackCards)}
+                    deleteCard={deleteCard}
                     flipCard={flipCard}
                     saveDeckContent={saveDeckContent}
                     closeSidePanel={closeSidePanel}
@@ -297,7 +348,7 @@ function Edit() {
                         <div className={styles.card} ref={cardRef}>
                             <div className={styles.cardInner}>
                                 <div className={styles.cardFront}>
-                                    {frontCards[cardNum - 1]?.text?.map((text, textIndex) =>
+                                    {content[cardNum - 1]?.front_card?.text?.map((text, textIndex) =>
                                         <motion.p
                                             key={textIndex}
                                             drag
@@ -319,35 +370,28 @@ function Edit() {
                                             }}
                                             onDoubleClick={() => {
                                                 openSidePanel("text");
-                                                setText(text.input);
-                                                setTextIndex(textIndex);
+                                                setText(text.value);
+                                                setContentIndex(textIndex);
                                                 setTextTools(true);                                                
                                             }}
-                                            onDragEnd={(_event, info) => {
-                                                setFrontCards(prevCards =>
-                                                    prevCards.map((card, cardIndex) =>
-                                                        cardIndex === (cardNum - 1) ? {
-                                                            ...card,
-                                                            text: card.text.map((tmp, i) =>
-                                                                i === textIndex ? {...tmp, x: Math.round(tmp.x + info.offset.x), y: Math.round(tmp.y + info.offset.y)} : tmp
-                                                            )
-                                                        } : card
-                                                    )
-                                                );
-                                                setDataChanged(true);
+                                            onDragStart={(_) => {
+                                                setContentIndex(textIndex);
+                                            }}
+                                            onDragEnd={(_, info) => {
+                                                updateContent("text", "x", Math.round(text.x + info.offset.x));
+                                                updateContent("text", "y", Math.round(text.y + info.offset.y));
                                             }}
                                         >
-                                            {text.input}
+                                            {text.value}
                                         </motion.p>
                                     )}
-                                    {frontCards[cardNum - 1]?.gif?.map((gif, gifIndex) =>
+                                    {content[cardNum - 1]?.front_card?.gif?.map((gif, gifIndex) =>
                                         <motion.img
                                             key={gifIndex}
                                             src={gif.url}
                                             alt="gif"
                                             drag
                                             dragMomentum={false}
-                                            // dragElastic={0}
                                             style={{
                                                 position: "fixed",
                                                 width: gif.width,
@@ -366,32 +410,26 @@ function Edit() {
                                             }}
                                             onDoubleClick={() => {
                                                 openSidePanel("gif");
-                                                setGifIndex(gifIndex);
+                                                //setGifIndex(gifIndex);
+                                                setContentIndex(gifIndex);
                                                 setGifTools(true);
                                             }}
-                                            onDragEnd={(_event, info) => {
-                                                setFrontCards(prevCards =>
-                                                    prevCards.map((card, cardIndex) =>
-                                                        cardIndex === (cardNum - 1) ? {
-                                                            ...card,
-                                                            gif: card.gif.map((tmp, i) =>
-                                                                i === gifIndex ? {...tmp, x: Math.round(tmp.x + info.offset.x), y: Math.round(tmp.y + info.offset.y)} : tmp
-                                                            )
-                                                        } : card
-                                                    )
-                                                );
-                                                setDataChanged(true);
+                                            onDragStart={(_) => {
+                                                setContentIndex(gifIndex);
+                                            }}
+                                            onDragEnd={(_, info) => {
+                                                updateContent("gif", "x", Math.round(gif.x + info.offset.x));
+                                                updateContent("gif", "y", Math.round(gif.y + info.offset.y));
                                             }}
                                         />
                                     )}
-                                    {frontCards[cardNum - 1]?.sticker?.map((sticker, stickerIndex) =>
+                                    {content[cardNum - 1]?.front_card?.sticker?.map((sticker, stickerIndex) =>
                                         <motion.img
                                             key={stickerIndex}
                                             src={sticker.url}
                                             alt="sticker"
                                             drag
                                             dragMomentum={false}
-                                            // dragElastic={0}
                                             style={{
                                                 position: "fixed",
                                                 width: sticker.width,
@@ -410,27 +448,22 @@ function Edit() {
                                             }}
                                             onDoubleClick={() => {
                                                 openSidePanel("sticker");
-                                                setStickerIndex(stickerIndex);
+                                                //setGifIndex(gifIndex);
+                                                setContentIndex(stickerIndex);
                                                 setStickerTools(true);
                                             }}
-                                            onDragEnd={(_event, info) => {
-                                                setFrontCards(prevCards =>
-                                                    prevCards.map((card, cardIndex) =>
-                                                        cardIndex === (cardNum - 1) ? {
-                                                            ...card,
-                                                            sticker: card.sticker.map((tmp, i) =>
-                                                                i === stickerIndex ? {...tmp, x: Math.round(tmp.x + info.offset.x), y: Math.round(tmp.y + info.offset.y)} : tmp
-                                                            )
-                                                        } : card
-                                                    )
-                                                );
-                                                setDataChanged(true);
+                                            onDragStart={(_) => {
+                                                setContentIndex(stickerIndex);
+                                            }}
+                                            onDragEnd={(_, info) => {
+                                                updateContent("sticker", "x", Math.round(sticker.x + info.offset.x));
+                                                updateContent("sticker", "y", Math.round(sticker.y + info.offset.y));
                                             }}
                                         />
                                     )}
                                 </div>
                                 <div className={styles.cardBack}>
-                                    {backCards[cardNum - 1]?.text?.map((text, textIndex) =>
+                                    {content[cardNum - 1]?.back_card?.text?.map((text, textIndex) =>
                                         <motion.p
                                             key={textIndex}
                                             drag
@@ -452,35 +485,28 @@ function Edit() {
                                             }}
                                             onDoubleClick={() => {
                                                 openSidePanel("text");
-                                                setText(text.input);
-                                                setTextIndex(textIndex);
-                                                setTextTools(true);
+                                                setText(text.value);
+                                                setContentIndex(textIndex);
+                                                setTextTools(true);                                                
                                             }}
-                                            onDragEnd={(_event, info) => {
-                                                setBackCards(prevCards =>
-                                                    prevCards.map((card, cardIndex) =>
-                                                        cardIndex === (cardNum - 1) ? {
-                                                            ...card,
-                                                            text: card.text.map((tmp, i) =>
-                                                                i === textIndex ? {...tmp, x: Math.round(tmp.x + info.offset.x), y: Math.round(tmp.y + info.offset.y)} : tmp
-                                                            )
-                                                        } : card
-                                                    )
-                                                );
-                                                setDataChanged(true);
+                                            onDragStart={(_) => {
+                                                setContentIndex(textIndex);
+                                            }}
+                                            onDragEnd={(_, info) => {
+                                                updateContent("text", "x", Math.round(text.x + info.offset.x));
+                                                updateContent("text", "y", Math.round(text.y + info.offset.y));
                                             }}
                                         >
-                                            {text.input}
+                                            {text.value}
                                         </motion.p>
                                     )}
-                                    {backCards[cardNum - 1]?.gif?.map((gif, gifIndex) =>
+                                    {content[cardNum - 1]?.back_card?.gif?.map((gif, gifIndex) =>
                                         <motion.img
                                             key={gifIndex}
                                             src={gif.url}
                                             alt="gif"
                                             drag
                                             dragMomentum={false}
-                                            // dragElastic={0}
                                             style={{
                                                 position: "fixed",
                                                 width: gif.width,
@@ -499,32 +525,26 @@ function Edit() {
                                             }}
                                             onDoubleClick={() => {
                                                 openSidePanel("gif");
-                                                setGifIndex(gifIndex);
+                                                //setGifIndex(gifIndex);
+                                                setContentIndex(gifIndex);
                                                 setGifTools(true);
                                             }}
-                                            onDragEnd={(_event, info) => {
-                                                setBackCards(prevCards =>
-                                                    prevCards.map((card, cardIndex) =>
-                                                        cardIndex === (cardNum - 1) ? {
-                                                            ...card,
-                                                            gif: card.gif.map((tmp, i) =>
-                                                                i === gifIndex ? {...tmp, x: Math.round(tmp.x + info.offset.x), y: Math.round(tmp.y + info.offset.y)} : tmp
-                                                            )
-                                                        } : card
-                                                    )
-                                                );
-                                                setDataChanged(true);
+                                            onDragStart={(_) => {
+                                                setContentIndex(gifIndex);
+                                            }}
+                                            onDragEnd={(_, info) => {
+                                                updateContent("gif", "x", Math.round(gif.x + info.offset.x));
+                                                updateContent("gif", "y", Math.round(gif.y + info.offset.y));
                                             }}
                                         />
                                     )}
-                                    {backCards[cardNum - 1]?.sticker?.map((sticker, stickerIndex) =>
+                                    {content[cardNum - 1]?.back_card?.sticker?.map((sticker, stickerIndex) =>
                                         <motion.img
                                             key={stickerIndex}
                                             src={sticker.url}
                                             alt="sticker"
                                             drag
                                             dragMomentum={false}
-                                            // dragElastic={0}
                                             style={{
                                                 position: "fixed",
                                                 width: sticker.width,
@@ -543,21 +563,16 @@ function Edit() {
                                             }}
                                             onDoubleClick={() => {
                                                 openSidePanel("sticker");
-                                                setStickerIndex(stickerIndex);
+                                                //setGifIndex(gifIndex);
+                                                setContentIndex(stickerIndex);
                                                 setStickerTools(true);
                                             }}
-                                            onDragEnd={(_event, info) => {
-                                                setBackCards(prevCards =>
-                                                    prevCards.map((card, cardIndex) =>
-                                                        cardIndex === (cardNum - 1) ? {
-                                                            ...card,
-                                                            sticker: card.sticker.map((tmp, i) =>
-                                                                i === stickerIndex ? {...tmp, x: Math.round(tmp.x + info.offset.x), y: Math.round(tmp.y + info.offset.y)} : tmp
-                                                            )
-                                                        } : card
-                                                    )
-                                                );
-                                                setDataChanged(true);
+                                            onDragStart={(_) => {
+                                                setContentIndex(stickerIndex);
+                                            }}
+                                            onDragEnd={(_, info) => {
+                                                updateContent("sticker", "x", Math.round(sticker.x + info.offset.x));
+                                                updateContent("sticker", "y", Math.round(sticker.y + info.offset.y));
                                             }}
                                         />
                                     )}
@@ -568,19 +583,19 @@ function Edit() {
                             <button disabled={cardNum === 1} onClick={showPrevCard}>
                                 <FontAwesomeIcon icon={faChevronLeft} />
                             </button>
-                            <span>{cardSide} of Card {cardNum}/{total}</span>
-                            <button disabled={cardNum === total} onClick={showNextCard}>
+                            <span>{cardSide} of Card {cardNum}/{totalCards}</span>
+                            <button disabled={cardNum === totalCards} onClick={showNextCard}>
                                 <FontAwesomeIcon icon={faChevronRight} />
                             </button>
                         </div>
                     </div>
-                    { textPanel &&
+                   { textPanel &&
                         <TextSidePanel
                             textTools={textTools}
                             text={text}
                             setText={setText}
                             textIndex={textIndex}
-                            createText={createContent}
+                            insertText={insertContent}
                             updateText={updateContent}
                             deleteText={deleteContent}
                         />
@@ -591,7 +606,7 @@ function Edit() {
                             setError={setError}
                             gifTools={gifTools}
                             gifIndex={gifIndex}
-                            createGif={createContent}
+                            insertGif={insertContent}
                             deleteGif={deleteContent}
                         />
                     }
@@ -601,7 +616,7 @@ function Edit() {
                             setError={setError}
                             stickerTools={stickerTools}
                             stickerIndex={stickerIndex}
-                            createSticker={createContent}
+                            insertSticker={insertContent}
                             deleteSticker={deleteContent}
                         />
                     }

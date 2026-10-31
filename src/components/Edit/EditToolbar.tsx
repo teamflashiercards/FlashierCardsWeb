@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 */
 
 function EditToolbar (props: any) {
-    const { createCard, openSidePanel, deleteCard, flipCard, saveDeckContent, closeSidePanel } = props;
+    const { addCard, openSidePanel, deleteCard, flipCard, saveDeckContent, closeSidePanel } = props;
 
     return (
         <div className={styles.toolbar}>
@@ -17,7 +17,7 @@ function EditToolbar (props: any) {
                 <button
                     type="button"
                     className={styles.toolOption}
-                    onClick={createCard}
+                    onClick={addCard}
                 >
                     <span className={styles.shadow}></span>
                     <span className={styles.edge}></span>

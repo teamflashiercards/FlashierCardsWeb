@@ -10,7 +10,7 @@ import type StickerSidePanelProps from "../../interfaces/StickerSidePanelProps";
 */
 
 function StickerSidePanel(props: StickerSidePanelProps) {
-    const { setLoading, setError, stickerTools, createSticker, deleteSticker } = props;
+    const { setLoading, setError, stickerTools, insertSticker, deleteSticker } = props;
     const [giphyQuery, setGiphyQuery] = useState("");
     const [stickerResults, setStickerResults] = useState<Giphy[] | null>([]);
 
@@ -65,7 +65,7 @@ function StickerSidePanel(props: StickerSidePanelProps) {
                             key={sticker.id}
                             src={sticker.url}
                             alt={sticker.title}
-                            onClick={() => createSticker("sticker", {url: sticker.url, width: 120, height: 120, x: 50, y: 50})}
+                            onClick={() => insertSticker("sticker", {url: sticker.url, width: 120, height: 120, x: 50, y: 50})}
                         />
                     ))}
                 </div>

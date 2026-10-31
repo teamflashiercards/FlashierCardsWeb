@@ -188,6 +188,8 @@ function Dashboard() {
         }
     };
 
+    console.log(session);
+
     useEffect(() => {
         fetchDeckData();
     }, []);

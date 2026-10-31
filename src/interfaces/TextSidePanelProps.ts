@@ -5,7 +5,7 @@ export default interface TextSidePanelProps {
     text: string
     setText: Dispatch<SetStateAction<string>>
     textIndex: number | null
-    createText: any
+    insertText: any
     updateText: any
     deleteText: any
 };
