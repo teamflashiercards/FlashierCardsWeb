@@ -1,6 +1,5 @@
 import Navbar from "../Navbar";
 import { useEffect, useState } from "react";
-import type Deck from "../../interfaces/Deck";
 import styles from "../../styles/Dashboard.module.css";
 import UserAuth from "../../util/AuthContext";
 import DashboardAnimation from "./DashboardAnimation";
@@ -8,18 +7,31 @@ import FeedbackButton from "../FeedbackButton";
 import DashboardToolbar from "./DashboardToolbar";
 import CreateDeckForm from "./CreateDeckForm";
 import RenameDeckForm from "./RenmeDeckForm";
+import type Dashboard from "../../interfaces/Dashboard";
 
 function Dashboard() {
+    // manage user session, error handling, data loading
+    const { session } = UserAuth();
     const [error, setError] = useState({ status: false, message: "" });
     const [loading, setLoading] = useState(false);
-    const { session } = UserAuth();
+    
+    // manage options in toolbar and overlays
     const [toolVisible, setToolVisible] = useState(false);
     const [createOverlay, setCreateOverlay] = useState(false);
     const [renameOverlay, setRenameOverlay] = useState(false);
-    const [deckName, setDeckName] = useState("");
-    const [deckId, setDeckId] = useState<null | number>(null);
-    const [decks, setDecks] = useState<Deck[]>([]);
+    
+    // stores id and name of all decks user has created
+    const [decks, setDecks] = useState<Dashboard[]>([]);
+
+    // to track number of decks user has created
+    // user can only create 6 decks
     const [totalDecks, setTotalDecks] = useState(0);
+
+    // id to fetch deck content in study or edit
+    const [deckId, setDeckId] = useState<null | number>(null);
+
+    // to store new or updated deck name value
+    const [deckName, setDeckName] = useState("");
 
     function setDeckSelected(id: number | null, request: boolean) {
         setDeckId(id);
@@ -41,7 +53,6 @@ function Dashboard() {
         setLoading(true);
 
         try {
-            // get array of all decks from Supabase
             const response = await fetch(`${import.meta.env.VITE_FLASHIER_CARDS_API}/api/deck`, {
                 method: "GET",
                 headers: {
@@ -49,8 +60,10 @@ function Dashboard() {
                 }
             });
 
+            // returns empty array or an array of objects
             const data = await response.json();
             if (!response.ok) throw new Error(data.message);
+
             setDecks(data);
             setTotalDecks(data.length);
 
@@ -62,6 +75,7 @@ function Dashboard() {
         }
     };
 
+    // VERIFY
     // function to create a new deck
     const submitCreateForm = async (e: any) => {
         e.preventDefault();
@@ -102,6 +116,7 @@ function Dashboard() {
         } 
     };
 
+    // VERIFY
     // function to rename a deck
     const submitRenameForm = async (e: any) => {
         e.preventDefault();
@@ -146,6 +161,7 @@ function Dashboard() {
         }
     };
 
+    // VERIFY
     // function to delete a deck
     const deleteDeck = async () => {
         setLoading(true);
