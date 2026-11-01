@@ -11,18 +11,19 @@ import StickerSidePanel from "./StickerSidePanel";
 import TextSidePanel from "./TextSidePanel";
 import GifSidePanel from "./GifSidePanel";
 import EditToolbar from "./EditToolbar";
-import { motion } from "motion/react";
 import Alert from '@mui/material/Alert';
 import type Content from "../../interfaces/Content";
 import type Text from "../../interfaces/Text";
 import type Gif from "../../interfaces/Gif";
 import type Sticker from "../../interfaces/Sticker";
+import DisplayText from "./DisplayText";
+import DisplayGiphy from "./DisplayGiphy";
 
 // https://mui.com/material-ui/react-alert/
 
 /*
     Description: This component allows the user create, update, or delete deck content.
-    Last updated: 8/10/2026
+    Last updated: 10/31/2026
 */
 
 function Edit() {
@@ -331,227 +332,71 @@ function Edit() {
                             <div className={styles.cardInner}>
                                 <div className={styles.cardFront}>
                                     {content[cardNum - 1]?.front_card?.text?.map((text, textIndex) =>
-                                        <motion.p
-                                            key={textIndex}
-                                            drag
-                                            dragMomentum={false}
-                                            style={{
-                                                position: "fixed",
-                                                width: text.width,
-                                                fontFamily: "Imprima",
-                                                fontSize: text.font_size,
-                                                color: text.color,
-                                                x: text.x,
-                                                y: text.y
-                                            }}
-                                            whileHover={{
-                                                cursor: "grab",
-                                            }}
-                                            whileDrag={{
-                                                cursor: "grabbing"
-                                            }}
-                                            onDoubleClick={() => {
-                                                openSidePanel("text");
-                                                setText(text.value);
-                                                setContentIndex(textIndex);
-                                                setShowTextTools(true);                                           
-                                            }}
-                                            onDragStart={(_) => {
-                                                setContentIndex(textIndex);
-                                            }}
-                                            onDragEnd={(_, info) => {
-                                                updateContent("text", "x", Math.round(text.x + info.offset.x));
-                                                updateContent("text", "y", Math.round(text.y + info.offset.y));
-                                            }}
-                                        >
-                                            {text.value}
-                                        </motion.p>
+                                        <DisplayText 
+                                            textIndex={textIndex}
+                                            text={text}
+                                            openSidePanel={openSidePanel}
+                                            setText={setText}
+                                            setContentIndex={setContentIndex}
+                                            setShowTextTools={setShowTextTools}
+                                            updateContent={updateContent}
+                                        />
                                     )}
                                     {content[cardNum - 1]?.front_card?.gif?.map((gif, gifIndex) =>
-                                        <motion.img
-                                            key={gifIndex}
-                                            src={gif.url}
-                                            alt="gif"
-                                            drag
-                                            dragMomentum={false}
-                                            style={{
-                                                position: "fixed",
-                                                width: gif.width,
-                                                height: gif.height,
-                                                objectFit: "contain",
-                                                x: gif.x,
-                                                y: gif.y
-                                            }}
-                                            whileHover={{
-                                                cursor: "grab",
-                                                boxShadow: "0px 0px 20px 5px rgba(78, 119, 162, 0.33)",
-                                                scale: 1.05
-                                            }}
-                                            whileDrag={{
-                                                cursor: "grabbing"
-                                            }}
-                                            onDoubleClick={() => {
-                                                openSidePanel("gif");
-                                                setContentIndex(gifIndex);
-                                                setShowGifTools(true);
-                                            }}
-                                            onDragStart={(_) => {
-                                                setContentIndex(gifIndex);
-                                            }}
-                                            onDragEnd={(_, info) => {
-                                                updateContent("gif", "x", Math.round(gif.x + info.offset.x));
-                                                updateContent("gif", "y", Math.round(gif.y + info.offset.y));
-                                            }}
+                                        <DisplayGiphy
+                                            type={"gif"}
+                                            giphyIndex={gifIndex}
+                                            giphy={gif}
+                                            openSidePanel={openSidePanel}
+                                            setContentIndex={setContentIndex}
+                                            setShowGiphyTools={setShowGifPanel}
+                                            updateContent={updateContent}
                                         />
                                     )}
                                     {content[cardNum - 1]?.front_card?.sticker?.map((sticker, stickerIndex) =>
-                                        <motion.img
-                                            key={stickerIndex}
-                                            src={sticker.url}
-                                            alt="sticker"
-                                            drag
-                                            dragMomentum={false}
-                                            style={{
-                                                position: "fixed",
-                                                width: sticker.width,
-                                                height: sticker.height,
-                                                objectFit: "contain",
-                                                x: sticker.x,
-                                                y: sticker.y
-                                            }}
-                                            whileHover={{
-                                                cursor: "grab",
-                                                boxShadow: "0px 0px 20px 5px rgba(78, 119, 162, 0.33)",
-                                                scale: 1.05
-                                            }}
-                                            whileDrag={{
-                                                cursor: "grabbing"
-                                            }}
-                                            onDoubleClick={() => {
-                                                openSidePanel("sticker");
-                                                setContentIndex(stickerIndex);
-                                                setShowStickerTools(true);
-                                            }}
-                                            onDragStart={(_) => {
-                                                setContentIndex(stickerIndex);
-                                            }}
-                                            onDragEnd={(_, info) => {
-                                                updateContent("sticker", "x", Math.round(sticker.x + info.offset.x));
-                                                updateContent("sticker", "y", Math.round(sticker.y + info.offset.y));
-                                            }}
+                                        <DisplayGiphy
+                                            type={"sticker"}
+                                            giphyIndex={stickerIndex}
+                                            giphy={sticker}
+                                            openSidePanel={openSidePanel}
+                                            setContentIndex={setContentIndex}
+                                            setShowGiphyTools={setShowStickerPanel}
+                                            updateContent={updateContent}
                                         />
                                     )}
                                 </div>
                                 <div className={styles.cardBack}>
                                     {content[cardNum - 1]?.back_card?.text?.map((text, textIndex) =>
-                                        <motion.p
-                                            key={textIndex}
-                                            drag
-                                            dragMomentum={false}
-                                            style={{
-                                                position: "fixed",
-                                                width: text.width,
-                                                fontFamily: "Imprima",
-                                                fontSize: text.font_size,
-                                                color: text.color,
-                                                x: text.x,
-                                                y: text.y
-                                            }}
-                                            whileHover={{
-                                                cursor: "grab",
-                                            }}
-                                            whileDrag={{
-                                                cursor: "grabbing"
-                                            }}
-                                            onDoubleClick={() => {
-                                                openSidePanel("text");
-                                                setText(text.value);
-                                                setContentIndex(textIndex);
-                                                setShowTextTools(true);                                                
-                                            }}
-                                            onDragStart={(_) => {
-                                                setContentIndex(textIndex);
-                                            }}
-                                            onDragEnd={(_, info) => {
-                                                updateContent("text", "x", Math.round(text.x + info.offset.x));
-                                                updateContent("text", "y", Math.round(text.y + info.offset.y));
-                                            }}
-                                        >
-                                            {text.value}
-                                        </motion.p>
+                                        <DisplayText 
+                                            textIndex={textIndex}
+                                            text={text}
+                                            openSidePanel={openSidePanel}
+                                            setText={setText}
+                                            setContentIndex={setContentIndex}
+                                            setShowTextTools={setShowTextTools}
+                                            updateContent={updateContent}
+                                        />
                                     )}
                                     {content[cardNum - 1]?.back_card?.gif?.map((gif, gifIndex) =>
-                                        <motion.img
-                                            key={gifIndex}
-                                            src={gif.url}
-                                            alt="gif"
-                                            drag
-                                            dragMomentum={false}
-                                            style={{
-                                                position: "fixed",
-                                                width: gif.width,
-                                                height: gif.height,
-                                                objectFit: "contain",
-                                                x: gif.x,
-                                                y: gif.y
-                                            }}
-                                            whileHover={{
-                                                cursor: "grab",
-                                                boxShadow: "0px 0px 20px 5px rgba(78, 119, 162, 0.33)",
-                                                scale: 1.05
-                                            }}
-                                            whileDrag={{
-                                                cursor: "grabbing"
-                                            }}
-                                            onDoubleClick={() => {
-                                                openSidePanel("gif");
-                                                setContentIndex(gifIndex);
-                                                setShowGifTools(true);
-                                            }}
-                                            onDragStart={(_) => {
-                                                setContentIndex(gifIndex);
-                                            }}
-                                            onDragEnd={(_, info) => {
-                                                updateContent("gif", "x", Math.round(gif.x + info.offset.x));
-                                                updateContent("gif", "y", Math.round(gif.y + info.offset.y));
-                                            }}
+                                        <DisplayGiphy
+                                            type={"gif"}
+                                            giphyIndex={gifIndex}
+                                            giphy={gif}
+                                            openSidePanel={openSidePanel}
+                                            setContentIndex={setContentIndex}
+                                            setShowGiphyTools={setShowGifPanel}
+                                            updateContent={updateContent}
                                         />
                                     )}
                                     {content[cardNum - 1]?.back_card?.sticker?.map((sticker, stickerIndex) =>
-                                        <motion.img
-                                            key={stickerIndex}
-                                            src={sticker.url}
-                                            alt="sticker"
-                                            drag
-                                            dragMomentum={false}
-                                            style={{
-                                                position: "fixed",
-                                                width: sticker.width,
-                                                height: sticker.height,
-                                                objectFit: "contain",
-                                                x: sticker.x,
-                                                y: sticker.y
-                                            }}
-                                            whileHover={{
-                                                cursor: "grab",
-                                                boxShadow: "0px 0px 20px 5px rgba(78, 119, 162, 0.33)",
-                                                scale: 1.05
-                                            }}
-                                            whileDrag={{
-                                                cursor: "grabbing"
-                                            }}
-                                            onDoubleClick={() => {
-                                                openSidePanel("sticker");
-                                                setContentIndex(stickerIndex);
-                                                setShowStickerTools(true);
-                                            }}
-                                            onDragStart={(_) => {
-                                                setContentIndex(stickerIndex);
-                                            }}
-                                            onDragEnd={(_, info) => {
-                                                updateContent("sticker", "x", Math.round(sticker.x + info.offset.x));
-                                                updateContent("sticker", "y", Math.round(sticker.y + info.offset.y));
-                                            }}
+                                        <DisplayGiphy
+                                            type={"sticker"}
+                                            giphyIndex={stickerIndex}
+                                            giphy={sticker}
+                                            openSidePanel={openSidePanel}
+                                            setContentIndex={setContentIndex}
+                                            setShowGiphyTools={setShowStickerPanel}
+                                            updateContent={updateContent}
                                         />
                                     )}
                                 </div>
