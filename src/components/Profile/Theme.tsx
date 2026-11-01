@@ -5,10 +5,11 @@ import { useEffect, useState } from 'react';
 import UserAuth from "../../util/AuthContext";
 import type Profile from "../../interfaces/Profile";
 import FeedbackButton from "../FeedbackButton";
+import Alert from "@mui/material/Alert";
 
 /*
     Description: This component allows user to change background animation.
-    Last updated: 6/26/2026
+    Last updated: 10/31/2026
 */
 
 function Theme() {
@@ -84,12 +85,14 @@ function Theme() {
                     <ProfileNavbar currentView={"theme"} />
                     <div>
                         { (loading) ?
-                            <div className={"error-message"}>
+                            <Alert severity="info" style={{marginBottom: "0.5rem"}}>
                                 Loading request...
-                            </div>
+                            </Alert>
                         :
                             (error.status) ?
-                                <div className={"error-message"}>{error.message}</div>
+                                <Alert severity="error" style={{marginBottom: "0.5rem"}}>
+                                    {error.message}
+                                </Alert>
                             :
                                 <></>
                         }

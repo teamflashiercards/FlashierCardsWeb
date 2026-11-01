@@ -304,17 +304,19 @@ function Edit() {
             <div className={styles.subContainer}>
                 <div className={"app-title"}>{deckName || "Flashier Cards"}</div>
                 { (loading) ?
-                    <div className={"error-message"}>
+                    <Alert severity="info" style={{marginBottom: "0.5rem"}}>
                         Loading request...
-                    </div>
+                    </Alert>
                 :
                     (error.status) ?
-                        <div className={"error-message"}>{error.message}</div>
+                        <Alert severity="error" style={{marginBottom: "0.5rem"}}>
+                            {error.message}
+                        </Alert>
                     :
                         <></>
                 }
                 { dataChanged && 
-                    <Alert severity="warning" onClose={() => {}} style={{marginBottom: "1rem"}}>
+                    <Alert severity="warning" style={{marginBottom: "0.5rem"}}>
                         Warning: You have not saved your work.
                     </Alert>
                 }

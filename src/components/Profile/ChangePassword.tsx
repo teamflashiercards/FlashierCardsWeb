@@ -5,10 +5,11 @@ import { useState, type ChangeEvent } from 'react';
 import UserAuth from "../../util/AuthContext";
 import FeedbackButton from "../FeedbackButton";
 import BlueTooltip from "../BlueTooltip";
+import Alert from "@mui/material/Alert";
 
 /*
     Description: This component allows user to change their password.
-    Last updated: 6/29/2026
+    Last updated: 10/31/2026
 */
 
 function ChangePassword() {
@@ -70,12 +71,14 @@ function ChangePassword() {
                     <ProfileNavbar currentView={"changePassword"} />
                     <div>
                         { (loading) ?
-                            <div className={"error-message"}>
+                            <Alert severity="info" style={{marginBottom: "0.5rem"}}>
                                 Loading request...
-                            </div>
+                            </Alert>
                         :
                             (error.status) ?
-                                <div className={"error-message"}>{error.message}</div>
+                                <Alert severity="error" style={{marginBottom: "0.5rem"}}>
+                                    {error.message}
+                                </Alert>
                             :
                                 <></>
                         }
