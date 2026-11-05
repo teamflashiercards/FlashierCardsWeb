@@ -6,8 +6,9 @@ import DashboardAnimation from "./DashboardAnimation";
 import FeedbackButton from "../FeedbackButton";
 import DashboardToolbar from "./DashboardToolbar";
 import CreateDeckForm from "./CreateDeckForm";
-import RenameDeckForm from "./RenmeDeckForm";
+import RenameDeckForm from "./RenameDeckForm";
 import type Deck from "../../interfaces/Deck";
+import Alert from "@mui/material/Alert";
 
 function Dashboard() {
     // manage user session, error handling, data loading
@@ -212,12 +213,14 @@ function Dashboard() {
                         deleteDeck={deleteDeck}
                     />
                     { (loading) ?
-                        <div className={"error-message"}>
+                        <Alert severity="info" style={{marginBottom: "0.5rem"}}>
                             Loading request...
-                        </div>
+                        </Alert>
                     :
                         (error.status) ?
-                            <div className={"error-message"}>{error.message}</div>
+                            <Alert severity="error" style={{marginBottom: "0.5rem"}}>
+                                {error.message}
+                            </Alert>
                         :
                             <></>
                     }
