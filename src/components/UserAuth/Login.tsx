@@ -7,10 +7,11 @@ import FeedbackButton from "../FeedbackButton";
 import { faHouse } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import BlueTooltip from "../BlueTooltip";
+import Alert from "@mui/material/Alert";
 
 /*
     Description: This component is the login page for a user to access their account.
-    Last updated: 6/12/2026
+    Last updated: 11/5/2026
 */
 
 function Login() {
@@ -81,12 +82,14 @@ function Login() {
                     Flashier Cards
                 </div>
                 { (loading) ?
-                    <div className={"error-message"}>
+                    <Alert severity="info" style={{marginBottom: "0.5rem"}}>
                         Loading request...
-                    </div>
+                    </Alert>
                 :
                     (error.status) ?
-                        <div className={"error-message"}>{error.message}</div>
+                        <Alert severity="error" style={{marginBottom: "0.5rem"}}>
+                            {error.message}
+                        </Alert>
                     :
                         <></>
                 }

@@ -7,10 +7,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styles from "../../styles/Home.module.css";
 import FeedbackButton from "../FeedbackButton";
 import BlueTooltip from "../BlueTooltip";
+import Alert from "@mui/material/Alert";
 
 /*
     Description: This component is the signup page for a user to create an account.
-    Last updated: 6/12/2026
+    Last updated: 11/5/2026
 */
 
 function Signup() {
@@ -90,12 +91,14 @@ function Signup() {
                     Join Flashier Cards
                 </div>
                 { (loading) ?
-                    <div className={"error-message"}>
+                    <Alert severity="info" style={{marginBottom: "0.5rem"}}>
                         Loading request...
-                    </div>
+                    </Alert>
                 :
                     (error.status) ?
-                        <div className={"error-message"}>{error.message}</div>
+                        <Alert severity="error" style={{marginBottom: "0.5rem"}}>
+                            {error.message}
+                        </Alert>
                     :
                         <></>
                 }

@@ -9,10 +9,11 @@ import UserAuth from "../util/AuthContext";
 import FeedbackButton from "./FeedbackButton";
 import { motion } from "motion/react";
 import type Deck from "../interfaces/Deck";
+import Alert from "@mui/material/Alert";
 
 /*
     Description: This component allows the user to study deck content.
-    Last updated: 8/8/2026
+    Last updated: 11/5/2026
 */
 
 function Study() {
@@ -164,12 +165,14 @@ function Study() {
                 <div className={styles.subContainer}>
                     <div className={"app-title"}>{deckName || "Flashier Cards"}</div>
                     { (loading) ?
-                        <div className={"error-message"}>
+                        <Alert severity="info" style={{marginBottom: "0.5rem"}}>
                             Loading request...
-                        </div>
+                        </Alert>
                     :
                         (error.status) ?
-                            <div className={"error-message"}>{error.message}</div>
+                            <Alert severity="error" style={{marginBottom: "0.5rem"}}>
+                                {error.message}
+                            </Alert>
                         :
                             <></>
                     }

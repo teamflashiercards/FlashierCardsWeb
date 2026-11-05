@@ -9,7 +9,7 @@ import Alert from "@mui/material/Alert";
 
 /*
     Description: This component allows user to change background animation.
-    Last updated: 10/31/2026
+    Last updated: 11/5/2026
 */
 
 function Theme() {
