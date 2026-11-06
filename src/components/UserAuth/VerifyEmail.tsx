@@ -2,10 +2,11 @@ import { useEffect, useState } from "react";
 import UserAuth from "../../util/AuthContext";
 import { useNavigate } from "react-router-dom";
 import styles from "../../styles/Home.module.css";
+import Alert from "@mui/material/Alert";
 
 /*
     Description: This component is used to verify user's email when they create an account.
-    Last updated: 6/12/2026
+    Last updated: 11/5/2026
 */
 
 function VerifyEmail() {
@@ -95,16 +96,18 @@ function VerifyEmail() {
                 Flashier Cards
             </div>
             { (loading) ?
-                <div className={"error-message"}>
+                <Alert severity="info" style={{marginBottom: "0.5rem"}}>
                     Loading request...
-                </div>
+                </Alert>
             :
                 (error.status) ?
-                    <div className={"error-message"}>{error.message}</div>
+                    <Alert severity="error" style={{marginBottom: "0.5rem"}}>
+                        {error.message}
+                    </Alert>
                 :
-                    <div className={"error-message"}>
+                    <Alert severity="error" style={{marginBottom: "0.5rem"}}>
                         Please check your email for the 6 digit verification token
-                    </div>
+                    </Alert>
             }
             <form className={styles.form} onSubmit={submitForm}>
                 <div>

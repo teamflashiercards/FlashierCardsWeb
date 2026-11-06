@@ -4,34 +4,42 @@ import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons
 import { useEffect, useRef, useState } from "react";
 import styles from "../styles/Deck.module.css";
 import { useParams } from "react-router-dom";
-import type Card from "../interfaces/Card";
 import UserAuth from "../util/AuthContext";
 import FeedbackButton from "./FeedbackButton";
 import { motion } from "motion/react";
+import Alert from "@mui/material/Alert";
+import type Content from "../interfaces/Content";
 
 /*
     Description: This component allows the user to study deck content.
-    Last updated: 8/8/2026
+    Last updated: 11/5/2026
 */
 
 function Study() {
-    // fetch related variables
+    // manage user session, error handling, and data loading
     const [error, setError] = useState({ status: false, message: "" });
     const [loading, setLoading] = useState(false);
-    const [animation, setAnimation] = useState(1);
     const { session } = UserAuth();
 
+    // to set background animation based on user profile
+    const [animation, setAnimation] = useState(1);
+
     // deck conntent related variables
+    const [deckName, setDeckName] = useState();  
+
+    // get id to fetch deck content
     const { deckId } = useParams();
-    const [deckName, setDeckName] = useState();
-    const [frontCards, setFrontCards] = useState<Card[]>([]);
-    const [backCards, setBackCards] = useState<Card[]>([]);    
 
     // card related variables
     const cardRef = useRef<HTMLDivElement>(null);
     const [cardSide, setCardSide] = useState("Front");
+
+    // to track current card
     const [cardNum, setCardNum] = useState(1);
-    const [total, setTotal] = useState(1);
+    const [totalCards, setTotalCards] = useState(1);
+
+    // stores deck content
+    const [content, setContent] = useState<Content[]>([]);
 
     function flipCard() {
         if (cardRef.current) {
@@ -41,8 +49,9 @@ function Study() {
     }
 
     function showNextCard() {
-        if ((cardNum + 1) <= total) {
+        if ((cardNum + 1) <= totalCards) {
             setCardNum(cardNum + 1);
+
             if (cardSide === "Back") {
                 flipCard();
             }
@@ -52,17 +61,18 @@ function Study() {
     function showPrevCard() {
         if ((cardNum - 1) >= 1) {
             setCardNum(cardNum - 1);
+
             if (cardSide === "Back") {
                 flipCard();
             }
         }
     }
 
-    const fetchDeckName = async () => {
+    // function to fetch all the deck content from Supabase
+    const fetchDeckContent = async () => {
         setLoading(true);
 
         try {
-            // get specific deck from Supabase
             const response = await fetch(`${import.meta.env.VITE_FLASHIER_CARDS_API}/api/deck/${deckId}`, {
                 method: "GET",
                 headers: {
@@ -70,35 +80,13 @@ function Study() {
                 }
             });
 
+            // returns an array with one object
             const data = await response.json();
             if (!response.ok) throw new Error(data.message);
+
             setDeckName(data[0].name);
-        
-        } catch(error: any) {
-            setError({ status: true, message: error.message });
-
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const fetchDeckContent = async () => {
-        setLoading(true);
-
-        try {
-            const response = await fetch(`${import.meta.env.VITE_FLASHIER_CARDS_API}/api/deck/${deckId}/content`, {
-                method: "GET",
-                headers: {
-                    "Authorization": `Bearer ${session.access_token}`
-                }
-            });
-
-            const data = await response.json();
-            if (!response.ok) throw new Error(data.message);
-
-            setFrontCards(data.front_cards);
-            setBackCards(data.back_cards);
-            setTotal(data.front_cards.length);
+            setContent(data[0].content);
+            setTotalCards(data[0].content.length);
 
         } catch(error: any) {
             setError({ status: true, message: error.message });
@@ -121,6 +109,7 @@ function Study() {
 
             const data = await response.json();
             if (!response.ok) throw new Error(data.message);
+
             setAnimation(data[0].animation);
 
         } catch(error: any) {
@@ -132,7 +121,6 @@ function Study() {
     }
 
     useEffect(() => {
-        fetchDeckName();
         fetchDeckContent();
         fetchProfileAnimation();
     }, []);
@@ -152,12 +140,14 @@ function Study() {
                 <div className={styles.subContainer}>
                     <div className={"app-title"}>{deckName || "Flashier Cards"}</div>
                     { (loading) ?
-                        <div className={"error-message"}>
+                        <Alert severity="info" style={{marginBottom: "0.5rem"}}>
                             Loading request...
-                        </div>
+                        </Alert>
                     :
                         (error.status) ?
-                            <div className={"error-message"}>{error.message}</div>
+                            <Alert severity="error" style={{marginBottom: "0.5rem"}}>
+                                {error.message}
+                            </Alert>
                         :
                             <></>
                     }
@@ -165,45 +155,47 @@ function Study() {
                         <div className={styles.card} onClick={() => flipCard()} ref={cardRef}>
                             <div className={styles.cardInner}>
                                 <div className={styles.cardFront}>
-                                    {frontCards[cardNum - 1]?.text?.map((text, textId) =>
+                                    {content[cardNum - 1]?.front_card?.text?.map((text, textIndex) =>
                                         <motion.p
-                                            key={textId}
+                                            key={textIndex}
                                             style={{
-                                                width: text.width + "px",
-                                                fontFamily: "Imprima, sans-serif",
+                                                position: "fixed",
+                                                width: text.width,
+                                                fontFamily: "Imprima",
                                                 fontSize: text.font_size,
                                                 color: text.color,
-                                                position: "fixed",
                                                 x: text.x,
                                                 y: text.y
                                             }}
                                         >
-                                            {text.input}
+                                            {text.value}
                                         </motion.p>
                                     )}
-                                    {frontCards[cardNum - 1]?.gif?.map((gif, gifId) =>
-                                        <motion.img 
-                                            key={gifId}
+                                    {content[cardNum - 1]?.front_card?.gif?.map((gif, gifIndex) =>
+                                        <motion.img
+                                            key={gifIndex}
                                             src={gif.url}
                                             alt="gif"
                                             style={{
-                                                width: gif.width + "px",
-                                                height: gif.height + "px",
                                                 position: "fixed",
+                                                width: gif.width,
+                                                height: gif.height,
+                                                objectFit: "contain",
                                                 x: gif.x,
                                                 y: gif.y
                                             }}
                                         />
                                     )}
-                                    {frontCards[cardNum - 1]?.sticker?.map((sticker, stickerId) =>
-                                        <motion.img 
-                                            key={stickerId}
+                                    {content[cardNum - 1]?.front_card?.sticker?.map((sticker, stickerIndex) =>
+                                        <motion.img
+                                            key={stickerIndex}
                                             src={sticker.url}
                                             alt="sticker"
                                             style={{
+                                                position: "fixed",
                                                 width: sticker.width,
                                                 height: sticker.height,
-                                                position: "fixed",
+                                                objectFit: "contain",
                                                 x: sticker.x,
                                                 y: sticker.y
                                             }}
@@ -211,45 +203,47 @@ function Study() {
                                     )}
                                 </div>
                                 <div className={styles.cardBack}>
-                                    {backCards[cardNum - 1]?.text?.map((text, textId) =>
+                                    {content[cardNum - 1]?.back_card?.text?.map((text, textIndex) =>
                                         <motion.p
-                                            key={textId}
+                                            key={textIndex}
                                             style={{
-                                                width: text.width + "px",
-                                                fontFamily: "Imprima, sans-serif",
+                                                position: "fixed",
+                                                width: text.width,
+                                                fontFamily: "Imprima",
                                                 fontSize: text.font_size,
                                                 color: text.color,
-                                                position: "fixed",
                                                 x: text.x,
                                                 y: text.y
                                             }}
                                         >
-                                            {text.input}
+                                            {text.value}
                                         </motion.p>
                                     )}
-                                    {backCards[cardNum - 1]?.gif?.map((gif, gifId) =>
-                                        <motion.img 
-                                            key={gifId}
+                                    {content[cardNum - 1]?.back_card?.gif?.map((gif, gifIndex) =>
+                                        <motion.img
+                                            key={gifIndex}
                                             src={gif.url}
                                             alt="gif"
                                             style={{
-                                                width: gif.width + "px",
-                                                height: gif.height + "px",
                                                 position: "fixed",
+                                                width: gif.width,
+                                                height: gif.height,
+                                                objectFit: "contain",
                                                 x: gif.x,
                                                 y: gif.y
                                             }}
                                         />
                                     )}
-                                    {backCards[cardNum - 1]?.sticker?.map((sticker, stickerId) =>
-                                        <motion.img 
-                                            key={stickerId}
+                                    {content[cardNum - 1]?.back_card?.sticker?.map((sticker, stickerIndex) =>
+                                        <motion.img
+                                            key={stickerIndex}
                                             src={sticker.url}
                                             alt="sticker"
                                             style={{
+                                                position: "fixed",
                                                 width: sticker.width,
                                                 height: sticker.height,
-                                                position: "fixed",
+                                                objectFit: "contain",
                                                 x: sticker.x,
                                                 y: sticker.y
                                             }}
@@ -262,8 +256,8 @@ function Study() {
                             <button disabled={cardNum === 1} onClick={showPrevCard}>
                                 <FontAwesomeIcon icon={faChevronLeft} />
                             </button>
-                            <span>{cardNum}/{total}</span>
-                            <button disabled={cardNum === total} onClick={showNextCard}>
+                            <span>{cardNum}/{totalCards}</span>
+                            <button disabled={cardNum === totalCards} onClick={showNextCard}>
                                 <FontAwesomeIcon icon={faChevronRight} />
                             </button>
                         </div>

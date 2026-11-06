@@ -7,7 +7,8 @@ import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
     Last updated: 7/28/2026
 */
 
-function CreateDeckForm({ exitOverlay, deckName, setDeckName, submitCreateForm }: any) {
+function CreateDeckForm(props: any) {
+    const { exitOverlay, setDeckName, submitCreateForm } = props;
     return (
         <div className={styles.overlay}>
             <div className={styles.exitBtn}>
@@ -25,7 +26,6 @@ function CreateDeckForm({ exitOverlay, deckName, setDeckName, submitCreateForm }
                     <input 
                         type="text"
                         name="deckName"
-                        value={deckName}
                         onChange={(e) => setDeckName(e.target.value)}
                     />
                 </div>

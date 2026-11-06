@@ -6,10 +6,11 @@ import styles from "../../styles/Dashboard.module.css";
 
 /*
     Description: This is a sub-component that contains code for the Dashboard component's toolbar.
-    Last updated: 7/12/2026
+    Last updated: 11/5/2026
 */
 
-function DashboardToolbar({ deckId, toolVisible, setDeckSelected, setCreateOverlay, setRenameOverlay, deleteDeck }: any) {
+function DashboardToolbar(props: any) {
+    const { deckId, setDeckId, showTools, setShowTools, setCreateOverlay, setRenameOverlay, deleteDeck } = props;
     const navigate = useNavigate();
     
     return (
@@ -30,7 +31,7 @@ function DashboardToolbar({ deckId, toolVisible, setDeckSelected, setCreateOverl
             <BlueTooltip title="Study Deck">
                 <button
                     type="button"
-                    style={{ display: toolVisible ? "inline-block" : "none" }}
+                    style={{ display: showTools ? "inline-block" : "none" }}
                     className={styles.toolOption}
                     onClick={() => navigate(`/dashboard/study/${deckId}`)}
                 >
@@ -44,7 +45,7 @@ function DashboardToolbar({ deckId, toolVisible, setDeckSelected, setCreateOverl
             <BlueTooltip title="Edit Deck">
                 <button
                     type="button"
-                    style={{ display: toolVisible ? "inline-block" : "none" }}
+                    style={{ display: showTools ? "inline-block" : "none" }}
                     className={styles.toolOption}
                     onClick={() => navigate(`/dashboard/edit/${deckId}`)}
                 >
@@ -58,7 +59,7 @@ function DashboardToolbar({ deckId, toolVisible, setDeckSelected, setCreateOverl
             <BlueTooltip title="Rename Deck">
                 <button
                     type="button"
-                    style={{ display: toolVisible ? "inline-block" : "none" }}
+                    style={{ display: showTools ? "inline-block" : "none" }}
                     className={styles.toolOption}
                     onClick={() => setRenameOverlay(true)}
                 >
@@ -72,7 +73,7 @@ function DashboardToolbar({ deckId, toolVisible, setDeckSelected, setCreateOverl
             <BlueTooltip title="Delete Deck">
                 <button
                     type="button"
-                    style={{ display: toolVisible ? "inline-block" : "none" }}
+                    style={{ display: showTools ? "inline-block" : "none" }}
                     className={styles.toolOption}
                     onClick={deleteDeck}
                 >
@@ -86,8 +87,11 @@ function DashboardToolbar({ deckId, toolVisible, setDeckSelected, setCreateOverl
             <BlueTooltip title="Cancel Selection">
                 <button
                     type="button"
-                    onClick={() => setDeckSelected(null, false)}
-                    style={{ display: toolVisible ? "inline-block" : "none" }}
+                    onClick={() => {
+                        setDeckId(null);
+                        setShowTools(false);
+                    }}
+                    style={{ display: showTools ? "inline-block" : "none" }}
                     className={styles.toolOption}
                 >
                     <span className={styles.shadow}></span>

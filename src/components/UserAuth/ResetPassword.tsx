@@ -3,10 +3,11 @@ import { useEffect, useState, type ChangeEvent } from "react";
 import UserAuth from "../../util/AuthContext";
 import styles from "../../styles/Home.module.css";
 import BlueTooltip from "../BlueTooltip";
+import Alert from "@mui/material/Alert";
 
 /*
     Description: This component is used to reset password from login route.
-    Last updated: 6/12/2026
+    Last updated: 11/5/2026
 */
 
 function ResetPassword() {
@@ -78,12 +79,14 @@ function ResetPassword() {
                 Flashier Cards
             </div>
             { (loading) ?
-                <div className={"error-message"}>
+                <Alert severity="info" style={{marginBottom: "0.5rem"}}>
                     Loading request...
-                </div>
+                </Alert>
             :
                 (error.status) ?
-                    <div className={"error-message"}>{error.message}</div>
+                    <Alert severity="error" style={{marginBottom: "0.5rem"}}>
+                        {error.message}
+                    </Alert>
                 :
                     <></>
             }

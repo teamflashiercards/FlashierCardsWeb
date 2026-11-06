@@ -4,11 +4,12 @@ import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 
 /*
     Description: This component allows the user to rename a deck on Dashboard.
-    Last updated: 8/8/2026
+    Last updated: 11/5/2026
 */
 
 
-function RenameDeckForm ({ exitOverlay, deckName, setDeckName, submitRenameForm } :any){
+function RenameDeckForm (props :any){
+    const { exitOverlay, setDeckName, submitRenameForm } = props;
     return (   
         <div className={styles.overlay}>
             <div className={styles.exitBtn}>
@@ -26,7 +27,6 @@ function RenameDeckForm ({ exitOverlay, deckName, setDeckName, submitRenameForm 
                     <input 
                         type="text"
                         name="deckName"
-                        value={deckName}
                         onChange={(e) => setDeckName(e.target.value)}
                     />
                 </div>

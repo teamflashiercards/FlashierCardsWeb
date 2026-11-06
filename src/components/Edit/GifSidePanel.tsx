@@ -2,15 +2,14 @@ import {useState} from 'react';
 import GiphyLogo from '../../assets/giphyLogo.png'
 import styles from "../../styles/Deck.module.css";
 import type Giphy from "../../interfaces/Giphy";
-import type GifSidePanelProps from '../../interfaces/GifSidePanelProps';
 
 /*
     Description: This is a sub-component that contains code for the gif side panel in Edit component.
-    Last updated: 8/9/2026
+    Last updated: 10/31/2026
 */
 
-function GifSidePanel (props: GifSidePanelProps) {
-    const { setLoading, setError, gifTools, createGif, deleteGif } = props;
+function GifSidePanel (props: any) {
+    const { setLoading, setError, showGifTools, insertGif, deleteGif } = props;
     const [gifResults, setGifResults] = useState<Giphy[] | null>([]);
     const [giphyQuery, setGiphyQuery] = useState("");    
 
@@ -42,10 +41,10 @@ function GifSidePanel (props: GifSidePanelProps) {
 
     return (
         <div className={styles.sidePanel}>
-            <div style={{ display: (gifTools) ? "flex" : "none" }}>
+            <div style={{ display: (showGifTools) ? "flex" : "none" }}>
                 <div className={styles.sidePanelTitle}>Gif Deletion</div>
                 <div className={styles.sidePanelOptions}>
-                    <button className={styles.sidePanelBtn} onClick={deleteGif}>Delete</button>
+                    <button className={styles.sidePanelBtn} onClick={() => deleteGif("gif")}>Delete</button>
                 </div>
             </div>
             <div>
@@ -65,7 +64,7 @@ function GifSidePanel (props: GifSidePanelProps) {
                             key={gif.id}
                             src={gif.url}
                             alt={gif.title}
-                            onClick={() => createGif("gif", {url: gif.url, width: 120, height: 120, x: 50, y: 50})}
+                            onClick={() => insertGif("gif", {url: gif.url, width: 120, height: 120, x: 50, y: 50})}
                         />
                     ))}
                 </div>

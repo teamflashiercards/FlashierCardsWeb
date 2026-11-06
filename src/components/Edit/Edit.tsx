@@ -11,55 +11,65 @@ import StickerSidePanel from "./StickerSidePanel";
 import TextSidePanel from "./TextSidePanel";
 import GifSidePanel from "./GifSidePanel";
 import EditToolbar from "./EditToolbar";
-import { motion } from "motion/react";
-import { createCard, deleteCard } from "./EditCardHelpers";
-import { setFrontCard, setBackCard } from "./EditContentHelpers";
-import { updateFrontCard, updateBackCard } from "./EditContentHelpers";
-import { deleteFrontCard, deleteBackCard } from "./EditContentHelpers";
+import Alert from '@mui/material/Alert';
+import type Content from "../../interfaces/Content";
+import type Text from "../../interfaces/Text";
+import type Gif from "../../interfaces/Gif";
+import type Sticker from "../../interfaces/Sticker";
+import DisplayText from "./DisplayText";
+import DisplayGiphy from "./DisplayGiphy";
+
+// https://mui.com/material-ui/react-alert/
 
 /*
     Description: This component allows the user create, update, or delete deck content.
-    Last updated: 8/10/2026
+    Last updated: 10/31/2026
 */
 
 function Edit() {
-    // fetch related variables
+    // manage user session, error handling, and data loading
+    const { session } = UserAuth();
     const [error, setError] = useState({ status: false, message: "" });
     const [loading, setLoading] = useState(false);
-    const { session } = UserAuth();
-
-    // deck conntent related variables
-    const { deckId } = useParams();
-    const [deckName, setDeckName] = useState();
-    const [frontCards, setFrontCards] = useState<Card[]>([]);
-    const [backCards, setBackCards] = useState<Card[]>([]);
-
+    
     // card related variables
     const cardRef = useRef<HTMLDivElement>(null);
     const [cardSide, setCardSide] = useState("Front");
-    const [cardNum, setCardNum] = useState(1);
-    const [total, setTotal] = useState(1);
 
-    // side panel related variables
-    const [textPanel, setTextPanel] = useState(false);
-    const [gifPanel, setGifPanel] = useState(false);
-    const [stickerPanel, setStickerPanel] = useState(false);
+    // manage when side panels and their tools are shown
+    const [showTextTools, setShowTextTools] = useState(false);
+    const [showTextPanel, setShowTextPanel] = useState(false);
 
-    // text related variables
+    const [showGifTools, setShowGifTools] = useState(false);
+    const [showGifPanel, setShowGifPanel] = useState(false);
+
+    const [showStickerTools, setShowStickerTools] = useState(false);
+    const [showStickerPanel, setShowStickerPanel] = useState(false);
+
+    // to manage text input
     const [text, setText] = useState("");
-    const [textTools, setTextTools] = useState(false);
-    const [textIndex, setTextIndex] = useState<number | null>(null);
-    
-    // gif related variables
-    const [gifTools, setGifTools] = useState(false);
-    const [gifIndex, setGifIndex] = useState<number | null>(null);
 
-    // sticker realted tools
-    const [stickerTools, setStickerTools] = useState(false);
-    const [stickerIndex, setStickerIndex] = useState<number | null>(null);
+    // to alert user if data has been changed but not saved
+    const [dataChanged, setDataChanged] = useState(false);
 
-    // function to fetch deck name from Supabase
-    const fetchDeckName = async () => {
+    // get id to fetch deck content
+    const { deckId } = useParams();
+
+    // stores deck name to display as title
+    const [deckName, setDeckName] = useState<string>("");
+
+    // stores deck content
+    const [content, setContent] = useState<Content[]>([]);
+
+    // to track current card
+    const [cardNum, setCardNum] = useState(1);
+    const [totalCards, setTotalCards] = useState(1);
+
+    // to track text, gif, or sticker selected
+    const [contentIndex, setContentIndex] = useState<number | null>(null);
+
+    // function to fetch all the deck content from Supabase
+    const fetchDeckContent = async () => {
         setLoading(true);
 
         try {
@@ -70,36 +80,13 @@ function Edit() {
                 }
             });
 
+            // returns an array with one object
             const data = await response.json();
             if (!response.ok) throw new Error(data.message);
+
             setDeckName(data[0].name);
-        
-        } catch(error: any) {
-            setError({ status: true, message: error.message });
-
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    // function to fetch all the deck content from Supabase
-    const fetchDeckContent = async () => {
-        setLoading(true);
-
-        try {
-            const response = await fetch(`${import.meta.env.VITE_FLASHIER_CARDS_API}/api/deck/${deckId}/content`, {
-                method: "GET",
-                headers: {
-                    "Authorization": `Bearer ${session.access_token}`
-                }
-            });
-
-            const data = await response.json();
-            if (!response.ok) throw new Error(data.message);
-
-            setFrontCards(data.front_cards);
-            setBackCards(data.back_cards);
-            setTotal(data.front_cards.length);
+            setContent(data[0].content);
+            setTotalCards(data[0].content.length);
 
         } catch(error: any) {
             setError({ status: true, message: error.message });
@@ -114,15 +101,14 @@ function Edit() {
         setLoading(true);
     
         try {
-            const response = await fetch(`${import.meta.env.VITE_FLASHIER_CARDS_API}/api/deck/${deckId}/save`, {
-                method: "POST",
+            const response = await fetch(`${import.meta.env.VITE_FLASHIER_CARDS_API}/api/deck/${deckId}/content`, {
+                method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${session.access_token}`
                 },
                 body: JSON.stringify({
-                    front_cards: frontCards,
-                    back_cards: backCards
+                    content: content
                 })
             });
     
@@ -134,38 +120,9 @@ function Edit() {
     
         } finally {
             setLoading(false);
+            setDataChanged(false);  // modified data has been saved
         }
     };
-
-    // function to create text, gifs, and stickers with helpers in EditHelpers
-    function createContent(contentType: string, initialContent: any) {
-        if (cardSide === "Front") {
-            let content = {id: null, card_id: frontCards[cardNum - 1].id, ...initialContent};
-            setFrontCard(contentType, content, setFrontCards, cardNum);
-        } else {
-            let content = {id: null, card_id: backCards[cardNum - 1].id, ...initialContent};
-            setBackCard(contentType, content, setBackCards, cardNum);
-        }
-    }
-
-    // function to update text, gifs, and stickers with helpers in EditHelpers
-    function updateContent(contentType: string, contentKey: string, contentValue: string, contentIndex: number,) {
-        if (cardSide === "Front") {
-            updateFrontCard(contentType, contentKey, contentValue, contentIndex, setFrontCards, cardNum);
-        } else {
-            updateBackCard(contentType, contentKey, contentValue, contentIndex, setBackCards, cardNum);
-        }
-    }
-
-    // function to delete text, gifs, and stickers with helpers in EditHelpers
-    function deleteContent(contentType: string, contentIndex: number) {
-        if (cardSide === "Front") {
-            deleteFrontCard(contentType, contentIndex, setFrontCards, cardNum);
-        } else {
-            deleteBackCard(contentType, contentIndex, setBackCards, cardNum);
-        }
-        hideSidePanelTools();
-    }
 
     function flipCard() {
         if (cardRef.current) {
@@ -175,7 +132,7 @@ function Edit() {
     }
 
     function showNextCard() {
-        if ((cardNum + 1) <= total) {
+        if ((cardNum + 1) <= totalCards) {
             hideSidePanelTools();
             setCardNum(cardNum + 1);
 
@@ -199,51 +156,143 @@ function Edit() {
     function openSidePanel(panel: string) {
         // close any open side panel first
         closeSidePanel();
-
+     
         if (panel === "text") {
-            setTextPanel(true);
-
+            setShowTextPanel(true);
         } else if (panel === "gif") {
-            setGifPanel(true);
-            
+            setShowGifPanel(true);
         } else if (panel === "sticker") {
-            setStickerPanel(true);
+            setShowStickerPanel(true);
         }
     }
 
     function closeSidePanel() {
-        // hide any tools open in side panels first
+        // hide any tools open in side panel first
         hideSidePanelTools();
 
-        if (textPanel) {
-            setTextPanel(false);
-
-        } else if (gifPanel) {
-            setGifPanel(false);
-
-        } else if (stickerPanel) {
-            setStickerPanel(false);
+        if (showTextPanel) {
+            setShowTextPanel(false);
+        } else if (showGifPanel) {
+            setShowGifPanel(false);
+        } else if (showStickerPanel) {
+            setShowStickerPanel(false);
         }
     }
 
     function hideSidePanelTools() {
-        if (textPanel) {
-            setTextIndex(null);
-            setTextTools(false); 
+        // set any selected object to null
+        setContentIndex(null);
+
+        if (showTextPanel) {
+            setShowTextTools(false); 
             setText("");
-
-        } else if (gifPanel) {
-            setGifIndex(null);
-            setGifTools(false);
-
-        } else if (stickerPanel) {
-            setStickerIndex(null);
-            setStickerTools(false);
+        } else if (showGifPanel) {
+            setShowGifTools(false);
+        } else if (showStickerPanel) {
+            setShowStickerTools(false);
         }
     }
 
+    // create a new card in the deck
+    function addCard() {
+        if (totalCards + 1 <= 15) {
+            const newCard = {
+                "front_card": { "text": [], "gif": [], "sticker": [] },
+                "back_card": { "text": [], "gif": [], "sticker": [] }
+            };
+            setContent(prevContent => [...prevContent, newCard]);
+            setTotalCards(prevTotal => prevTotal + 1);
+        } else {
+            setError({ status: true, message: "You can only create up to 15 cards in a deck." });
+        }        
+    }
+
+    // deletes current card in the deck
+    function deleteCard() {
+        if (totalCards - 1 >= 1) {
+            setContent(prevContent => prevContent.filter((_, cardIndex) => cardIndex != cardNum - 1));
+            (cardNum > 1) ? setCardNum(prevCardNum => prevCardNum - 1) : setCardNum(1);
+            setTotalCards(prevTotal => prevTotal - 1);
+        }
+    }
+
+    // adds text, gifs, or stickers to card
+    function insertCardContent(type: string, card: Card, newContent: Text | Gif | Sticker) {
+        if (type === "text") {
+            return {...card, text: [...card.text, newContent as Text]};
+        } else if (type === "gif") {
+            return {...card, gif: [...card.gif, newContent as Gif]};
+        } else if (type === "sticker") {
+            return {...card, sticker: [...card.sticker, newContent as Sticker]};
+        }
+        return card;
+    }
+
+    // adds text, gifs, or stickers to front or back card
+    function insertContent(type: string, newContent: Text | Gif | Sticker) {
+        setContent(prevContent => prevContent.map((card: Content, cardIndex) =>
+            (cardIndex === cardNum - 1) ? (cardSide === "Front") ?
+                {...card, front_card: insertCardContent(type, card.front_card, newContent)}
+                : {...card, back_card: insertCardContent(type, card.back_card, newContent)}
+            : card
+        ));
+        setDataChanged(true);
+    }
+
+    // updates text, gifs, or stickers on card
+    function updateCardContent(type: string, card: Card, key: string, value: string | number) {
+        if (type === "text") {
+            return {...card, text: card.text.map((cardText, textIndex) =>
+                (textIndex === contentIndex) ? {...cardText, [key]: value} : cardText
+            )};
+        } else if (type === "gif") {
+            return {...card, gif: card.gif.map((cardGif, gifIndex) =>
+                (gifIndex === contentIndex) ? {...cardGif, [key]: value} : cardGif
+            )};
+        } else if (type === "sticker") {
+            return {...card, sticker: card.sticker.map((cardSticker, stickerIndex) =>
+                (stickerIndex === contentIndex) ? {...cardSticker, [key]: value} : cardSticker
+            )};
+        }
+        return card;
+    }
+
+    // updates text, gifs, or stickers on front or back card
+    function updateContent(type: string, key: string, value: string | number) {
+        setContent(prevContent => prevContent.map((card: Content, cardIndex) =>
+            (cardIndex === cardNum - 1) ? (cardSide === "Front") ?
+                {...card, front_card: updateCardContent(type, card.front_card, key, value)}
+                : {...card, back_card: updateCardContent(type, card.back_card, key, value)}
+            : card
+        ));
+        setDataChanged(true);
+    }
+
+    // deletes text, gifs, or stickers on card
+    function deleteCardContent(type: string, card: Card) {
+        if (type === "text") {
+            return {...card, text: card.text.filter((_, index) => index != contentIndex)};
+        } else if (type === "gif") {
+            return {...card, gif: card.gif.filter((_, index) => index != contentIndex)};
+        } else if (type === "sticker") {
+            return {...card, sticker: card.sticker.filter((_, index) => index != contentIndex)};
+        }
+        return card;
+    }
+
+    // deletes text, gifs, or stickers on front or back card
+    function deleteContent(type: string) {
+        setContent(prevContent => prevContent.map((card: Content, cardIndex) =>
+            (cardIndex === cardNum - 1) ? (cardSide === "Front") ?
+                {...card, front_card: deleteCardContent(type, card.front_card)}
+                : {...card, back_card: deleteCardContent(type, card.back_card)}
+            : card
+        ));
+        setDataChanged(true);
+        hideSidePanelTools();
+    }
+
     useEffect(() => {
-        fetchDeckName();
         fetchDeckContent();
     }, []);
 
@@ -253,19 +302,26 @@ function Edit() {
             <div className={styles.subContainer}>
                 <div className={"app-title"}>{deckName || "Flashier Cards"}</div>
                 { (loading) ?
-                    <div className={"error-message"}>
+                    <Alert severity="info" style={{marginBottom: "0.5rem"}}>
                         Loading request...
-                    </div>
+                    </Alert>
                 :
                     (error.status) ?
-                        <div className={"error-message"}>{error.message}</div>
+                        <Alert severity="error" style={{marginBottom: "0.5rem"}}>
+                            {error.message}
+                        </Alert>
                     :
                         <></>
                 }
+                { dataChanged && 
+                    <Alert severity="warning" style={{marginBottom: "0.5rem"}}>
+                        Warning: You have not saved your work.
+                    </Alert>
+                }
                 <EditToolbar
-                    createCard={() => createCard(deckId, total, setTotal, frontCards, setFrontCards, backCards, setBackCards, setError)}
+                    addCard={addCard}
                     openSidePanel={openSidePanel}
-                    deleteCard={() => deleteCard(total, setTotal, cardNum, setCardNum, setFrontCards, setBackCards)}
+                    deleteCard={deleteCard}
                     flipCard={flipCard}
                     saveDeckContent={saveDeckContent}
                     closeSidePanel={closeSidePanel}
@@ -275,262 +331,72 @@ function Edit() {
                         <div className={styles.card} ref={cardRef}>
                             <div className={styles.cardInner}>
                                 <div className={styles.cardFront}>
-                                    {frontCards[cardNum - 1]?.text?.map((text, textIndex) =>
-                                        <motion.p
-                                            key={textIndex}
-                                            drag
-                                            dragMomentum={false}
-                                            style={{
-                                                position: "fixed",
-                                                width: text.width,
-                                                fontFamily: "Imprima",
-                                                fontSize: text.font_size,
-                                                color: text.color,
-                                                x: text.x,
-                                                y: text.y
-                                            }}
-                                            whileHover={{
-                                                cursor: "grab",
-                                            }}
-                                            whileDrag={{
-                                                cursor: "grabbing"
-                                            }}
-                                            onDoubleClick={() => {
-                                                openSidePanel("text");
-                                                setText(text.input);
-                                                setTextIndex(textIndex);
-                                                setTextTools(true);                                                
-                                            }}
-                                            onDragEnd={(_event, info) => {
-                                                setFrontCards(prevCards =>
-                                                    prevCards.map((card, cardIndex) =>
-                                                        cardIndex === (cardNum - 1) ? {
-                                                            ...card,
-                                                            text: card.text.map((tmp, i) =>
-                                                                i === textIndex ? {...tmp, x: Math.round(tmp.x + info.offset.x), y: Math.round(tmp.y + info.offset.y)} : tmp
-                                                            )
-                                                        } : card
-                                                    )
-                                                );
-                                            }}
-                                        >
-                                            {text.input}
-                                        </motion.p>
-                                    )}
-                                    {frontCards[cardNum - 1]?.gif?.map((gif, gifIndex) =>
-                                        <motion.img
-                                            key={gifIndex}
-                                            src={gif.url}
-                                            alt="gif"
-                                            drag
-                                            dragMomentum={false}
-                                            // dragElastic={0}
-                                            style={{
-                                                position: "fixed",
-                                                width: gif.width,
-                                                height: gif.height,
-                                                objectFit: "contain",
-                                                x: gif.x,
-                                                y: gif.y
-                                            }}
-                                            whileHover={{
-                                                cursor: "grab",
-                                                boxShadow: "0px 0px 20px 5px rgba(78, 119, 162, 0.33)",
-                                                scale: 1.05
-                                            }}
-                                            whileDrag={{
-                                                cursor: "grabbing"
-                                            }}
-                                            onDoubleClick={() => {
-                                                openSidePanel("gif");
-                                                setGifIndex(gifIndex);
-                                                setGifTools(true);
-                                            }}
-                                            onDragEnd={(_event, info) => {
-                                                setFrontCards(prevCards =>
-                                                    prevCards.map((card, cardIndex) =>
-                                                        cardIndex === (cardNum - 1) ? {
-                                                            ...card,
-                                                            gif: card.gif.map((tmp, i) =>
-                                                                i === gifIndex ? {...tmp, x: Math.round(tmp.x + info.offset.x), y: Math.round(tmp.y + info.offset.y)} : tmp
-                                                            )
-                                                        } : card
-                                                    )
-                                                );
-                                            }}
+                                    {content[cardNum - 1]?.front_card?.text?.map((text, textIndex) =>
+                                        <DisplayText 
+                                            textIndex={textIndex}
+                                            text={text}
+                                            openSidePanel={openSidePanel}
+                                            setText={setText}
+                                            setContentIndex={setContentIndex}
+                                            setShowTextTools={setShowTextTools}
+                                            updateContent={updateContent}
                                         />
                                     )}
-                                    {frontCards[cardNum - 1]?.sticker?.map((sticker, stickerIndex) =>
-                                        <motion.img
-                                            key={stickerIndex}
-                                            src={sticker.url}
-                                            alt="sticker"
-                                            drag
-                                            dragMomentum={false}
-                                            // dragElastic={0}
-                                            style={{
-                                                position: "fixed",
-                                                width: sticker.width,
-                                                height: sticker.height,
-                                                objectFit: "contain",
-                                                x: sticker.x,
-                                                y: sticker.y
-                                            }}
-                                            whileHover={{
-                                                cursor: "grab",
-                                                boxShadow: "0px 0px 20px 5px rgba(78, 119, 162, 0.33)",
-                                                scale: 1.05
-                                            }}
-                                            whileDrag={{
-                                                cursor: "grabbing"
-                                            }}
-                                            onDoubleClick={() => {
-                                                openSidePanel("sticker");
-                                                setStickerIndex(stickerIndex);
-                                                setStickerTools(true);
-                                            }}
-                                            onDragEnd={(_event, info) => {
-                                                setFrontCards(prevCards =>
-                                                    prevCards.map((card, cardIndex) =>
-                                                        cardIndex === (cardNum - 1) ? {
-                                                            ...card,
-                                                            sticker: card.sticker.map((tmp, i) =>
-                                                                i === stickerIndex ? {...tmp, x: Math.round(tmp.x + info.offset.x), y: Math.round(tmp.y + info.offset.y)} : tmp
-                                                            )
-                                                        } : card
-                                                    )
-                                                );
-                                            }}
+                                    {content[cardNum - 1]?.front_card?.gif?.map((gif, gifIndex) =>
+                                        <DisplayGiphy
+                                            type={"gif"}
+                                            giphyIndex={gifIndex}
+                                            giphy={gif}
+                                            openSidePanel={openSidePanel}
+                                            setContentIndex={setContentIndex}
+                                            setShowGiphyTools={setShowGifPanel}
+                                            updateContent={updateContent}
+                                        />
+                                    )}
+                                    {content[cardNum - 1]?.front_card?.sticker?.map((sticker, stickerIndex) =>
+                                        <DisplayGiphy
+                                            type={"sticker"}
+                                            giphyIndex={stickerIndex}
+                                            giphy={sticker}
+                                            openSidePanel={openSidePanel}
+                                            setContentIndex={setContentIndex}
+                                            setShowGiphyTools={setShowStickerPanel}
+                                            updateContent={updateContent}
                                         />
                                     )}
                                 </div>
                                 <div className={styles.cardBack}>
-                                    {backCards[cardNum - 1]?.text?.map((text, textIndex) =>
-                                        <motion.p
-                                            key={textIndex}
-                                            drag
-                                            dragMomentum={false}
-                                            style={{
-                                                position: "fixed",
-                                                width: text.width,
-                                                fontFamily: "Imprima",
-                                                fontSize: text.font_size,
-                                                color: text.color,
-                                                x: text.x,
-                                                y: text.y
-                                            }}
-                                            whileHover={{
-                                                cursor: "grab",
-                                            }}
-                                            whileDrag={{
-                                                cursor: "grabbing"
-                                            }}
-                                            onDoubleClick={() => {
-                                                openSidePanel("text");
-                                                setText(text.input);
-                                                setTextIndex(textIndex);
-                                                setTextTools(true);
-                                            }}
-                                            onDragEnd={(_event, info) => {
-                                                setBackCards(prevCards =>
-                                                    prevCards.map((card, cardIndex) =>
-                                                        cardIndex === (cardNum - 1) ? {
-                                                            ...card,
-                                                            text: card.text.map((tmp, i) =>
-                                                                i === textIndex ? {...tmp, x: Math.round(tmp.x + info.offset.x), y: Math.round(tmp.y + info.offset.y)} : tmp
-                                                            )
-                                                        } : card
-                                                    )
-                                                );
-                                            }}
-                                        >
-                                            {text.input}
-                                        </motion.p>
-                                    )}
-                                    {backCards[cardNum - 1]?.gif?.map((gif, gifIndex) =>
-                                        <motion.img
-                                            key={gifIndex}
-                                            src={gif.url}
-                                            alt="gif"
-                                            drag
-                                            dragMomentum={false}
-                                            // dragElastic={0}
-                                            style={{
-                                                position: "fixed",
-                                                width: gif.width,
-                                                height: gif.height,
-                                                objectFit: "contain",
-                                                x: gif.x,
-                                                y: gif.y
-                                            }}
-                                            whileHover={{
-                                                cursor: "grab",
-                                                boxShadow: "0px 0px 20px 5px rgba(78, 119, 162, 0.33)",
-                                                scale: 1.05
-                                            }}
-                                            whileDrag={{
-                                                cursor: "grabbing"
-                                            }}
-                                            onDoubleClick={() => {
-                                                openSidePanel("gif");
-                                                setGifIndex(gifIndex);
-                                                setGifTools(true);
-                                            }}
-                                            onDragEnd={(_event, info) => {
-                                                setBackCards(prevCards =>
-                                                    prevCards.map((card, cardIndex) =>
-                                                        cardIndex === (cardNum - 1) ? {
-                                                            ...card,
-                                                            gif: card.gif.map((tmp, i) =>
-                                                                i === gifIndex ? {...tmp, x: Math.round(tmp.x + info.offset.x), y: Math.round(tmp.y + info.offset.y)} : tmp
-                                                            )
-                                                        } : card
-                                                    )
-                                                );
-                                            }}
+                                    {content[cardNum - 1]?.back_card?.text?.map((text, textIndex) =>
+                                        <DisplayText 
+                                            textIndex={textIndex}
+                                            text={text}
+                                            openSidePanel={openSidePanel}
+                                            setText={setText}
+                                            setContentIndex={setContentIndex}
+                                            setShowTextTools={setShowTextTools}
+                                            updateContent={updateContent}
                                         />
                                     )}
-                                    {backCards[cardNum - 1]?.sticker?.map((sticker, stickerIndex) =>
-                                        <motion.img
-                                            key={stickerIndex}
-                                            src={sticker.url}
-                                            alt="sticker"
-                                            drag
-                                            dragMomentum={false}
-                                            // dragElastic={0}
-                                            style={{
-                                                position: "fixed",
-                                                width: sticker.width,
-                                                height: sticker.height,
-                                                objectFit: "contain",
-                                                x: sticker.x,
-                                                y: sticker.y
-                                            }}
-                                            whileHover={{
-                                                cursor: "grab",
-                                                boxShadow: "0px 0px 20px 5px rgba(78, 119, 162, 0.33)",
-                                                scale: 1.05
-                                            }}
-                                            whileDrag={{
-                                                cursor: "grabbing"
-                                            }}
-                                            onDoubleClick={() => {
-                                                openSidePanel("sticker");
-                                                setStickerIndex(stickerIndex);
-                                                setStickerTools(true);
-                                            }}
-                                            onDragEnd={(_event, info) => {
-                                                setBackCards(prevCards =>
-                                                    prevCards.map((card, cardIndex) =>
-                                                        cardIndex === (cardNum - 1) ? {
-                                                            ...card,
-                                                            sticker: card.sticker.map((tmp, i) =>
-                                                                i === stickerIndex ? {...tmp, x: Math.round(tmp.x + info.offset.x), y: Math.round(tmp.y + info.offset.y)} : tmp
-                                                            )
-                                                        } : card
-                                                    )
-                                                );
-                                            }}
+                                    {content[cardNum - 1]?.back_card?.gif?.map((gif, gifIndex) =>
+                                        <DisplayGiphy
+                                            type={"gif"}
+                                            giphyIndex={gifIndex}
+                                            giphy={gif}
+                                            openSidePanel={openSidePanel}
+                                            setContentIndex={setContentIndex}
+                                            setShowGiphyTools={setShowGifPanel}
+                                            updateContent={updateContent}
+                                        />
+                                    )}
+                                    {content[cardNum - 1]?.back_card?.sticker?.map((sticker, stickerIndex) =>
+                                        <DisplayGiphy
+                                            type={"sticker"}
+                                            giphyIndex={stickerIndex}
+                                            giphy={sticker}
+                                            openSidePanel={openSidePanel}
+                                            setContentIndex={setContentIndex}
+                                            setShowGiphyTools={setShowStickerPanel}
+                                            updateContent={updateContent}
                                         />
                                     )}
                                 </div>
@@ -540,40 +406,37 @@ function Edit() {
                             <button disabled={cardNum === 1} onClick={showPrevCard}>
                                 <FontAwesomeIcon icon={faChevronLeft} />
                             </button>
-                            <span>{cardSide} of Card {cardNum}/{total}</span>
-                            <button disabled={cardNum === total} onClick={showNextCard}>
+                            <span>{cardSide} of Card {cardNum}/{totalCards}</span>
+                            <button disabled={cardNum === totalCards} onClick={showNextCard}>
                                 <FontAwesomeIcon icon={faChevronRight} />
                             </button>
                         </div>
                     </div>
-                    { textPanel &&
+                   { showTextPanel &&
                         <TextSidePanel
-                            textTools={textTools}
                             text={text}
                             setText={setText}
-                            textIndex={textIndex}
-                            createText={createContent}
+                            showTextTools={showTextTools}
+                            insertText={insertContent}
                             updateText={updateContent}
                             deleteText={deleteContent}
                         />
                     }
-                    { gifPanel &&
+                    { showGifPanel &&
                         <GifSidePanel
                             setLoading={setLoading}
                             setError={setError}
-                            gifTools={gifTools}
-                            gifIndex={gifIndex}
-                            createGif={createContent}
+                            showGifTools={showGifTools}
+                            insertGif={insertContent}
                             deleteGif={deleteContent}
                         />
                     }
-                    { stickerPanel &&
+                    { showStickerPanel &&
                         <StickerSidePanel
                             setLoading={setLoading}
                             setError={setError}
-                            stickerTools={stickerTools}
-                            stickerIndex={stickerIndex}
-                            createSticker={createContent}
+                            showStickerTools={showStickerTools}
+                            insertSticker={insertContent}
                             deleteSticker={deleteContent}
                         />
                     }
