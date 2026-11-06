@@ -348,7 +348,7 @@ function Edit() {
                                             giphyIndex={gifIndex}
                                             giphy={gif}
                                             setContentIndex={setContentIndex}
-                                            showGiphyPanel={openSidePanel}
+                                            openSidePanel={openSidePanel}
                                             setShowGiphyTools={setShowGifTools}
                                             updateContent={updateContent}
                                         />
@@ -359,7 +359,7 @@ function Edit() {
                                             giphyIndex={stickerIndex}
                                             giphy={sticker}
                                             setContentIndex={setContentIndex}
-                                            showGiphyPanel={openSidePanel}
+                                            openSidePanel={openSidePanel}
                                             setShowGiphyTools={setShowStickerTools}
                                             updateContent={updateContent}
                                         />
@@ -383,7 +383,7 @@ function Edit() {
                                             giphyIndex={gifIndex}
                                             giphy={gif}
                                             setContentIndex={setContentIndex}
-                                            showGiphyPanel={openSidePanel}
+                                            openSidePanel={openSidePanel}
                                             setShowGiphyTools={setShowGifTools}
                                             updateContent={updateContent}
                                         />
@@ -394,7 +394,7 @@ function Edit() {
                                             giphyIndex={stickerIndex}
                                             giphy={sticker}
                                             setContentIndex={setContentIndex}
-                                            showGiphyPanel={openSidePanel}
+                                            openSidePanel={openSidePanel}
                                             setShowGiphyTools={setShowStickerTools}
                                             updateContent={updateContent}
                                         />

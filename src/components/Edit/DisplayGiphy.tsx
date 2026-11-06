@@ -1,7 +1,7 @@
 import { motion } from "motion/react";
 
 function DisplayGiphy (props: any) {
-    const {type, giphyIndex, giphy, setContentIndex, showGiphyPanel, setShowGiphyTools, updateContent} = props;
+    const {type, giphyIndex, giphy, setContentIndex, openSidePanel, setShowGiphyTools, updateContent} = props;
     return (
         <motion.img
             key={giphyIndex}
@@ -26,8 +26,8 @@ function DisplayGiphy (props: any) {
                 cursor: "grabbing"
             }}
             onDoubleClick={() => {
+                openSidePanel(type);
                 setContentIndex(giphyIndex);
-                showGiphyPanel(type);
                 setShowGiphyTools(true);
             }}
             onDragStart={(_) => {
