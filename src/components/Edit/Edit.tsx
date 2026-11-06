@@ -292,8 +292,6 @@ function Edit() {
         hideSidePanelTools();
     }
 
-    console.log(content);
-
     useEffect(() => {
         fetchDeckContent();
     }, []);
