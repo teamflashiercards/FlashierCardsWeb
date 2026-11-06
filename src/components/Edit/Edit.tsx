@@ -347,9 +347,9 @@ function Edit() {
                                             type={"gif"}
                                             giphyIndex={gifIndex}
                                             giphy={gif}
-                                            openSidePanel={openSidePanel}
                                             setContentIndex={setContentIndex}
-                                            setShowGiphyTools={setShowGifPanel}
+                                            setShowGiphyPanel={setShowGifPanel}
+                                            setShowGiphyTools={setShowGifTools}
                                             updateContent={updateContent}
                                         />
                                     )}
@@ -358,9 +358,9 @@ function Edit() {
                                             type={"sticker"}
                                             giphyIndex={stickerIndex}
                                             giphy={sticker}
-                                            openSidePanel={openSidePanel}
                                             setContentIndex={setContentIndex}
-                                            setShowGiphyTools={setShowStickerPanel}
+                                            setShowGiphyPanel={setShowStickerPanel}
+                                            setShowGiphyTools={setShowStickerTools}
                                             updateContent={updateContent}
                                         />
                                     )}
@@ -382,9 +382,9 @@ function Edit() {
                                             type={"gif"}
                                             giphyIndex={gifIndex}
                                             giphy={gif}
-                                            openSidePanel={openSidePanel}
                                             setContentIndex={setContentIndex}
-                                            setShowGiphyTools={setShowGifPanel}
+                                            setShowGiphyPanel={setShowGifPanel}
+                                            setShowGiphyTools={setShowGifTools}
                                             updateContent={updateContent}
                                         />
                                     )}
@@ -393,9 +393,9 @@ function Edit() {
                                             type={"sticker"}
                                             giphyIndex={stickerIndex}
                                             giphy={sticker}
-                                            openSidePanel={openSidePanel}
                                             setContentIndex={setContentIndex}
-                                            setShowGiphyTools={setShowStickerPanel}
+                                            setShowGiphyPanel={setShowStickerPanel}
+                                            setShowGiphyTools={setShowStickerTools}
                                             updateContent={updateContent}
                                         />
                                     )}
