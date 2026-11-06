@@ -10,6 +10,11 @@ import RenameDeckForm from "./RenameDeckForm";
 import type Deck from "../../interfaces/Deck";
 import Alert from "@mui/material/Alert";
 
+/*
+    Description: This component contains code for the Dashboard which displays all the decks.
+    Last updated: 11/5/2026
+*/
+
 function Dashboard() {
     // manage user session, error handling, data loading
     const { session } = UserAuth();
@@ -17,7 +22,7 @@ function Dashboard() {
     const [loading, setLoading] = useState(false);
     
     // manage options in toolbar and overlays
-    const [toolVisible, setToolVisible] = useState(false);
+    const [showTools, setShowTools] = useState(false);
     const [createOverlay, setCreateOverlay] = useState(false);
     const [renameOverlay, setRenameOverlay] = useState(false);
     
@@ -34,11 +39,6 @@ function Dashboard() {
     // to store new or updated deck name value
     const [deckName, setDeckName] = useState("");
 
-    function setDeckSelected(id: number | null, request: boolean) {
-        setDeckId(id);
-        setToolVisible(request);
-    }
-
     function exitOverlay() {
         if (createOverlay) {
             setCreateOverlay(false);
@@ -46,7 +46,8 @@ function Dashboard() {
             setRenameOverlay(false);
         }
         setDeckName("");
-        setDeckSelected(null, false);
+        setDeckId(null);
+        setShowTools(false);
     }
 
     // function to fetch all decks user has created when dashboard is opened
@@ -76,7 +77,6 @@ function Dashboard() {
         }
     };
 
-    // VERIFY
     // function to create a new deck
     const submitCreateForm = async (e: any) => {
         e.preventDefault();
@@ -98,14 +98,20 @@ function Dashboard() {
                     "Authorization": `Bearer ${session.access_token}`
                 },
                 body: JSON.stringify({
-                    name: deckName.trim()
-                    // TODO: add initial content here
+                    name: deckName.trim(),
+                    content: [{
+                        front_card: {text: [], gif: [], sticker: []},
+                        back_card: {text: [], gif: [], sticker: []}
+                    }]
                 })
             });
 
+            // returns an array with one object with deck id, name, and content
             const data = await response.json();
             if (!response.ok) throw new Error(data.message);
-            setDecks(prev => [...prev, data[0]]);
+
+            setDecks(prev => [...prev, {id: data[0].id, name: data[0].name}]);
+            setTotalDecks(prevTotal => prevTotal + 1);
             setError({ status: false, message: "" });
 
         } catch(error: any) {
@@ -117,7 +123,6 @@ function Dashboard() {
         } 
     };
 
-    // VERIFY
     // function to rename a deck
     const submitRenameForm = async (e: any) => {
         e.preventDefault();
@@ -141,10 +146,11 @@ function Dashboard() {
                 })
             });
 
+            // returns an array with one object with deck id and name
             const data = await response.json();
             if (!response.ok) throw new Error(data.message);
 
-            // update deck decks array
+            // update decks array
             setDecks(prevDecks => 
                 prevDecks.map(deck => 
                     deck.id === data[0].id ? data[0] : deck
@@ -162,7 +168,6 @@ function Dashboard() {
         }
     };
 
-    // VERIFY
     // function to delete a deck
     const deleteDeck = async () => {
         setLoading(true);
@@ -178,18 +183,20 @@ function Dashboard() {
 
             const data = await response.json();
             if (!response.ok) throw new Error(data.message);
+
+            // remove the deck that was deleted
             setDecks(prevDecks => prevDecks.filter(deck => deck.id !== deckId)); 
+            setTotalDecks(prevTotal => prevTotal - 1);
 
         } catch(error: any) {
             setError({ status: true, message: error.message });
 
         } finally {
             setLoading(false);
-            setDeckSelected(null, false);
+            setDeckId(null);
+            setShowTools(false);
         }
     };
-
-    console.log(session);
 
     useEffect(() => {
         fetchDeckData();
@@ -205,9 +212,10 @@ function Dashboard() {
                         Flashier Cards
                     </div>
                     <DashboardToolbar 
-                        deckId={deckId} 
-                        toolVisible={toolVisible}
-                        setDeckSelected={setDeckSelected}
+                        deckId={deckId}
+                        setDeckId={setDeckId}
+                        showTools={showTools}
+                        setShowTools={setShowTools}
                         setCreateOverlay={setCreateOverlay}
                         setRenameOverlay={setRenameOverlay}
                         deleteDeck={deleteDeck}
@@ -230,7 +238,10 @@ function Dashboard() {
                                 <div 
                                     key={deck.id}
                                     className={styles.deck}
-                                    onClick={() => setDeckSelected(deck.id, true)}
+                                    onClick={() => {
+                                        setDeckId(deck.id);
+                                        setShowTools(true);
+                                    }}
                                     style={{ border: (deck.id == deckId) ? "2px solid #004A94" : "" }}
                                 >
                                     {deck.name}
@@ -241,7 +252,6 @@ function Dashboard() {
                     { createOverlay &&
                         <CreateDeckForm
                             exitOverlay={exitOverlay}
-                            deckName={deckName}
                             setDeckName={setDeckName}
                             submitCreateForm={submitCreateForm}
                         />
@@ -249,7 +259,6 @@ function Dashboard() {
                     { renameOverlay &&
                         <RenameDeckForm
                             exitOverlay={exitOverlay}
-                            deckName={deckName}
                             setDeckName={setDeckName}
                             submitRenameForm={submitRenameForm}
                         />
